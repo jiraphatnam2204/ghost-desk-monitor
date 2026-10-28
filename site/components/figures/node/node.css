@@ -50,24 +50,32 @@
   animation-duration: 0.9s;
 }
 
-/* a part named in the list beside the figure: heavy toner edge and a cool tint */
-.gdm-node[data-focus="radar"] .gdm-radar .iso-edge,
-.gdm-node[data-focus="thermal"] .gdm-thermal .iso-edge,
-.gdm-node[data-focus="head"] .gdm-head .iso-edge,
-.gdm-node[data-focus="board"] .gdm-board .iso-edge,
-.gdm-node[data-focus="prism"] .gdm-prism .iso-edge,
-.gdm-node[data-focus="servo"] .gdm-servo .iso-edge,
-.gdm-node[data-focus="qr"] .gdm-qr .iso-edge {
+/* parts named by the list beside the figure or by a build step (space-separated): heavy toner edge and a cool tint */
+.gdm-node[data-focus~="radar"] .gdm-radar .iso-edge,
+.gdm-node[data-focus~="thermal"] .gdm-thermal .iso-edge,
+.gdm-node[data-focus~="head"] .gdm-head .iso-edge,
+.gdm-node[data-focus~="board"] .gdm-board .iso-edge,
+.gdm-node[data-focus~="prism"] .gdm-prism .iso-edge,
+.gdm-node[data-focus~="servo"] .gdm-servo .iso-edge,
+.gdm-node[data-focus~="qr"] .gdm-qr .iso-edge,
+.gdm-node[data-focus~="mast"] .gdm-mast .iso-edge,
+.gdm-node[data-focus~="cap"] .gdm-cap .iso-edge,
+.gdm-node[data-focus~="block"] .gdm-block .iso-edge,
+.gdm-node[data-focus~="stand"] .gdm-stand .iso-edge {
   stroke: var(--anatomy-lit);
   stroke-width: 2.6px;
 }
 
-.gdm-node[data-focus="radar"] .gdm-radar :is(.iso-top, .iso-shade, .iso-fill),
-.gdm-node[data-focus="thermal"] .gdm-thermal :is(.iso-top, .iso-shade, .iso-fill),
-.gdm-node[data-focus="head"] .gdm-head :is(.iso-top, .iso-shade, .iso-fill),
-.gdm-node[data-focus="board"] .gdm-board :is(.iso-top, .iso-shade, .iso-fill),
-.gdm-node[data-focus="servo"] .gdm-servo :is(.iso-top, .iso-shade, .iso-fill),
-.gdm-node[data-focus="qr"] .gdm-qr :is(.iso-top, .iso-shade) {
+.gdm-node[data-focus~="radar"] .gdm-radar :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus~="thermal"] .gdm-thermal :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus~="head"] .gdm-head :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus~="board"] .gdm-board :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus~="servo"] .gdm-servo :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus~="mast"] .gdm-mast :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus~="cap"] .gdm-cap :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus~="block"] .gdm-block :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus~="stand"] .gdm-stand :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus~="qr"] .gdm-qr :is(.iso-top, .iso-shade) {
   fill: #c9d1dd;
 }
 

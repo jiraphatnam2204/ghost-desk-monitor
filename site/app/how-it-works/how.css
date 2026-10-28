@@ -1,0 +1,713 @@
+/* ---------- the figure and the step beside it ---------- */
+
+.hop-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(290px, 1fr);
+  gap: clamp(16px, 2.4vw, 28px);
+  align-items: start;
+}
+
+.signal-step {
+  position: sticky;
+  top: 76px;
+  display: grid;
+  gap: 16px;
+  padding: 16px clamp(14px, 1.6vw, 20px) 18px;
+  border: 2px solid var(--rule);
+}
+
+.signal-dots {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.signal-dots .story-dot {
+  width: auto;
+}
+
+.signal-card {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.signal-card h3 {
+  font-size: clamp(21px, 1.9vw, 26px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.signal-card > p {
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.signal-wire {
+  display: grid;
+  gap: 2px;
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.signal-wire code,
+.theory code,
+.packet code,
+.code pre {
+  font-family: var(--font-mono);
+}
+
+.signal-wire code {
+  font-size: 12.5px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.signal-nav {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 8px;
+}
+
+.signal-nav .text-button {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+@media (max-width: 960px) {
+  .hop-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .signal-step {
+    position: static;
+  }
+}
+
+/* ---------- the ladder: time down, places across ---------- */
+
+.ladder-wrap {
+  display: grid;
+  gap: 10px;
+  margin-top: clamp(28px, 4vw, 40px);
+}
+
+.ladder {
+  --lanes: 5;
+  border-top: 2px solid var(--rule);
+}
+
+.ladder-head,
+.ladder-row {
+  display: grid;
+  grid-template-columns: 8.5em minmax(0, 1fr);
+  column-gap: 12px;
+}
+
+.ladder-head {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 12.5px;
+  color: var(--toner-2);
+}
+
+.ladder-head > span:not(:first-child) {
+  display: grid;
+  text-align: center;
+}
+
+/* the head has no gap between lanes, like the track below it */
+.ladder-head {
+  grid-template-columns: calc(8.5em + 12px) repeat(var(--lanes), minmax(0, 1fr));
+  column-gap: 0;
+}
+
+.ladder-head b {
+  color: var(--toner);
+  font-size: 13.5px;
+}
+
+.ladder-row {
+  width: 100%;
+  padding: 6px 0 8px;
+  border: 0;
+  border-bottom: 1px solid var(--rule-soft);
+  background: none;
+  color: var(--toner);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ladder-row:hover .ladder-title {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.ladder-row[aria-current="step"] {
+  background: var(--paper-shadow);
+  box-shadow: inset 4px 0 0 var(--toner);
+}
+
+.ladder-time {
+  grid-row: 1 / span 2;
+  padding-left: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--toner-2);
+}
+
+.ladder-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--lanes), minmax(0, 1fr));
+  height: 18px;
+}
+
+.ladder-lane,
+.ladder-hop,
+.ladder-self {
+  grid-row: 1;
+}
+
+.ladder-lane {
+  justify-self: center;
+  width: 0;
+  border-left: 1px dashed var(--rule-soft);
+}
+
+/* an arrow from the centre of one lane to the centre of another */
+.ladder-hop {
+  position: relative;
+  align-self: center;
+  height: 2.5px;
+  margin-inline: calc(100% / (2 * var(--span)));
+  background: var(--toner);
+}
+
+.ladder-hop::before,
+.ladder-hop::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+}
+
+.ladder-hop::before {
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--toner);
+  transform: translateY(-50%);
+}
+
+.ladder-hop::after {
+  right: -2px;
+  border: 6px solid transparent;
+  border-left: 9px solid var(--toner);
+  border-right: 0;
+  transform: translateY(-50%);
+}
+
+.ladder-hop[data-back]::before {
+  left: auto;
+  right: -4px;
+}
+
+.ladder-hop[data-back]::after {
+  right: auto;
+  left: -2px;
+  border-left: 0;
+  border-right: 9px solid var(--toner);
+}
+
+/* work that stays inside one place: a ring on its lane */
+.ladder-self {
+  justify-self: center;
+  align-self: center;
+  width: 14px;
+  height: 14px;
+  border: 2.5px solid var(--toner);
+  border-radius: 50%;
+  background: var(--paper);
+}
+
+.ladder-row[aria-current="step"] .ladder-hop,
+.ladder-row[aria-current="step"] .ladder-hop::before {
+  background: var(--stamp);
+}
+
+.ladder-row[aria-current="step"] .ladder-hop::after {
+  border-left-color: var(--stamp);
+}
+
+.ladder-row[aria-current="step"] .ladder-hop[data-back]::after {
+  border-right-color: var(--stamp);
+}
+
+.ladder-row[aria-current="step"] .ladder-self {
+  border-color: var(--stamp);
+}
+
+.ladder-title {
+  grid-column: 2;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .ladder-head,
+  .ladder-row {
+    grid-template-columns: 5.6em minmax(0, 1fr);
+  }
+
+  .ladder-head {
+    grid-template-columns: calc(5.6em + 12px) repeat(var(--lanes), minmax(0, 1fr));
+    font-size: 0;
+  }
+
+  .ladder-head b {
+    font-size: 11px;
+  }
+
+  .ladder-time {
+    padding-left: 8px;
+    font-size: 12px;
+  }
+}
+
+/* ---------- theory sections ---------- */
+
+.theory {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(24px, 4vw, 48px);
+  align-items: start;
+}
+
+.theory > *,
+.theory-cols > * {
+  min-width: 0;
+}
+
+.theory-wide {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+}
+
+.theory-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 4vw, 48px);
+}
+
+@media (max-width: 960px) {
+  .theory,
+  .theory-wide,
+  .theory-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+.theory-text {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  max-width: 64ch;
+  font-size: 16.5px;
+  line-height: 1.7;
+}
+
+.theory-text h3 {
+  margin-top: 6px;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.theory-text code,
+.theory-list code {
+  font-size: 0.86em;
+  padding: 0 3px;
+  background: var(--paper-shadow);
+}
+
+.theory-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.formula {
+  justify-self: start;
+  padding: 8px 14px;
+  border: 1.5px solid var(--rule);
+  font-size: 17px;
+}
+
+.theory + .scroll-x,
+.fusion-wrap {
+  margin-top: clamp(28px, 4vw, 40px);
+}
+
+.section .scroll-x {
+  margin-top: 28px;
+}
+
+.chain td:first-child {
+  min-width: 10em;
+}
+
+.chain td,
+.fusion td {
+  min-width: 8em;
+}
+
+/* ---------- widgets: a ruled instrument panel ---------- */
+
+.widget {
+  display: grid;
+  margin: 0;
+  border: 2px solid var(--rule);
+  background: var(--paper);
+  min-width: 0;
+}
+
+.widget > figcaption {
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--rule);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--toner-2);
+}
+
+.widget-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.widget-read {
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--rule-soft);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* scope */
+
+.scope-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 2px solid var(--rule);
+}
+
+.scope-tab {
+  display: grid;
+  gap: 1px;
+  padding: 9px 10px 10px;
+  border: 0;
+  background: var(--paper);
+  color: var(--toner-2);
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.scope-tab + .scope-tab {
+  border-left: 1px solid var(--rule);
+}
+
+.scope-tab b {
+  font-size: 16px;
+  color: var(--toner);
+}
+
+.scope-tab[aria-selected="true"] {
+  background: var(--toner);
+  color: var(--paper);
+}
+
+.scope-tab[aria-selected="true"] b {
+  color: var(--paper);
+}
+
+.scope {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 6px 0;
+  background: var(--paper);
+}
+
+.scope-grid {
+  stroke: var(--rule-faint);
+  stroke-width: 1;
+}
+
+.scope-trace {
+  fill: none;
+  stroke: var(--toner);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+
+.scope-analog {
+  stroke-width: 1.6;
+  stroke: var(--toner-3);
+}
+
+.scope-sample {
+  fill: var(--stamp);
+}
+
+.scope-label,
+.scope-bit,
+.scope-name {
+  font-family: var(--font-sans);
+  fill: var(--toner-2);
+  font-size: 12px;
+  text-anchor: middle;
+}
+
+.scope-bit {
+  fill: var(--toner);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.scope-name {
+  text-anchor: end;
+  font-weight: 700;
+}
+
+.scope-range {
+  flex: 1 1 140px;
+  accent-color: var(--toner);
+}
+
+@media (max-width: 520px) {
+  .scope-tab span {
+    display: none;
+  }
+}
+
+/* thermal */
+
+.thermal-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.6fr);
+  gap: 14px;
+  padding: 14px;
+}
+
+.thermal-grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 2px;
+  aspect-ratio: 1;
+}
+
+/* temperature in toner tints: ink is kept for desk states */
+.thermal-cell {
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--toner) calc(var(--k) * 88%), var(--paper));
+  color: var(--toner);
+  font-size: clamp(9px, 1vw, 11.5px);
+  font-weight: 600;
+}
+
+.thermal-cell[data-dark] {
+  color: var(--paper);
+}
+
+.thermal-cell[data-hot] {
+  outline: 2px solid var(--paper);
+  outline-offset: -4px;
+}
+
+.thermal-out {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  margin: 0;
+}
+
+.thermal-out dd {
+  margin: 1px 0 0;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.thermal-out .thermal-say {
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+@media (max-width: 520px) {
+  .thermal-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* packet */
+
+.packet-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 14px;
+}
+
+.packet-field {
+  display: grid;
+  gap: 2px;
+  flex-basis: 0;
+  min-width: 92px;
+  padding: 6px 6px 7px;
+  border: 1.5px solid var(--rule);
+  background: var(--paper);
+  color: var(--toner);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.packet-field[aria-pressed="true"] {
+  background: var(--toner);
+  color: var(--paper);
+}
+
+.packet-bytes {
+  display: flex;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.packet-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.packet-at {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.packet-say {
+  min-height: 4.4em;
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--rule-soft);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.packet-say b {
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+/* state machine */
+
+.fsm-window {
+  margin: 10px 6px 0;
+}
+
+.fsm svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.fsm-state rect {
+  fill: var(--hl-yellow);
+  stroke: var(--toner);
+  stroke-width: 2;
+}
+
+.fsm-state[data-ink="pink"] rect {
+  fill: var(--hl-pink);
+}
+
+.fsm-state[data-ink="green"] rect {
+  fill: var(--hl-green);
+}
+
+.fsm-name {
+  font-family: var(--font-sans);
+  font-size: 19px;
+  font-weight: 800;
+  fill: var(--toner);
+}
+
+.fsm-en {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--toner-2);
+}
+
+.fsm-edge {
+  fill: none;
+  stroke: var(--toner);
+  stroke-width: 1.8;
+}
+
+.fsm-head {
+  fill: var(--toner);
+}
+
+.fsm-label {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--toner);
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 4px;
+}
+
+.fsm-sub {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  fill: var(--toner-2);
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 4px;
+}
+
+/* glossary */
+
+.glossary {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 0 clamp(20px, 3vw, 36px);
+  margin: 0;
+  border-top: 2px solid var(--rule);
+}
+
+.glossary > div {
+  padding: 12px 0 14px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.glossary dt {
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.glossary dd {
+  margin: 2px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--toner-2);
+}

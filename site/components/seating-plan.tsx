@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { DESKS, clockControls, deskMoment, useDemoClock } from "@/lib/demo-clock";
+import { DESKS, SPEEDS, clockControls, deskMoment, isPresent, noticesOf, roomTime, useDemoClock } from "@/lib/demo-clock";
 import { AWAY_AFTER, RELEASE_AT, STATE_LABEL, WARN_AT, clock, type Moment } from "@/lib/session";
+import { PERSONA_LABEL, STORY } from "@/lib/story";
 
 const COLUMNS = 6;
 const deskId = (index: number) => `D${String(index + 1).padStart(2, "0")}`;
@@ -13,7 +14,7 @@ function passesOf(moment: Moment) {
   return { ink: "yellow", count: moment.warned ? 2 : 1 };
 }
 
-function Seat({ index, moment, selected }: { index: number; moment: Moment; selected: boolean }) {
+function Seat({ index, moment, selected, story }: { index: number; moment: Moment; selected: boolean; story: boolean }) {
   const { ink, count } = passesOf(moment);
   const ghost = moment.state === "away";
   const label = `โต๊ะ ${deskId(index)} ${STATE_LABEL[moment.state]}${ghost ? ` มาแล้ว ${clock(moment.awayFor ?? 0)} นาที` : ""}${moment.warned ? " ส่ง LINE เตือนแล้ว" : ""}`;
@@ -23,6 +24,7 @@ function Seat({ index, moment, selected }: { index: number; moment: Moment; sele
       className="seat"
       data-state={moment.state}
       data-ghost={ghost ? "" : undefined}
+      data-story={story ? "" : undefined}
       aria-pressed={selected}
       aria-label={label}
       onClick={() => (selected ? clockControls.next(index) : clockControls.select(index))}
@@ -89,85 +91,263 @@ function MinuteAxis({ moment }: { moment: Moment }) {
   );
 }
 
+function StoryBar({ story }: { story: number | null }) {
+  const step = story === null ? null : STORY[story];
+  if (!step || story === null) {
+    return (
+      <div className="story">
+        <div className="story-start">
+          <div>
+            <b>เล่า use case ทีละขั้น</b>
+            <span>
+              {STORY.length} ขั้น บนโต๊ะ D07, D15 และ D20 · ระหว่างนำเสนอใช้ <kbd>←</kbd> <kbd>→</kbd>
+            </span>
+          </div>
+          <button type="button" className="action" data-primary="" onClick={() => clockControls.story(0)}>
+            เริ่ม story
+          </button>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="story" data-on="">
+      <div className="story-steps" role="group" aria-label="ขั้นของ use case">
+        {STORY.map((item, index) => (
+          <button
+            key={item.title}
+            type="button"
+            className="story-dot"
+            aria-current={index === story ? "step" : undefined}
+            data-done={index < story ? "" : undefined}
+            onClick={() => clockControls.story(index)}
+            title={item.title}
+          >
+            {index + 1}
+          </button>
+        ))}
+        <button type="button" className="text-button story-exit" onClick={() => clockControls.reset()}>
+          ออกจาก story
+        </button>
+      </div>
+      <div className="story-body">
+        <div className="story-card" aria-live="polite">
+          <span className="story-persona">{PERSONA_LABEL[step.persona]}</span>
+          <h3>
+            {story + 1}. {step.title}
+          </h3>
+          <p>{step.text}</p>
+        </div>
+        <div className="story-nav">
+          <button type="button" className="action" onClick={() => clockControls.story(story - 1)} disabled={story === 0}>
+            ← ก่อนหน้า
+          </button>
+          <button type="button" className="action" data-primary="" onClick={() => clockControls.story(story + 1)} disabled={story === STORY.length - 1}>
+            ถัดไป →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function SeatingPlan() {
-  const { minute, selected, playing } = useDemoClock();
-  const moments = Array.from({ length: DESKS }, (_, index) => deskMoment(minute, index));
+  const { minute, selected, playing, speed, manual, story } = useDemoClock();
+  const moments = Array.from({ length: DESKS }, (_, index) => deskMoment(minute, index, manual));
   const chosen = moments[selected];
-  // the most recent LINE warning anywhere in the room
-  const warned = moments
-    .map((moment, index) => ({ moment, index }))
-    .filter(({ moment }) => moment.warned)
-    .sort((a, b) => (a.moment.awayFor ?? 0) - (b.moment.awayFor ?? 0))[0];
   const counts = moments.reduce(
     (tally, moment) => ({ ...tally, [moment.state]: tally[moment.state] + 1 }),
     { free: 0, inUse: 0, away: 0 } as Record<Moment["state"], number>,
   );
+  const notices = noticesOf(manual, minute);
+  const storyDesks = story === null ? [] : Object.keys(manual).map(Number);
+  // during the story only its desks speak, so the narration isn't drowned by the rest of the room
+  const speaks = (desk: number) => story === null || storyDesks.includes(desk);
+  // LINE: messages from desks someone is driving, plus any other desk warned right now
+  const inbox = [
+    ...notices.filter((notice) => notice.kind === "warn").map((notice) => ({ desk: notice.desk, at: notice.at })),
+    ...moments
+      .map((moment, desk) => ({ moment, desk }))
+      .filter(({ moment, desk }) => moment.warned && !manual[desk] && speaks(desk))
+      .map(({ moment, desk }) => ({ desk, at: minute - (moment.awayFor ?? 0) + WARN_AT })),
+  ].sort((a, b) => b.at - a.at);
+  const leftovers = moments.map((moment, desk) => ({ moment, desk })).filter(({ moment, desk }) => moment.state === "away" && speaks(desk));
+  const released = notices.filter((notice) => notice.kind === "release");
+  const freeDesks = moments.map((moment, desk) => ({ moment, desk })).filter(({ moment }) => moment.state === "free");
+  const present = manual[selected] ? isPresent(manual[selected], minute) : chosen.state === "inUse" && chosen.awayFor === null;
+
+  // presenter keys: space pauses, arrows walk the story, N jumps the selected desk to its next event
+  React.useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement;
+      if (target.closest("input, textarea, select, [contenteditable]") || event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.key === " " && !target.closest("button, a, summary")) {
+        event.preventDefault();
+        clockControls.toggle();
+      } else if (event.key === "ArrowRight" && story !== null) {
+        clockControls.story(story + 1);
+      } else if (event.key === "ArrowLeft" && story !== null) {
+        clockControls.story(story - 1);
+      } else if (event.key.toLowerCase() === "n") {
+        clockControls.next();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [story]);
 
   return (
     <div className="plan">
       <div className="plan-head">
-        <div>
+        <p className="plan-room">
           <span className="field-label">ผังที่นั่ง</span>
-          <p className="plan-room">ห้องอ่านหนังสือ ชั้น 3 · 24 โต๊ะ</p>
-        </div>
-        <div>
-          <span className="field-label">ตอนนี้ในห้อง</span>
-          <p className="plan-tally" aria-live="off">
-            <span className="hl" data-ink="green">ว่าง {counts.free}</span> <span className="hl" data-ink="pink">ใช้งาน {counts.inUse}</span>{" "}
-            <span className="hl" data-ink="yellow">ไม่อยู่ {counts.away}</span>
-          </p>
-        </div>
+          ห้องอ่านหนังสือ ชั้น 3 · 24 โต๊ะ
+        </p>
+        <p className="plan-tally" aria-live="off">
+          <span className="hl" data-ink="green">ว่าง {counts.free}</span> <span className="hl" data-ink="pink">ใช้งาน {counts.inUse}</span>{" "}
+          <span className="hl" data-ink="yellow">ไม่อยู่ {counts.away}</span>
+        </p>
         <span className="stamp plan-stamp">
           จำลอง
           <small>ไม่ใช่ข้อมูลจริง</small>
         </span>
       </div>
 
-      <div className="room">
-        <div className="room-front" aria-hidden="true">
-          <span>หน้าห้อง · เคาน์เตอร์บรรณารักษ์</span>
+      <div className="plan-main">
+        <div className="plan-floor">
+          <div className="room">
+            <div className="room-front" aria-hidden="true">
+              <span>หน้าห้อง · เคาน์เตอร์บรรณารักษ์</span>
+            </div>
+            <div className="seats" role="group" aria-label="ผังโต๊ะ 24 ตัว กดโต๊ะเพื่อเลือก กดซ้ำเพื่อข้ามไปเหตุการณ์ถัดไป">
+              {moments.map((moment, index) => (
+                <React.Fragment key={index}>
+                  {index % COLUMNS === COLUMNS / 2 ? <span className="aisle" aria-hidden="true" /> : null}
+                  <Seat index={index} moment={moment} selected={index === selected} story={storyDesks.includes(index)} />
+                </React.Fragment>
+              ))}
+            </div>
+            <div className="room-door" aria-hidden="true">
+              <span>ทางเข้า</span>
+            </div>
+          </div>
+          <div className="plan-axis">
+            <span className="field-label">เส้นเวลาโต๊ะ {deskId(selected)} · นับจากตอนที่ไม่เห็นคน</span>
+            <MinuteAxis moment={chosen} />
+          </div>
         </div>
-        <div className="seats" role="group" aria-label="ผังโต๊ะ 24 ตัว กดโต๊ะเพื่อดูสถานะ กดซ้ำเพื่อข้ามไปเหตุการณ์ถัดไป">
-          {moments.map((moment, index) => (
-            <React.Fragment key={index}>
-              {index % COLUMNS === COLUMNS / 2 ? <span className="aisle" aria-hidden="true" /> : null}
-              <Seat index={index} moment={moment} selected={index === selected} />
-            </React.Fragment>
-          ))}
-        </div>
-        <div className="room-door" aria-hidden="true">
-          <span>ทางเข้า</span>
+
+        <div className="plan-rail">
+          <StoryBar story={story} />
+
+          <div className="rail-desk">
+            <p className="plan-desk-id">
+              <span className="field-label">โต๊ะที่เลือก · กดโต๊ะในผังเพื่อเปลี่ยน</span>
+              <b>{deskId(selected)}</b>
+              <span className="plan-desk-state" aria-live="polite">
+                {STATE_LABEL[chosen.state]}
+                {chosen.awayFor !== null ? ` · ไม่เห็นคนมา ${clock(chosen.awayFor)}` : ""}
+              </span>
+            </p>
+            <div className="desk-actions" role="group" aria-label={`ทำอะไรที่โต๊ะ ${deskId(selected)}`}>
+              {present ? (
+                <>
+                  <button type="button" className="action" onClick={() => clockControls.act("leave-items")}>
+                    ลุก · ทิ้งกระเป๋าไว้
+                  </button>
+                  <button type="button" className="action" onClick={() => clockControls.act("leave-clean")}>
+                    ลุก · เก็บของกลับ
+                  </button>
+                </>
+              ) : (
+                <button type="button" className="action" onClick={() => clockControls.act("sit")}>
+                  {chosen.state === "away" ? "กลับมานั่ง" : "นั่งลง"}
+                </button>
+              )}
+              <button type="button" className="action" data-primary="" onClick={() => clockControls.next()}>
+                ข้ามไปเหตุการณ์ถัดไป <kbd>N</kbd>
+              </button>
+            </div>
+          </div>
+
+          <div className="time-controls" role="group" aria-label="เวลาในห้อง">
+            <span className="field-label">เวลาในห้อง</span>
+            <b className="room-clock">{roomTime(minute)}</b>
+            <button type="button" className="chip" onClick={() => clockControls.toggle()} aria-pressed={!playing}>
+              {playing ? "หยุด" : "เดินต่อ"} <kbd>Space</kbd>
+            </button>
+            <span className="chips">
+              {SPEEDS.map((option) => (
+                <button key={option.label} type="button" className="chip" aria-pressed={speed === option.value} onClick={() => clockControls.setSpeed(option.value)}>
+                  {option.label}
+                </button>
+              ))}
+            </span>
+            <button type="button" className="text-button" onClick={() => clockControls.reset()}>
+              เริ่มใหม่
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="plan-desk">
-        <div className="plan-desk-id">
-          <span className="field-label">โต๊ะที่เลือก</span>
-          <p>
-            <b>{deskId(selected)}</b>
-            <span className="plan-desk-state" aria-live="polite">
-              {STATE_LABEL[chosen.state]}
-              {chosen.awayFor !== null ? ` · ไม่เห็นคนมา ${clock(chosen.awayFor)}` : ""}
-            </span>
-          </p>
-        </div>
-        <MinuteAxis moment={chosen} />
-        {warned ? (
-          <p className="line-slip" aria-live="polite">
-            <span className="field-label">LINE · Ghost-Desk Official Account</span>
-            <span>
-              โต๊ะ {deskId(warned.index)} ไม่มีคน {Math.floor(warned.moment.awayFor ?? 0)} นาที จะปล่อยใน {Math.max(1, Math.ceil(RELEASE_AT - (warned.moment.awayFor ?? 0)))} นาที
-            </span>
-          </p>
-        ) : null}
-        <div className="plan-controls">
-          <button type="button" className="action" onClick={() => clockControls.next()}>
-            ข้ามไปเหตุการณ์ถัดไป
-          </button>
-          <button type="button" className="action" onClick={() => clockControls.toggle()} aria-pressed={!playing}>
-            {playing ? "หยุดเวลา" : "เดินเวลาต่อ"}
-          </button>
-        </div>
+      <div className="views" aria-label="สิ่งที่แต่ละคนเห็น">
+        <section className="view">
+          <h3>
+            <span className="field-label">ผู้หาที่นั่ง · ผังห้อง</span>
+            ว่าง {freeDesks.length} โต๊ะ
+          </h3>
+          {freeDesks.length ? (
+            <p className="view-desks">
+              {freeDesks.map(({ desk }) => (
+                <button key={desk} type="button" className="desk-tag" onClick={() => clockControls.select(desk)}>
+                  {deskId(desk)}
+                </button>
+              ))}
+            </p>
+          ) : (
+            <p className="view-empty">ไม่มีโต๊ะว่างตอนนี้</p>
+          )}
+        </section>
+        <section className="view">
+          <h3>
+            <span className="field-label">เจ้าของโต๊ะ · LINE</span>
+            {inbox.length ? `${inbox.length} ข้อความ` : "ยังไม่มีข้อความ"}
+          </h3>
+          <ol className="inbox">
+            {inbox.slice(0, 4).map((message) => (
+              <li key={`${message.desk}-${message.at}`}>
+                <span className="inbox-time">{roomTime(message.at)}</span>
+                <span>
+                  โต๊ะ <b>{deskId(message.desk)}</b> ไม่มีคน {WARN_AT} นาที จะปล่อยใน {RELEASE_AT - WARN_AT} นาที
+                </span>
+              </li>
+            ))}
+          </ol>
+        </section>
+        <section className="view">
+          <h3>
+            <span className="field-label">เจ้าหน้าที่ · หน้า staff</span>
+            {released.length + leftovers.length ? `${released.length + leftovers.length} โต๊ะมีของ` : "ไม่มีของค้าง"}
+          </h3>
+          <ol className="inbox">
+            {released.map((notice) => (
+              <li key={`r-${notice.desk}-${notice.at}`}>
+                <span className="inbox-time">{roomTime(notice.at)}</span>
+                <span>
+                  <b>{deskId(notice.desk)}</b> ปล่อยแล้ว · มีของค้าง ให้มาเก็บ
+                </span>
+              </li>
+            ))}
+            {leftovers.slice(0, 4).map(({ moment, desk }) => (
+              <li key={`a-${desk}`}>
+                <span className="inbox-time">ตอนนี้</span>
+                <span>
+                  <b>{deskId(desk)}</b> ไม่อยู่ {Math.floor(moment.awayFor ?? 0)} นาที · มีของบนโต๊ะ
+                </span>
+              </li>
+            ))}
+          </ol>
+        </section>
       </div>
     </div>
   );

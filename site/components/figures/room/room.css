@@ -1,0 +1,186 @@
+.rm {
+  cursor: pointer;
+  outline: none;
+}
+
+.rm:focus-visible .rm-prism .iso-edge {
+  stroke: var(--focus);
+  stroke-width: 1.6px;
+}
+
+/* the parts a step uses: heavy toner edge and a cool tint, as in the node figure */
+.rm[data-lit~="radar"] .rm-radar .iso-edge,
+.rm[data-lit~="head"] .rm-head .iso-edge,
+.rm[data-lit~="prism"] .rm-sign .iso-edge,
+.rm[data-lit~="prism"] .rm-prism .iso-edge,
+.rm[data-lit~="gateway"] .rm-gateway .iso-edge,
+.rm[data-lit~="router"] .rm-router .iso-edge,
+.rm[data-lit~="screen"] .rm-screen .iso-edge,
+.rm[data-lit~="phone"] .rm-phone .iso-edge,
+.rm[data-lit~="person"] .rm-person .iso-edge {
+  stroke: var(--anatomy-lit);
+  stroke-width: 2.2px;
+}
+
+.rm[data-lit~="radar"] .rm-radar :is(.iso-top, .iso-shade, .iso-fill),
+.rm[data-lit~="head"] .rm-head :is(.iso-top, .iso-shade, .iso-fill),
+.rm[data-lit~="prism"] .rm-sign :is(.iso-top, .iso-shade, .iso-fill),
+.rm[data-lit~="gateway"] .rm-gateway :is(.iso-top, .iso-shade, .iso-fill),
+.rm[data-lit~="router"] .rm-router :is(.iso-top, .iso-shade, .iso-fill),
+.rm[data-lit~="screen"] .rm-screen :is(.iso-top, .iso-shade, .iso-fill),
+.rm[data-lit~="phone"] .rm-phone :is(.iso-top, .iso-shade, .iso-fill) {
+  fill: #c9d1dd;
+}
+
+.rm-led circle {
+  fill: var(--anatomy-hi);
+}
+
+/* radar wavefronts ripple out from the board while it is asked */
+.rm-waves {
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.rm[data-waves] .rm-waves {
+  opacity: 1;
+}
+
+.rm-waves .iso-line {
+  stroke-width: 2px;
+}
+
+.rm[data-waves] .rm-waves > g {
+  animation: rm-ripple 1.8s linear infinite;
+}
+
+.rm[data-waves] .rm-waves > g:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.rm[data-waves] .rm-waves > g:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes rm-ripple {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  20% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.3;
+  }
+}
+
+.rm-view {
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.rm[data-view] .rm-view {
+  opacity: 1;
+}
+
+/* the dashboard: a dark glass with the room map; this desk's cell carries the state ink */
+.rm-glass {
+  fill: var(--toner);
+  stroke: var(--anatomy-hi);
+  stroke-width: 0.6px;
+}
+
+.rm-cell {
+  fill: #3a3d42;
+  stroke: none;
+}
+
+.rm-cell[data-ink="inUse"] {
+  fill: #a8597f;
+}
+
+.rm-cell[data-ink="away"] {
+  fill: #a89a3a;
+}
+
+.rm-cell[data-ink="free"] {
+  fill: #5f9a52;
+}
+
+.rm-this {
+  stroke: var(--paper);
+  stroke-width: 0.9px;
+  transition: fill 0.4s var(--ease);
+}
+
+.rm[data-screen="free"] .rm-this {
+  fill: var(--hl-green);
+}
+
+.rm[data-screen="inUse"] .rm-this {
+  fill: var(--hl-pink);
+}
+
+.rm[data-screen="away"] .rm-this {
+  fill: var(--hl-yellow);
+}
+
+/* the LINE message on the phone, only once it has been sent */
+.rm-bubble {
+  opacity: 0;
+  transition: opacity 0.4s var(--ease) 0.9s;
+}
+
+.rm[data-phone] .rm-bubble {
+  opacity: 1;
+}
+
+.rm-bubble-fill {
+  fill: var(--hl-yellow);
+  stroke: none;
+}
+
+.rm-link {
+  transition: opacity 0.3s var(--ease);
+}
+
+/* idle links stay on the drawing as a fine dotted trace, so the network reads before anything moves */
+.rm-link:not([data-on]) .iso-line {
+  stroke: var(--toner-3);
+  stroke-width: 1px;
+  stroke-dasharray: 1 4;
+  stroke-linecap: round;
+}
+
+.rm-link:not([data-on]) .iso-wire-end {
+  fill: var(--toner-3);
+}
+
+.rm-link[data-on] .iso-line {
+  stroke-width: 1.6px;
+}
+
+.rm-packet {
+  pointer-events: none;
+}
+
+.rm-packet-ring {
+  fill: var(--paper);
+  stroke: var(--anatomy-lit);
+  stroke-width: 1.4px;
+}
+
+.rm-packet-dot {
+  fill: var(--stamp);
+}
+
+.rm-person {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rm[data-waves] .rm-waves > g {
+    animation: none;
+  }
+}

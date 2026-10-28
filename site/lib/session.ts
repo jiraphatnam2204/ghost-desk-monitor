@@ -49,7 +49,7 @@ export const lengthOf = (p: Profile) => SEATED_AFTER + p.stay + secondOf(p) + ta
 const FREE: Moment = { state: "free", awayFor: null, warned: false };
 const SEATED: Moment = { state: "inUse", awayFor: null, warned: false };
 
-function leaving(gone: number, items: boolean): Moment {
+export function leaving(gone: number, items: boolean): Moment {
   if (gone < AWAY_AFTER) return { state: "inUse", awayFor: gone, warned: false };
   if (!items || gone >= RELEASE_AT) return FREE;
   return { state: "away", awayFor: gone, warned: gone >= WARN_AT };
@@ -66,6 +66,37 @@ export function momentAt(minute: number, p: Profile = DEMO): Moment {
   const second = out + secondOf(p);
   if (t < second) return SEATED;
   return leaving(t - second, p.items);
+}
+
+// A desk driven by hand in the demo: what people do, in room minutes.
+export type ManualKind = "sit" | "leave-items" | "leave-clean";
+export interface ManualEvent {
+  at: number;
+  kind: ManualKind;
+}
+
+// Replays the events up to `now` through the same rule the gateway runs.
+// Sitting back down while the desk is still held (away, or within the 2-minute grace) resumes it at once.
+export function manualMoment(events: ManualEvent[], now: number): Moment {
+  let sitAt: number | null = null;
+  let leftAt: number | null = null;
+  let items = false;
+  let held = false;
+  for (const event of [...events].sort((a, b) => a.at - b.at)) {
+    if (event.at > now) break;
+    if (event.kind === "sit") {
+      held = sitAt !== null && leftAt !== null && event.at - leftAt < (items ? RELEASE_AT : AWAY_AFTER);
+      sitAt = event.at;
+      leftAt = null;
+    } else if (sitAt !== null && leftAt === null) {
+      leftAt = event.at;
+      items = event.kind === "leave-items";
+    }
+  }
+  if (sitAt === null) return FREE;
+  if (leftAt === null) return held || now - sitAt >= SEATED_AFTER ? SEATED : FREE;
+  if (!held && leftAt - sitAt < SEATED_AFTER) return FREE;
+  return leaving(now - leftAt, items);
 }
 
 // Session minutes at which something visible happens on a desk.

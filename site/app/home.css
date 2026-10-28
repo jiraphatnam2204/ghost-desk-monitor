@@ -1,28 +1,33 @@
-/* ---------- notice header ---------- */
+/* ---------- notice header: short, so the demo below starts on the first screen ---------- */
 
 .notice {
   display: grid;
-  grid-template-columns: minmax(0, 1.75fr) minmax(300px, 1fr);
-  gap: 28px clamp(24px, 5vw, 72px);
+  grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr);
+  gap: 18px clamp(24px, 4vw, 56px);
   align-items: end;
-  padding-top: clamp(28px, 5vw, 64px);
-  padding-bottom: clamp(24px, 3vw, 36px);
+  padding-top: clamp(18px, 2.6vw, 32px);
+  padding-bottom: clamp(14px, 1.8vw, 20px);
+}
+
+.notice-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
 }
 
 .notice h1 {
-  font-size: clamp(52px, 9vw, 136px);
-  white-space: nowrap;
+  font-size: clamp(38px, 5vw, 72px);
   font-weight: 800;
-  line-height: 0.86;
-  letter-spacing: -0.045em;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
 }
 
 .notice-sub {
-  margin-top: clamp(16px, 2.4vw, 28px);
-  max-width: 34ch;
-  font-size: clamp(19px, 2vw, 25px);
-  line-height: 1.5;
-  font-weight: 400;
+  margin-top: 10px;
+  max-width: 58ch;
+  font-size: clamp(16px, 1.3vw, 18px);
+  line-height: 1.55;
 }
 
 .notice-fields {
@@ -33,7 +38,10 @@
 }
 
 .notice-fields > div {
-  padding: 10px 14px 12px;
+  padding: 7px 12px 8px;
+}
+
+.notice-fields > div:nth-child(-n + 2) {
   border-bottom: 1px solid var(--rule);
 }
 
@@ -42,19 +50,10 @@
 }
 
 .notice-fields dd {
-  margin: 2px 0 0;
+  margin: 1px 0 0;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.4;
-}
-
-.notice-stamp {
-  grid-column: 1 / -1;
-  display: flex;
-  justify-content: flex-end;
-  border-bottom: 0 !important;
-  border-right: 0 !important;
-  padding: 16px 18px 18px !important;
 }
 
 @media (max-width: 860px) {
@@ -64,23 +63,16 @@
 }
 
 @media (max-width: 520px) {
-  .notice-fields > div {
-    padding: 8px 10px 10px;
-  }
-
   .notice-fields dd {
-    font-size: 14.5px;
-  }
-
-  .notice-stamp {
-    padding: 10px 12px 12px !important;
+    font-size: 14px;
   }
 }
 
 /* ---------- plan ---------- */
 
 .plan-sheet {
-  padding-bottom: clamp(48px, 7vw, 88px);
+  padding-top: 0;
+  padding-bottom: clamp(40px, 6vw, 72px);
 }
 
 .plan-after {

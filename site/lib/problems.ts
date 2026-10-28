@@ -21,6 +21,11 @@ export interface Problem {
   logged: string;
   likelihood?: 1 | 2 | 3;
   impact?: 1 | 2 | 3;
+  // for a problem the team has to decide: the ways out, side by side
+  options?: { name: string; good: string; bad: string; points: string }[];
+  // what to talk over before deciding
+  questions?: string[];
+  related?: string[];
   updates: { date: string; note: string }[];
 }
 

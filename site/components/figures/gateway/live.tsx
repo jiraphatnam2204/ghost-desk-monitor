@@ -38,10 +38,10 @@ export function GatewayLive({ layers }: { layers: GatewayLayer[] }) {
   const { anchor, say } = useReadout<SVGGElement>();
   const inView = useInView(anchor);
   const still = useStillness();
-  const [picked, setPicked] = React.useState<ModuleId | null>(null);
+  const [picked, setPicked] = React.useState<ModuleId[] | null>(null);
   const [toured, setToured] = React.useState(0);
   const [apart, setApart] = React.useState(false);
-  const lit: ModuleId = picked ?? MODULES[toured % MODULES.length].id;
+  const lit = React.useMemo<ModuleId[]>(() => picked ?? [MODULES[toured % MODULES.length].id], [picked, toured]);
   const moverRefs = React.useRef<Record<string, SVGGElement | null>>({});
   const leadRefs = React.useRef<Record<string, SVGGElement | null>>({});
   const opened = React.useRef(0);
@@ -49,7 +49,7 @@ export function GatewayLive({ layers }: { layers: GatewayLayer[] }) {
   React.useEffect(() => {
     const onFocus = (event: Event) => {
       const { figure, part } = (event as CustomEvent<FocusDetail>).detail;
-      if (figure === "gateway") setPicked(part as ModuleId | null);
+      if (figure === "gateway") setPicked(part ? (part.split(" ") as ModuleId[]) : null);
     };
     const onExplode = (event: Event) => setApart((event as CustomEvent<boolean>).detail);
     window.addEventListener(FOCUS_EVENT, onFocus);
@@ -70,8 +70,8 @@ export function GatewayLive({ layers }: { layers: GatewayLayer[] }) {
   React.useEffect(() => {
     const root = anchor.current;
     if (!root) return;
-    root.querySelectorAll("[data-module]").forEach((el) => el.toggleAttribute("data-on", el.getAttribute("data-module") === lit));
-    say(apart ? "ถอดประกอบ · 4 บอร์ดยกออกจากเสา สายจัมเปอร์ยังต่ออยู่" : (MODULES.find((module) => module.id === lit)?.readout ?? ""));
+    root.querySelectorAll("[data-module]").forEach((el) => el.toggleAttribute("data-on", lit.includes(el.getAttribute("data-module") as ModuleId)));
+    say(apart ? "ถอดประกอบ · 4 บอร์ดยกออกจากเสา สายจัมเปอร์ยังต่ออยู่" : (MODULES.find((module) => module.id === lit[0])?.readout ?? ""));
   }, [anchor, lit, say, apart]);
 
   const place = React.useCallback(
@@ -116,7 +116,8 @@ export function GatewayLive({ layers }: { layers: GatewayLayer[] }) {
 
   const pick = (event: React.SyntheticEvent) => {
     const target = (event.target as Element).closest("[data-module]");
-    setPicked((target?.getAttribute("data-module") as ModuleId | null) ?? null);
+    const id = target?.getAttribute("data-module") as ModuleId | null;
+    setPicked(id ? [id] : null);
   };
 
   return (
@@ -130,9 +131,9 @@ export function GatewayLive({ layers }: { layers: GatewayLayer[] }) {
       onKeyDown={(event) => {
         if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
         event.preventDefault();
-        const index = MODULES.findIndex((module) => module.id === lit);
+        const index = MODULES.findIndex((module) => module.id === lit[0]);
         const step = event.key === "ArrowRight" ? 1 : MODULES.length - 1;
-        setPicked(MODULES[(index + step) % MODULES.length].id);
+        setPicked([MODULES[(index + step) % MODULES.length].id]);
       }}
       tabIndex={0}
       role="group"

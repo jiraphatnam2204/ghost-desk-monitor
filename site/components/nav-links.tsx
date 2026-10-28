@@ -9,6 +9,7 @@ const LINKS = [
   { href: "/equipment", label: "Equipment" },
   { href: "/grading", label: "Grading Criteria" },
   { href: "/build-plan", label: "Build Plan" },
+  { href: "/how-it-works", label: "How It Works" },
   { href: "/problems", label: "Problems" },
   { href: "/docs", label: "Docs" },
 ];

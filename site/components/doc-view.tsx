@@ -3,6 +3,7 @@
 import * as React from "react";
 import { PROPOSAL, REPORT, type Block, type Doc, type Lang } from "@/lib/docs-content";
 import { BlockDiagram, StateDiagram } from "./doc-figures";
+import { Enlarge } from "./enlarge";
 
 const DOCS: Doc[] = [PROPOSAL, REPORT];
 const STATUS: Record<"ready" | "draft" | "todo", Record<Lang, string>> = {
@@ -76,12 +77,14 @@ function BlockView({ block, lang }: { block: Block; lang: Lang }) {
       );
     case "figure":
       return (
-        <figure className="doc-figure">
-          {block.figure === "block-diagram" ? <BlockDiagram lang={lang} /> : <StateDiagram lang={lang} />}
-          <figcaption>
-            <Inline text={block.caption[lang]} />
-          </figcaption>
-        </figure>
+        <Enlarge openOnClick className="doc-enlarge">
+          <figure className="doc-figure">
+            <div data-enlarge-window="">{block.figure === "block-diagram" ? <BlockDiagram lang={lang} /> : <StateDiagram lang={lang} />}</div>
+            <figcaption>
+              <Inline text={block.caption[lang]} />
+            </figcaption>
+          </figure>
+        </Enlarge>
       );
     case "code":
       return (

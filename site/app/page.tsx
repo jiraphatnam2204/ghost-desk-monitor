@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Enlarge } from "@/components/enlarge";
 import { NodeFigure } from "@/components/figures/node/figure";
 import { ProblemRow } from "@/components/problem-row";
 import { SeatingPlan } from "@/components/seating-plan";
@@ -18,13 +19,16 @@ export default function Home() {
     <>
       <section className="sheet notice" aria-labelledby="title">
         <div className="notice-title">
-          <h1 id="title">
-            Ghost-Desk
-            <br />
-            Monitor
-          </h1>
+          <div className="notice-name">
+            <h1 id="title">Ghost-Desk Monitor</h1>
+            <span className="stamp">
+              Planning
+              <small>ยังไม่ได้สร้าง</small>
+            </span>
+          </div>
           <p className="notice-sub">
-            ป้ายบนโต๊ะห้องสมุดที่รู้จริงว่ามีคนนั่งไหม และ<b>ปล่อยโต๊ะที่ถูกทิ้งไว้เกิน 30 นาที</b>คืนให้คนที่ต้องการนั่งจริง · team front end สำหรับเช็กความคืบหน้าและปัญหา
+            ป้ายบนโต๊ะห้องสมุดที่รู้จริงว่ามีคนนั่งไหม และ<b>ปล่อยโต๊ะที่ถูกทิ้งไว้เกิน 30 นาที</b>คืนให้คนที่ต้องการนั่งจริง · team front end
+            สำหรับเช็กความคืบหน้าและปัญหา
           </p>
         </div>
         <dl className="notice-fields">
@@ -48,12 +52,6 @@ export default function Home() {
               </a>
             </dd>
           </div>
-          <div className="notice-stamp">
-            <span className="stamp">
-              Planning
-              <small>ยังไม่ได้สร้าง</small>
-            </span>
-          </div>
         </dl>
       </section>
 
@@ -63,8 +61,15 @@ export default function Home() {
         </h2>
         <SeatingPlan />
         <p className="note plan-rule">
-          Desk rule: เห็นคนนั่งครบ 1 นาที → <span className="hl" data-ink="pink">ใช้งาน</span> · ไม่เห็นคน 2 นาที แล้วกล้องเห็นโต๊ะโล่ง →{" "}
-          <span className="hl" data-ink="green">ว่าง</span> ทันที · ถ้ายังมีของ → <span className="hl">ไม่อยู่</span> · 20 นาที LINE เตือน · 30 นาที ปล่อยโต๊ะ
+          Desk rule: เห็นคนนั่งครบ 1 นาที →{" "}
+          <span className="hl" data-ink="pink">
+            ใช้งาน
+          </span>{" "}
+          · ไม่เห็นคน 2 นาที แล้วกล้องเห็นโต๊ะโล่ง →{" "}
+          <span className="hl" data-ink="green">
+            ว่าง
+          </span>{" "}
+          ทันที · ถ้ายังมีของ → <span className="hl">ไม่อยู่</span> · 20 นาที LINE เตือน · 30 นาที ปล่อยโต๊ะ
         </p>
       </section>
 
@@ -74,7 +79,9 @@ export default function Home() {
           <span className="ref">Fig 1 ตามโต๊ะที่เลือกในผังด้านบน</span>
         </div>
         <div className="figure-row">
-          <NodeFigure />
+          <Enlarge>
+            <NodeFigure />
+          </Enlarge>
           <div className="device-notes">
             <p className="lede">เลือกโต๊ะในผัง แล้วดูป้ายปริซึมหมุนตาม: ชมพู = ใช้งาน, เหลือง = ไม่อยู่, เขียว = ว่าง</p>
             <p className="note">ทุกอย่างในผังและรูปเป็นการจำลองตามกติกาที่ gateway จะรัน ยังไม่ใช่ข้อมูลจากเครื่องจริง</p>

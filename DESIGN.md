@@ -225,6 +225,9 @@ Every time event sits on one shared axis under the plan: a 22px track between a 
 ### Isometric Figure Plate
 Node and gateway drawings from the anatomy kit, re-themed to the site's toner and paper, inside a square plate with a 2px toner border and Sarabun corner labels. Pointing at a part in the adjacent list draws that part's edges at 2.6px in black with a cool grey fill; the prism face takes the current highlighter ink.
 
+### Enlarged Copy
+Every figure (`components/enlarge.tsx`) carries a folder tab on its top edge: a 30px square tab ruled in 2px toner with no bottom border, so it joins the plate's own border, holding a drawn corner-arrows mark and the word ขยาย; it inverts to toner on hover. A still diagram also opens on a click anywhere (zoom-in cursor); a live drawing keeps its clicks and opens only from the tab. Open, the same element (never a clone, so live drawings keep their state) lies over the whole screen on plain paper: no dim, blur or shadow. A ruled header strip carries the figure name, copier zoom settings (พอดีจอ · 150% · 200%) as chips and a square close button (Esc). A side panel wrapped with the figure (part list, step panel) stays beside it. Zoom works like a magnifier over the copy: the frame, its corner labels and its caption keep their fitted size and place, and only the drawing grows inside the frame's window (a 1px soft outline marks the window while zoomed). It scrolls, pans with a mouse drag and stays centred on the same point as the size changes; a caption inside the frame wraps to the drawing's width rather than widening it. The one motion is a 3px toner scan bar crossing as the copy prints in from the left (0.5s ease-out), removed under reduced motion.
+
 ## Do's and Don'ts
 
 ### Do:

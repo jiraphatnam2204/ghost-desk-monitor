@@ -83,7 +83,7 @@ const TOP = (
 );
 
 const MAST = (
-  <g key="mast">
+  <g key="mast" className="gdm-mast">
     <Solid paths={MAST_ART.clamp} tone="mid" crease="faint" />
     <Dots points={MAST_ART.clampScrews} size={0.45} tone="mid" />
     <Wire from={HEAD_CABLE.from} via={HEAD_CABLE.via} to={HEAD_CABLE.to} tone="mid" size={0.9} />
@@ -142,20 +142,26 @@ const BOOK = (
 
 const SIGN_BACK = (
   <g key="sign-back">
-    <Solid paths={SIGN_ART.plinth} tone="mid" crease="faint" inner={<Line d={SIGN_ART.plinthSeam} tone="faint" />} />
-    <Dots points={SIGN_ART.plinthScrews} size={0.5} tone="mid" />
-    <Solid paths={SIGN_ART.block} tone="mid" crease="faint" />
-    <Line d={SIGN_ART.blockScrews} tone="lo" />
-    <Line d={SIGN_ART.blockSlots} tone="mid" />
-    <Solid paths={SIGN_ART.cheekL} tone="mid" crease="faint" />
-    <Dots points={SIGN_ART.cheekScrewsL} size={0.45} tone="mid" />
-    <Line d={SIGN_ART.bossL} tone="lo" />
-    <Solid paths={SIGN_ART.stop} tone="mid" crease="faint" />
+    <g className="gdm-stand">
+      <Solid paths={SIGN_ART.plinth} tone="mid" crease="faint" inner={<Line d={SIGN_ART.plinthSeam} tone="faint" />} />
+      <Dots points={SIGN_ART.plinthScrews} size={0.5} tone="mid" />
+    </g>
+    <g className="gdm-block">
+      <Solid paths={SIGN_ART.block} tone="mid" crease="faint" />
+      <Line d={SIGN_ART.blockScrews} tone="lo" />
+      <Line d={SIGN_ART.blockSlots} tone="mid" />
+    </g>
+    <g className="gdm-stand">
+      <Solid paths={SIGN_ART.cheekL} tone="mid" crease="faint" />
+      <Dots points={SIGN_ART.cheekScrewsL} size={0.45} tone="mid" />
+      <Line d={SIGN_ART.bossL} tone="lo" />
+      <Solid paths={SIGN_ART.stop} tone="mid" crease="faint" />
+    </g>
   </g>
 );
 
 const CHEEK_R = (
-  <g key="cheek-r">
+  <g key="cheek-r" className="gdm-stand">
     <Solid paths={SIGN_ART.cheekR} tone="mid" crease="faint" />
     <Dots points={SIGN_ART.cheekScrewsR} size={0.45} tone="mid" />
     <Line d={SIGN_ART.shaftBore} tone="lo" />
@@ -173,7 +179,7 @@ const SERVO = (
 );
 
 const CAP = (
-  <g key="cap">
+  <g key="cap" className="gdm-cap">
     <Solid paths={SIGN_ART.cap} tone="mid" crease="faint" inner={<Line d={SIGN_ART.capSleeve} tone="faint" />} />
     <Line d={SIGN_ART.capTop} tone="lo" />
     <Line d={SIGN_ART.capVent} tone="lo" />

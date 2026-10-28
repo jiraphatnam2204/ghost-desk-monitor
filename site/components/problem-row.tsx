@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AREA_LABEL, SEVERITY_LABEL, STATUS_LABEL, type Problem } from "@/lib/problems";
 
 const LEVEL = ["", "ต่ำ", "กลาง", "สูง"];
@@ -40,10 +41,56 @@ export function ProblemRow({ problem, open = false }: { problem: Problem; open?:
               {LEVEL[problem.likelihood]} · {LEVEL[problem.impact]}
             </p>
           ) : null}
+          {problem.options?.length ? (
+            <div className="problem-options">
+              <span className="field-label">ทางเลือก · Options</span>
+              <ol>
+                {problem.options.map((option) => (
+                  <li key={option.name}>
+                    <b>{option.name}</b>
+                    <span className="option-row">
+                      <span className="option-tag">ได้</span>
+                      {option.good}
+                    </span>
+                    <span className="option-row">
+                      <span className="option-tag">เสีย</span>
+                      {option.bad}
+                    </span>
+                    <span className="option-row option-points">
+                      <span className="option-tag">คะแนน</span>
+                      {option.points}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ) : null}
+          {problem.questions?.length ? (
+            <div className="problem-questions">
+              <span className="field-label">คุยกันในทีม · To discuss</span>
+              <ul>
+                {problem.questions.map((question) => (
+                  <li key={question}>{question}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
           <p className="problem-action">
-            <span className="field-label">{problem.status === "fixed" ? "Fix · แก้แล้วด้วย" : "Plan · รับมือ"}</span>
+            <span className="field-label">{problem.status === "fixed" ? "Fix · แก้แล้วด้วย" : problem.options?.length ? "Recommendation · ข้อเสนอ" : "Plan · รับมือ"}</span>
             {problem.action}
           </p>
+          {problem.related?.length ? (
+            <p className="problem-related">
+              <span className="field-label">เกี่ยวข้อง · Related</span>
+              <span>
+                {problem.related.map((id) => (
+                  <Link key={id} href={`/problems/#${id}`}>
+                    {id}
+                  </Link>
+                ))}
+              </span>
+            </p>
+          ) : null}
           {problem.updates.length ? (
             <ol className="problem-updates">
               {problem.updates.map((update) => (

@@ -157,3 +157,85 @@
     padding-left: 0;
   }
 }
+
+/* ---------- a problem the team has to decide ---------- */
+
+.problem-options ol {
+  display: grid;
+  gap: 10px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: option;
+}
+
+.problem-options li {
+  display: grid;
+  gap: 4px;
+  padding: 10px 14px 12px;
+  border: 1.5px solid var(--rule);
+  counter-increment: option;
+}
+
+.problem-options li > b::before {
+  content: counter(option) ". ";
+}
+
+.option-row {
+  display: grid;
+  grid-template-columns: 3.6em minmax(0, 1fr);
+  gap: 8px;
+}
+
+.option-tag {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--toner-2);
+  padding-top: 2px;
+}
+
+.option-points {
+  font-weight: 700;
+}
+
+.problem-questions ul {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.problem-questions li {
+  position: relative;
+  padding-left: 30px;
+}
+
+.problem-questions li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 3px;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--toner);
+}
+
+.problem-related span:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.problem-related a {
+  padding: 0 6px 1px;
+  border: 1.5px solid var(--toner);
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.problem-related a:hover {
+  background: var(--toner);
+  color: var(--paper);
+}

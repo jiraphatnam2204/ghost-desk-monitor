@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Enlarge } from "@/components/enlarge";
 import { GatewayFigure } from "@/components/figures/gateway/figure";
 import { NodeFigure } from "@/components/figures/node/figure";
 import { Workflow } from "@/components/workflow";
@@ -54,7 +55,18 @@ export default function BuildPlanPage() {
           <h2 id="workflow">Workflow · ทีละขั้น</h2>
           <span className="ref">แตะขั้นเพื่อเปิด · รูปข้าง ๆ ไฮไลต์ชิ้นที่ใช้</span>
         </div>
-        <Workflow nodeFigure={<NodeFigure />} gatewayFigure={<GatewayFigure />} />
+        <Workflow
+          nodeFigure={
+            <Enlarge>
+              <NodeFigure />
+            </Enlarge>
+          }
+          gatewayFigure={
+            <Enlarge>
+              <GatewayFigure />
+            </Enlarge>
+          }
+        />
       </section>
     </>
   );
