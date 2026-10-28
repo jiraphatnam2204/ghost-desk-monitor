@@ -24,10 +24,15 @@
     color 0.18s var(--ease);
 }
 
-.enlarge-tab svg,
-.enlarge-close svg {
+/* page rules such as "figure svg { width: 100% }" must never reach the tab's icon */
+.enlarge .enlarge-tab > svg,
+.enlarge .enlarge-close > svg {
+  display: block;
   width: 14px;
   height: 14px;
+  max-width: none;
+  margin: 0;
+  padding: 0;
   flex: none;
   fill: none;
   stroke: currentColor;
