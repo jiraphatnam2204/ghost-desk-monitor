@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-28T12:00:00+07:00",
+  "title": "Design System: Ghost-Desk Monitor",
+  "extensions": {
+    "colorMeta": {
+      "stamp-violet": { "role": "primary", "displayName": "Rubber-Stamp Violet", "canonical": "#5a3fc0", "tonalRamp": ["#1c1240", "#2c1d66", "#3f2b8f", "#5a3fc0", "#7a63d0", "#9c8bde", "#c3b9ec", "#e9e5f8"] },
+      "hl-pink": { "role": "secondary", "displayName": "In-Use Pink", "canonical": "#ff8cc6", "tonalRamp": ["#4a0f2c", "#7a1a4b", "#b02c6f", "#e0559c", "#ff8cc6", "#ffaed7", "#ffd0e7", "#fff0f7"] },
+      "hl-yellow": { "role": "secondary", "displayName": "Away Yellow", "canonical": "#ffe94a", "tonalRamp": ["#3d3500", "#665a00", "#998700", "#ccb500", "#ffe94a", "#fff07f", "#fff6b3", "#fffbe0"] },
+      "hl-green": { "role": "secondary", "displayName": "Free Green", "canonical": "#96f07e", "tonalRamp": ["#123d0a", "#1f6612", "#30961e", "#5cc947", "#96f07e", "#b5f5a3", "#d4f9c9", "#effdeb"] },
+      "paper": { "role": "neutral", "displayName": "Photocopy White", "canonical": "#f8f9fb", "tonalRamp": ["#1b1c1e", "#33353a", "#474a4f", "#6b6e73", "#c5c9d0", "#dfe2e7", "#eceef2", "#f8f9fb"] },
+      "paper-shadow": { "role": "neutral", "displayName": "Copier Glass Grey", "canonical": "#eceef2" },
+      "toner": { "role": "neutral", "displayName": "Toner Black", "canonical": "#1b1c1e" },
+      "toner-press": { "role": "neutral", "displayName": "Toner Pressed", "canonical": "#33353a" },
+      "toner-2": { "role": "neutral", "displayName": "Second-Pass Toner", "canonical": "#474a4f" },
+      "toner-3": { "role": "neutral", "displayName": "Faded Toner", "canonical": "#6b6e73" },
+      "rule-soft": { "role": "neutral", "displayName": "Soft Rule", "canonical": "#c5c9d0" },
+      "rule-faint": { "role": "neutral", "displayName": "Faint Rule", "canonical": "#dfe2e7" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Project name on the notice header and inner page titles." },
+      "headline": { "displayName": "Headline", "purpose": "Section heads on each ruled sheet." },
+      "title": { "displayName": "Title", "purpose": "Tier and part names inside a sheet." },
+      "seat-number": { "displayName": "Seat Number", "purpose": "Seat cell numbers; the selected desk ID runs larger." },
+      "lede": { "displayName": "Lede", "purpose": "Opening paragraph of a section, 68ch max." },
+      "body": { "displayName": "Body", "purpose": "Running Thai text with English terms, tabular figures, 68ch max." },
+      "label": { "displayName": "Field Label", "purpose": "Header-field labels, room labels, register heads; sentence case." },
+      "code": { "displayName": "Code", "purpose": "Code and message formats only." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "All state transitions: button fills, nav underline, highlighter passes." },
+      { "name": "highlighter-pass", "value": "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "A seat pass scaling in from the left; the second pass delayed 0.05s." },
+      { "name": "axis-sweep", "value": "transform 0.15s linear", "purpose": "Minute-axis sweep and now-line tracking the simulated clock." },
+      { "name": "reduced-motion", "value": "0.01ms", "purpose": "All animation and transition durations under prefers-reduced-motion." }
+    ],
+    "breakpoints": [
+      { "name": "stack-table", "value": "560px" },
+      { "name": "seat-compact", "value": "640px" },
+      { "name": "desk-stack", "value": "720px" },
+      { "name": "split-stack", "value": "860px" },
+      { "name": "colophon-two", "value": "900px" },
+      { "name": "figure-stack", "value": "960px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Square toner form control for the main next step, such as opening the device.",
+      "html": "<a class=\"ds-action ds-action-primary\" href=\"#\">ดูข้างในอุปกรณ์</a>",
+      "css": ".ds-action { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 10px 20px; border: 2px solid #1b1c1e; background: #f8f9fb; color: #1b1c1e; font-family: Sarabun, 'Leelawadee UI', Tahoma, sans-serif; font-weight: 700; font-size: 17px; text-decoration: none; cursor: pointer; transition: background-color 0.18s cubic-bezier(0.22, 1, 0.36, 1); } .ds-action-primary { background: #1b1c1e; color: #f8f9fb; } .ds-action-primary:hover { background: #33353a; } .ds-action:focus-visible { outline: 2px solid #5a3fc0; outline-offset: 3px; }"
+    },
+    {
+      "name": "Secondary Action",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Paper-filled ruled control for the alternative step.",
+      "html": "<a class=\"ds-action\" href=\"#\">อ่านแผนงานฉบับเต็ม</a>",
+      "css": ".ds-action { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 10px 20px; border: 2px solid #1b1c1e; background: #f8f9fb; color: #1b1c1e; font-family: Sarabun, 'Leelawadee UI', Tahoma, sans-serif; font-weight: 700; font-size: 17px; text-decoration: none; cursor: pointer; transition: background-color 0.18s cubic-bezier(0.22, 1, 0.36, 1); } .ds-action:hover { background: #eceef2; } .ds-action:focus-visible { outline: 2px solid #5a3fc0; outline-offset: 3px; }"
+    },
+    {
+      "name": "Status Stamp",
+      "kind": "custom",
+      "refersTo": "stamp",
+      "description": "The one violet rubber-stamp mark for status on a header.",
+      "html": "<span class=\"ds-stamp\">แผนงาน<small>ยังไม่ได้สร้างจริง</small></span>",
+      "css": ".ds-stamp { display: inline-grid; place-items: center; padding: 6px 14px 7px; border: 2px solid #5a3fc0; outline: 1px solid #5a3fc0; outline-offset: 2px; color: #5a3fc0; font-family: Sarabun, 'Leelawadee UI', Tahoma, sans-serif; font-weight: 800; font-size: 15px; letter-spacing: 0.06em; line-height: 1.15; text-align: center; transform: rotate(-4deg); mix-blend-mode: multiply; opacity: 0.88; } .ds-stamp small { font-weight: 600; font-size: 11px; letter-spacing: 0.04em; }"
+    },
+    {
+      "name": "Seat Cell",
+      "kind": "custom",
+      "refersTo": "seat-cell",
+      "description": "A numbered desk on the seating plan; state is a highlighter pass, ghost desks go dashed.",
+      "html": "<div style=\"display:flex;gap:12px\"><button class=\"ds-seat\"><span class=\"ds-pass ds-pink\"></span><span class=\"ds-no\">05</span><span class=\"ds-state\">ใช้งาน</span></button><button class=\"ds-seat ds-ghost\"><span class=\"ds-pass\"></span><span class=\"ds-pass ds-pass2\"></span><span class=\"ds-no\">11</span><span class=\"ds-state\">ไม่อยู่ 24:40</span></button><button class=\"ds-seat\"><span class=\"ds-pass ds-green\"></span><span class=\"ds-no\">24</span><span class=\"ds-state\">ว่าง</span></button></div>",
+      "css": ".ds-seat { position: relative; isolation: isolate; display: grid; align-content: space-between; justify-items: start; width: 120px; min-height: 100px; padding: 10px 12px; border: 1.5px solid #1b1c1e; background: #f8f9fb; color: #1b1c1e; font-family: Sarabun, 'Leelawadee UI', Tahoma, sans-serif; text-align: left; cursor: pointer; overflow: hidden; } .ds-seat:focus-visible { outline: 3px solid #5a3fc0; outline-offset: 3px; } .ds-ghost { border-style: dashed; } .ds-no { position: relative; font-size: 40px; font-weight: 800; line-height: 0.95; letter-spacing: -0.03em; } .ds-state { position: relative; font-size: 13px; font-weight: 600; } .ds-pass { position: absolute; z-index: -1; left: -6%; right: -6%; top: 30%; height: 42%; background: #ffe94a; mix-blend-mode: multiply; border-radius: 6px 14px 8px 16px; transform: rotate(-4deg); } .ds-pass2 { top: 52%; height: 34%; opacity: 0.85; transform: rotate(3deg); } .ds-pink { background: #ff8cc6; } .ds-green { background: #96f07e; }"
+    },
+    {
+      "name": "Inline Highlighter",
+      "kind": "chip",
+      "description": "A state word in running text marked with its ink.",
+      "html": "<p class=\"ds-p\">เห็นคนนั่งครบ 1 นาที → <span class=\"ds-hl ds-hl-pink\">ใช้งาน</span> · ของยังวางอยู่ → <span class=\"ds-hl\">ไม่อยู่</span> · 30 นาที → <span class=\"ds-hl ds-hl-green\">ว่าง</span></p>",
+      "css": ".ds-p { font-family: Sarabun, 'Leelawadee UI', Tahoma, sans-serif; font-size: 17px; line-height: 1.65; color: #1b1c1e; } .ds-hl { position: relative; isolation: isolate; } .ds-hl::before { content: ''; position: absolute; z-index: -1; left: -0.14em; right: -0.06em; top: 0.12em; bottom: 0.02em; border-radius: 0.18em 0.32em 0.22em 0.4em; background: #ffe94a; mix-blend-mode: multiply; transform: skewX(-8deg) rotate(-0.6deg); opacity: 0.92; } .ds-hl-pink::before { background: #ff8cc6; } .ds-hl-green::before { background: #96f07e; }"
+    },
+    {
+      "name": "Header Fields",
+      "kind": "card",
+      "description": "The notice's ruled official field grid; unknown values stay blank.",
+      "html": "<dl class=\"ds-fields\"><div><dt>รายวิชา</dt><dd>Embedded System (CEDT)</dd></div><div><dt>นำเสนอ</dt><dd>8 ธ.ค. 2026</dd></div><div><dt>ผู้รับผิดชอบ</dt><dd class=\"ds-blank\"></dd></div><div><dt>สถานะ</dt><dd>แผนงาน</dd></div></dl>",
+      "css": ".ds-fields { display: grid; grid-template-columns: 1fr 1fr; margin: 0; border: 2px solid #1b1c1e; font-family: Sarabun, 'Leelawadee UI', Tahoma, sans-serif; color: #1b1c1e; } .ds-fields > div { padding: 10px 14px 12px; border-bottom: 1px solid #1b1c1e; } .ds-fields > div:nth-child(odd) { border-right: 1px solid #1b1c1e; } .ds-fields > div:nth-last-child(-n+2) { border-bottom: 0; } .ds-fields dt { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: #474a4f; } .ds-fields dd { margin: 2px 0 0; font-weight: 600; font-size: 16px; line-height: 1.4; } .ds-blank { height: 22px; border-bottom: 1.5px dotted #1b1c1e; }"
+    },
+    {
+      "name": "Register",
+      "kind": "card",
+      "description": "Ruled table with heavy head rule, soft row rules and a double-ruled total.",
+      "html": "<table class=\"ds-register\"><thead><tr><th>ชิ้นส่วน</th><th class=\"ds-num\">ราคา</th></tr></thead><tbody><tr><td>LD2410</td><td class=\"ds-num\">฿—</td></tr><tr><td>AMG8833</td><td class=\"ds-num\">฿—</td></tr></tbody><tfoot><tr><td>รวม</td><td class=\"ds-num\">฿—</td></tr></tfoot></table>",
+      "css": ".ds-register { width: 100%; border-collapse: collapse; font-family: Sarabun, 'Leelawadee UI', Tahoma, sans-serif; font-size: 15.5px; line-height: 1.5; color: #1b1c1e; font-feature-settings: 'tnum' 1; } .ds-register th { text-align: left; font-size: 12.5px; font-weight: 700; letter-spacing: 0.03em; padding: 8px 12px 8px 0; border-bottom: 2px solid #1b1c1e; } .ds-register td { padding: 12px 12px 12px 0; border-bottom: 1px solid #c5c9d0; } .ds-register .ds-num { text-align: right; } .ds-register tfoot td { border-top: 2px solid #1b1c1e; border-bottom: 4px double #1b1c1e; font-weight: 700; }"
+    },
+    {
+      "name": "Masthead Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Sticky ruled masthead; current page holds a full 3px toner underline.",
+      "html": "<nav class=\"ds-nav\"><b class=\"ds-mark\">Ghost-Desk Monitor</b><ul><li><a href=\"#\" aria-current=\"page\">ภาพรวม</a></li><li><a href=\"#\">ระบบ</a></li><li><a href=\"#\">อุปกรณ์</a></li><li><a href=\"#\">แผนงาน</a></li></ul></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; padding: 0 16px; background: #f8f9fb; border-bottom: 1px solid #1b1c1e; font-family: Sarabun, 'Leelawadee UI', Tahoma, sans-serif; } .ds-mark { font-size: 18px; font-weight: 800; color: #1b1c1e; } .ds-nav ul { display: flex; gap: 18px; margin: 0; padding: 0; list-style: none; } .ds-nav a { position: relative; display: inline-block; padding: 16px 6px; font-size: 16px; font-weight: 600; text-decoration: none; color: #474a4f; } .ds-nav a::after { content: ''; position: absolute; left: 6px; right: 6px; bottom: -1px; height: 3px; background: #1b1c1e; transform: scaleX(0); transform-origin: left center; transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); } .ds-nav a:hover { color: #1b1c1e; } .ds-nav a:hover::after { transform: scaleX(0.35); } .ds-nav a[aria-current='page'] { color: #1b1c1e; } .ds-nav a[aria-current='page']::after { transform: scaleX(1); } .ds-nav a:focus-visible { outline: 2px solid #5a3fc0; outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Exam-Season Seating Plan",
+    "overview": "Every surface is a photocopied notice pinned up in a library reading room during exam season: cool white sheets, toner-black ruled grids, official header fields, and a numbered seat cell for every desk. The only colour on the page is what a person adds by hand to a printed plan: three highlighter inks marking which seats are really taken, and one violet rubber stamp for status. Everything else is achromatic toner.\n\nThe page is dense the way a form is dense: ruled rows, small field labels against very large numbers, double rules under totals. Sections are ruled sheets separated by a 2px toner rule, never boxed into cards. Depth comes only from the isometric device drawings, which are inked in the same toner on the same paper. Absence is drawn on purpose: a ghost desk is a dashed cell holding a belongings mark, an unknown name is an empty dotted field, a missing measurement is a dashed blank to be filled in.\n\nMotion is a highlighter stroke being drawn: passes scale in from the left on a slow ease-out, and the minute axis sweeps linearly. Nothing bounces, fades in on scroll, or floats.",
+    "keyCharacteristics": [
+      "Achromatic toner-on-paper text field; colour only on state marks.",
+      "Three highlighter inks are the whole state system (pink in use, yellow away, green free); a second yellow pass stacks urgency.",
+      "One violet rubber stamp, rotated, multiplied onto the paper.",
+      "Square corners on every container; ruled lines instead of boxes and shadows.",
+      "Sarabun throughout, at weight 800 for numbers and headings, with tiny 12px field labels set against them.",
+      "Isometric line drawings rendered in the page's own toner on the page's own paper."
+    ],
+    "rules": [
+      { "name": "The Ink Means State Rule", "body": "Highlighter inks and the stamp violet appear only on state marks: seat passes, the axis sweep, the prism face, a state word in text, the stamp, and focus. Never as decoration, section tint, icon colour or link colour.", "section": "colors" },
+      { "name": "The Multiply Rule", "body": "Highlighter passes and the stamp sit on paper with `mix-blend-mode: multiply`, so toner text stays legible through them and stacked passes darken like real ink.", "section": "colors" },
+      { "name": "The Full Scale Rule", "body": "Numbers (seat numbers, desk IDs, dates, prices) set big and heavy against tiny field labels. The contrast between a 12px label and a 44px number is the hierarchy.", "section": "typography" },
+      { "name": "The Mono Is For Code Rule", "body": "JetBrains Mono appears only inside `code` and `pre`. Labels, numbers and readouts stay in Sarabun.", "section": "typography" },
+      { "name": "The Ruled Sheet Rule", "body": "Separation is a line, never a shadow, tint panel or card. If two things need distance, rule them apart.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep every text and structural element in toner on paper; reach for pink, yellow, green or violet only to mark a state.",
+      "Do draw absence on purpose: dashed cells for ghost desks, dashed blanks for missing figures, dotted empty fields for unknown names.",
+      "Do separate content with rules at the established weights (1px soft, 2px toner, 4px double for totals).",
+      "Do set numbers at full scale (weight 800, tight tracking) against 12px field labels.",
+      "Do put every time event on the shared 0 · 2 · 20 · 30 minute axis.",
+      "Do blend highlighter passes and the stamp with multiply so text reads through."
+    ],
+    "donts": [
+      "Don't use cards, drop shadows, decorative gradients or rounded panels; sections are ruled sheets.",
+      "Don't use highlighter inks as backgrounds for sections, buttons or links, or invent a fourth state colour.",
+      "Don't use JetBrains Mono for labels, numbers or headings.",
+      "Don't fill unknown names or measurements with placeholder values; leave the designed blank.",
+      "Don't add a second stamp colour or more than one stamp per header."
+    ]
+  }
+}

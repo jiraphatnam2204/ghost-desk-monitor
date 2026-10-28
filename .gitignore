@@ -1,0 +1,11 @@
+# Wi-Fi passwords, Supabase keys and the LINE token never go in the repo (course rule, E5)
+secrets.h
+**/secrets.h
+
+# local tooling
+.claude/
+.impeccable/review/
+.impeccable/mocks/
+
+# the course brief is the instructor's document: keep it local
+Embedded System (CEDT) - Final Project 2026.pdf

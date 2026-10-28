@@ -1,0 +1,102 @@
+/* ---------- figures with their notes ---------- */
+
+.figure-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(240px, 1fr);
+  gap: 28px clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+
+.figure-row .iso-figure {
+  margin: 0;
+}
+
+.senses {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: sense;
+}
+
+.senses li {
+  display: grid;
+  gap: 2px;
+  padding: 14px 0 14px 40px;
+  border-bottom: 1px solid var(--rule-soft);
+  position: relative;
+  counter-increment: sense;
+  cursor: pointer;
+  outline: none;
+}
+
+.senses li[data-active]::before {
+  background: var(--toner);
+  color: var(--paper);
+}
+
+.senses li:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.senses li:first-child {
+  border-top: 2px solid var(--rule);
+}
+
+.senses li::before {
+  content: counter(sense);
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--toner);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.senses b {
+  font-size: 17px;
+}
+
+.senses span {
+  color: var(--toner-2);
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+@media (max-width: 960px) {
+  .figure-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.figure-side {
+  display: grid;
+  gap: 20px;
+  align-content: start;
+}
+
+.figure-actions {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+
+.part-cue {
+  margin-bottom: 8px;
+  font-size: 13.5px;
+  color: var(--toner-2);
+}
+
+.senses[data-variant="assembly"] li::before {
+  content: counter(sense, decimal-leading-zero);
+  width: 30px;
+  font-size: 13px;
+}
+
+.senses[data-variant="assembly"] li {
+  padding-left: 44px;
+}

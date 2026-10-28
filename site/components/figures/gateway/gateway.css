@@ -1,0 +1,20 @@
+.gw {
+  outline: none;
+}
+
+.gw [data-module] {
+  cursor: pointer;
+}
+
+.gw [data-module][data-on] .iso-edge {
+  stroke: var(--anatomy-lit);
+  stroke-width: 2.6px;
+}
+
+.gw [data-module][data-on] :is(.iso-top, .iso-shade) {
+  fill: #c9d1dd;
+}
+
+.gw:focus-visible [data-module][data-on] .iso-edge {
+  stroke: var(--focus);
+}

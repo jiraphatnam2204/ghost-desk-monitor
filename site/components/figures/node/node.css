@@ -1,0 +1,76 @@
+.gdm-node {
+  cursor: pointer;
+  outline: none;
+}
+
+.gdm-node:focus-visible .gdm-prism .iso-edge {
+  stroke: var(--focus);
+  stroke-width: 1.6px;
+}
+
+.gdm-ink {
+  fill: var(--anatomy-hi);
+  stroke: none;
+}
+
+.gdm-face {
+  stroke: none;
+}
+
+[data-face="inUse"] .gdm-face {
+  fill: var(--hl-pink);
+}
+
+[data-face="away"] .gdm-face {
+  fill: var(--hl-yellow);
+}
+
+[data-face="free"] .gdm-face {
+  fill: var(--hl-green);
+}
+
+.gdm-face-shade {
+  fill: var(--toner);
+  stroke: none;
+}
+
+.gdm-presence {
+  visibility: hidden;
+}
+
+.gdm-node[data-present] .gdm-presence {
+  visibility: visible;
+}
+
+.gdm-led circle {
+  fill: var(--anatomy-hi);
+}
+
+.gdm-node[data-state="away"] .gdm-led circle {
+  animation-duration: 0.9s;
+}
+
+/* a part named in the list beside the figure: heavy toner edge and a cool tint */
+.gdm-node[data-focus="radar"] .gdm-radar .iso-edge,
+.gdm-node[data-focus="thermal"] .gdm-thermal .iso-edge,
+.gdm-node[data-focus="head"] .gdm-head .iso-edge,
+.gdm-node[data-focus="board"] .gdm-board .iso-edge,
+.gdm-node[data-focus="prism"] .gdm-prism .iso-edge,
+.gdm-node[data-focus="servo"] .gdm-servo .iso-edge,
+.gdm-node[data-focus="qr"] .gdm-qr .iso-edge {
+  stroke: var(--anatomy-lit);
+  stroke-width: 2.6px;
+}
+
+.gdm-node[data-focus="radar"] .gdm-radar :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus="thermal"] .gdm-thermal :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus="head"] .gdm-head :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus="board"] .gdm-board :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus="servo"] .gdm-servo :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus="qr"] .gdm-qr :is(.iso-top, .iso-shade) {
+  fill: #c9d1dd;
+}
+
+.gdm-ribbon {
+  fill: var(--anatomy-mid);
+}

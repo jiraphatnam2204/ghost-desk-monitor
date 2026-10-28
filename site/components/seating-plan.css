@@ -1,0 +1,409 @@
+.plan {
+  border: 2px solid var(--rule);
+  background: var(--paper);
+}
+
+.plan-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) auto;
+  gap: 16px 28px;
+  align-items: center;
+  padding: 14px clamp(14px, 2.4vw, 24px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.plan-room {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.plan-tally {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.plan-stamp {
+  justify-self: end;
+}
+
+/* ---------- the room ---------- */
+
+.room {
+  padding: clamp(14px, 2.6vw, 28px) clamp(12px, 3vw, 36px) clamp(10px, 2vw, 20px);
+}
+
+.room-front,
+.room-door {
+  display: flex;
+  justify-content: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--toner-2);
+}
+
+.room-front {
+  margin-bottom: clamp(14px, 2.4vw, 26px);
+  border-bottom: 3px solid var(--rule);
+  padding-bottom: 6px;
+}
+
+.room-door {
+  justify-content: flex-end;
+  margin-top: clamp(12px, 2vw, 22px);
+}
+
+.room-door span {
+  border-top: 3px solid var(--rule);
+  padding: 4px 18px 0;
+}
+
+.seats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) clamp(14px, 4vw, 56px) repeat(3, minmax(0, 1fr));
+  gap: clamp(6px, 1.4vw, 16px) clamp(4px, 1vw, 12px);
+}
+
+.aisle {
+  display: block;
+}
+
+.seat {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: space-between;
+  justify-items: start;
+  min-height: clamp(64px, 9vw, 116px);
+  padding: clamp(5px, 1vw, 10px) clamp(6px, 1.1vw, 12px);
+  border: 1.5px solid var(--rule);
+  background: var(--paper);
+  color: var(--toner);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s var(--ease);
+}
+
+/* the chair under each desk, as on a printed seating plan */
+.seat::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 34%;
+  height: 0;
+  border-bottom: 3px solid var(--rule-soft);
+  transform: translateX(-50%);
+}
+
+.seat[data-ghost] {
+  border-style: dashed;
+}
+
+.seat[aria-pressed="true"] {
+  outline: 3px solid var(--toner);
+  outline-offset: 3px;
+}
+
+.seat:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.seat-no {
+  position: relative;
+  font-size: clamp(20px, 3.4vw, 44px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.seat-state {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 8px;
+  font-size: clamp(11px, 1.15vw, 14px);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.seat-timer {
+  font-weight: 700;
+}
+
+.seat-bag {
+  position: absolute;
+  top: clamp(5px, 1vw, 10px);
+  right: clamp(5px, 1vw, 10px);
+  width: clamp(16px, 2.2vw, 26px);
+  height: auto;
+  color: var(--toner);
+}
+
+/* highlighter passes: one per state, a second yellow pass once LINE has warned */
+.seat-pass {
+  position: absolute;
+  z-index: -1;
+  left: -6%;
+  right: -6%;
+  top: 30%;
+  height: 42%;
+  background: var(--hl-yellow);
+  mix-blend-mode: multiply;
+  border-radius: 6px 14px 8px 16px;
+  transform: rotate(-4deg) scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.55s var(--ease), background-color 0.3s var(--ease);
+}
+
+.seat-pass[data-ink="pink"] {
+  background: var(--hl-pink);
+}
+
+.seat-pass[data-ink="green"] {
+  background: var(--hl-green);
+}
+
+.seat-pass[data-pass="1"] {
+  transform: rotate(-4deg) scaleX(1);
+}
+
+.seat-pass[data-pass="2"] {
+  top: 52%;
+  height: 34%;
+  opacity: 0.85;
+  transform: rotate(3deg) scaleX(0);
+  transition-delay: 0.05s;
+}
+
+.seat-pass[data-pass="2"][data-on] {
+  transform: rotate(3deg) scaleX(1);
+}
+
+@media (max-width: 640px) {
+  .seat-state {
+    display: none;
+  }
+
+  .seat-bag {
+    top: auto;
+    bottom: 6px;
+    right: 4px;
+  }
+
+  .plan-head {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .plan-head > div:nth-child(2) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+/* ---------- the selected desk ---------- */
+
+.plan-desk {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.8fr) minmax(0, 3fr);
+  gap: 18px clamp(16px, 3vw, 40px);
+  align-items: start;
+  padding: 18px clamp(14px, 2.4vw, 24px) 22px;
+  border-top: 1px solid var(--rule);
+}
+
+.plan-desk-id p {
+  display: grid;
+  gap: 2px;
+}
+
+.plan-desk-id b {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.plan-desk-state {
+  font-weight: 600;
+  font-size: 15px;
+  min-height: 3em;
+}
+
+.plan-controls {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.plan-controls .action {
+  min-height: 44px;
+  padding: 8px 16px;
+  font-size: 15px;
+}
+
+@media (max-width: 720px) {
+  .plan-desk {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- the shared minute axis ---------- */
+
+.axis {
+  position: relative;
+  padding: 40px 0 0;
+}
+
+.axis-track {
+  position: relative;
+  height: 22px;
+  border-top: 2px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.axis-sweep {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  background: var(--hl-yellow);
+  mix-blend-mode: multiply;
+  border-radius: 2px 6px 3px 6px;
+  transform-origin: left center;
+  transition: transform 0.15s linear;
+}
+
+.axis[data-state="inUse"] .axis-sweep[data-pass="1"] {
+  background: var(--hl-pink);
+}
+
+.axis-sweep[data-pass="2"] {
+  top: 7px;
+  bottom: -1px;
+  opacity: 0.85;
+}
+
+.axis-tick {
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  width: 0;
+  border-left: 1.5px solid var(--rule);
+}
+
+.axis-rail {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: transform 0.15s linear;
+}
+
+.axis-now {
+  position: absolute;
+  left: -1.5px;
+  top: -14px;
+  bottom: -14px;
+  width: 3px;
+  background: var(--toner);
+}
+
+.axis[data-counting] .axis-now {
+  background: var(--stamp);
+}
+
+.axis-marks {
+  position: relative;
+  height: 58px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.axis-marks li {
+  position: absolute;
+  top: 0;
+  display: grid;
+  max-width: 9.5em;
+  transform: translateX(-50%);
+  text-align: center;
+  color: var(--toner-2);
+}
+
+.axis-marks li:first-child {
+  top: -72px;
+  display: flex;
+  gap: 6px;
+  max-width: none;
+  transform: none;
+  text-align: left;
+}
+
+.axis-marks li:nth-child(2) {
+  max-width: 15em;
+  transform: translateX(-4px);
+  text-align: left;
+}
+
+.axis-marks li:last-child {
+  max-width: none;
+  white-space: nowrap;
+  transform: translateX(-100%);
+  text-align: right;
+}
+
+.axis-marks b {
+  color: var(--toner);
+  font-weight: 700;
+}
+
+.axis-marks li[data-passed] span {
+  color: var(--toner);
+  font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  .axis-marks {
+    height: 76px;
+    font-size: 12px;
+  }
+
+  .axis-marks li {
+    max-width: 6.5em;
+  }
+
+  .axis-marks li:nth-child(2) {
+    max-width: 8.5em;
+  }
+}
+
+/* ---------- the LINE message the gateway sends at 20 minutes ---------- */
+
+.line-slip {
+  grid-column: 2;
+  justify-self: start;
+  display: grid;
+  gap: 2px;
+  max-width: 34em;
+  padding: 8px 14px 10px;
+  border: 1.5px solid var(--rule);
+  border-left-width: 1.5px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .line-slip {
+    grid-column: 1;
+  }
+}

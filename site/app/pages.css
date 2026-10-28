@@ -1,0 +1,386 @@
+.page-head {
+  padding-top: clamp(32px, 6vw, 72px);
+  padding-bottom: clamp(32px, 4vw, 48px);
+}
+
+.page-head h1 {
+  font-size: clamp(56px, 10vw, 132px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+  margin-bottom: clamp(16px, 2.4vw, 28px);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.gap {
+  margin-top: 16px;
+}
+
+/* ---------- system: three tiers ---------- */
+
+.tiers {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 2px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.tiers > li {
+  padding: 16px clamp(14px, 2vw, 24px) 20px;
+}
+
+.tiers > li:first-child {
+  padding-left: 0;
+}
+
+.tiers > li + li {
+  border-left: 1px solid var(--rule);
+}
+
+.tier-fields {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  margin: 10px 0 14px;
+  border-top: 1px solid var(--rule);
+}
+
+.tier-fields > div {
+  padding: 6px 12px 8px 0;
+}
+
+.tier-fields > div + div {
+  padding-left: 12px;
+  border-left: 1px solid var(--rule);
+}
+
+.tier-fields dd {
+  margin: 0;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.tiers h3 {
+  font-size: clamp(24px, 2.6vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.tiers ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.tiers ul li {
+  padding: 9px 0 9px 18px;
+  border-bottom: 1px solid var(--rule-faint);
+  position: relative;
+  font-size: 15.5px;
+  line-height: 1.5;
+}
+
+.tiers ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.95em;
+  width: 9px;
+  border-top: 1.5px solid var(--toner);
+}
+
+@media (max-width: 860px) {
+  .tiers {
+    grid-template-columns: 1fr;
+  }
+
+  .tiers > li {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .tiers > li + li {
+    border-left: 0;
+    border-top: 1px solid var(--rule);
+  }
+}
+
+.states th[scope="row"] {
+  border-bottom: 1px solid var(--rule-soft);
+  vertical-align: top;
+  padding-right: 16px;
+}
+
+/* ---------- code blocks ---------- */
+
+.formats {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 24px clamp(20px, 3vw, 40px);
+  align-items: start;
+}
+
+.formats-side {
+  display: grid;
+  gap: 20px;
+}
+
+.code {
+  margin: 0;
+  border: 1.5px solid var(--rule);
+}
+
+.code figcaption {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 14px;
+  color: var(--toner-2);
+}
+
+.code figcaption b {
+  color: var(--toner);
+  margin-right: 8px;
+}
+
+.code pre {
+  margin: 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.65;
+  background: var(--paper-shadow);
+}
+
+@media (max-width: 960px) {
+  .formats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- depth items ---------- */
+
+.depth {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 2px solid var(--rule);
+}
+
+.depth li {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 0.9fr) minmax(0, 1.6fr);
+  gap: 4px 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  align-items: baseline;
+}
+
+.depth b {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.depth-name {
+  font-weight: 700;
+}
+
+.depth-plan {
+  color: var(--toner-2);
+}
+
+.depth li[data-spare] {
+  border-bottom-style: dashed;
+}
+
+.depth li[data-spare] b {
+  color: var(--toner-3);
+}
+
+@media (max-width: 720px) {
+  .depth li {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .depth-plan {
+    grid-column: 2;
+  }
+}
+
+.blank-cell {
+  display: inline-block;
+  width: 5em;
+  height: 1.2em;
+  border-bottom: 1.5px dashed var(--toner);
+}
+
+/* ---------- parts register ---------- */
+
+.levels-key {
+  margin-top: 18px;
+  font-size: 15px;
+  color: var(--toner-2);
+  max-width: var(--measure);
+  line-height: 2;
+}
+
+.level {
+  display: inline-block;
+  padding: 1px 9px 2px;
+  border: 1.5px solid var(--toner);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--toner);
+  white-space: nowrap;
+}
+
+.level[data-level="กลาง"] {
+  border-style: double;
+  border-width: 3px;
+  padding: 0 8px 1px;
+}
+
+.level[data-level="ยาก"] {
+  background: var(--toner);
+  color: var(--paper);
+}
+
+.parts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 2px solid var(--rule);
+}
+
+.part {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.9fr) minmax(0, 2.4fr) minmax(130px, 0.7fr);
+  gap: 16px clamp(18px, 3vw, 40px);
+  padding: 22px 0 24px;
+  border-bottom: 1px solid var(--rule);
+  scroll-margin-top: 80px;
+}
+
+.part-name h3 {
+  font-size: clamp(20px, 2vw, 25px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+
+.part-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+  margin: 0;
+}
+
+.part-facts .wide {
+  grid-column: 1 / -1;
+}
+
+.part-facts dd {
+  margin: 2px 0 0;
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+.part-note {
+  color: var(--toner-2);
+}
+
+.part-price {
+  display: grid;
+  align-content: start;
+  justify-items: end;
+  gap: 2px;
+  text-align: right;
+}
+
+.part-price b {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.part-line {
+  font-size: 14px;
+  color: var(--toner-2);
+}
+
+.part-price a,
+.part-shop {
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.part-shop {
+  color: var(--toner-2);
+}
+
+@media (max-width: 860px) {
+  .part {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .part-facts {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 520px) {
+  .part-facts {
+    grid-template-columns: 1fr;
+  }
+}
+
+.totals {
+  max-width: 760px;
+}
+
+.totals th[scope="row"] {
+  font-weight: 600;
+  font-size: 15.5px;
+  letter-spacing: 0;
+  border-bottom: 1px solid var(--rule-soft);
+  padding: 12px 12px 12px 0;
+}
+
+.totals tfoot th {
+  font-size: 18px;
+  font-weight: 800;
+  border-top: 2px solid var(--rule);
+  border-bottom: 4px double var(--rule);
+}
+
+.totals tfoot td {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.loan {
+  margin-top: 18px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.struck-name {
+  font-weight: 600;
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+  letter-spacing: 0;
+  font-size: 15.5px;
+  border-bottom: 1px solid var(--rule-soft);
+  vertical-align: top;
+}
+
+.sum {
+  font-weight: 800;
+  border-bottom: 4px double var(--rule);
+}

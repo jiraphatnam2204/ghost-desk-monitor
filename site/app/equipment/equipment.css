@@ -1,0 +1,272 @@
+/* ---------- budget ---------- */
+
+.budget {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 16px 32px;
+  align-items: center;
+  padding: 18px 20px 20px;
+  border: 4px double var(--rule);
+}
+
+.budget-sum {
+  display: grid;
+  gap: 2px;
+}
+
+.budget-sum > b {
+  font-size: clamp(32px, 4vw, 46px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.budget-each {
+  font-size: 16px;
+  color: var(--toner-2);
+}
+
+.budget-each b {
+  color: var(--toner);
+}
+
+.budget-switches {
+  display: grid;
+  gap: 10px;
+}
+
+.switch {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  font-size: 15.5px;
+  cursor: pointer;
+}
+
+.switch input {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  margin: 1px 0 0;
+  border: 1.5px solid var(--toner);
+  background: var(--paper);
+  cursor: pointer;
+}
+
+.switch input:checked {
+  background:
+    linear-gradient(45deg, transparent 44%, var(--toner) 44%, var(--toner) 56%, transparent 56%),
+    linear-gradient(-45deg, transparent 44%, var(--toner) 44%, var(--toner) 56%, transparent 56%);
+}
+
+.switch input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+  .budget {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- register extras ---------- */
+
+.part-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+
+.part-where {
+  font-size: 13px;
+  color: var(--toner-2);
+}
+
+.struck-price {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  color: var(--toner-3);
+}
+
+/* ---------- power per desk ---------- */
+
+.power {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 24px clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+
+.power-figure {
+  margin: 0;
+  padding: 16px;
+  border: 1.5px solid var(--rule);
+  background: #ffffff;
+}
+
+.power-figure figcaption {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--toner-2);
+}
+
+.power-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pw-box {
+  fill: #ffffff;
+  stroke: var(--toner);
+  stroke-width: 1.5;
+}
+
+.pw-heavy {
+  stroke-width: 3;
+}
+
+.pw-title {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 800;
+  fill: var(--toner);
+}
+
+.pw-text {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  fill: var(--toner-2);
+}
+
+.pw-label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--toner);
+}
+
+.pw-cap {
+  font-size: 14px;
+}
+
+.pw-wire {
+  fill: none;
+  stroke: var(--toner);
+  stroke-width: 2;
+}
+
+.pw-gnd {
+  stroke-dasharray: 7 4;
+}
+
+.pw-signal {
+  stroke-width: 1.2;
+}
+
+.pw-plate {
+  fill: none;
+  stroke: var(--toner);
+  stroke-width: 3;
+}
+
+.pw-node {
+  fill: var(--toner);
+}
+
+.pw-screw {
+  fill: #ffffff;
+  stroke: var(--toner);
+  stroke-width: 1.5;
+}
+
+.power-points {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding-left: 1.3em;
+  font-size: 16px;
+}
+
+@media (max-width: 960px) {
+  .power {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- misc parts ---------- */
+
+.misc-lede {
+  margin-bottom: 24px;
+}
+
+.misc {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 2px solid var(--rule);
+}
+
+.misc > li {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(0, 2.4fr) auto;
+  gap: 12px clamp(18px, 3vw, 36px);
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  scroll-margin-top: 90px;
+}
+
+.misc-name h3 {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.misc-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 24px;
+  margin: 0;
+}
+
+.misc-facts dd {
+  margin: 2px 0 0;
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+.misc-watch {
+  grid-column: 1 / -1;
+  padding: 8px 12px 10px;
+  border: 1.5px dashed var(--toner);
+}
+
+.misc-step {
+  align-self: start;
+  padding: 1px 8px 2px;
+  border: 1.5px solid var(--toner);
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.misc-step:hover {
+  background: var(--toner);
+  color: var(--paper);
+}
+
+@media (max-width: 860px) {
+  .misc > li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .misc-facts {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    grid-template-columns: 1fr;
+  }
+}
