@@ -166,7 +166,6 @@
   margin: 6px 0 0;
   padding: 0;
   list-style: none;
-  counter-reset: option;
 }
 
 .problem-options li {
@@ -174,11 +173,6 @@
   gap: 4px;
   padding: 10px 14px 12px;
   border: 1.5px solid var(--rule);
-  counter-increment: option;
-}
-
-.problem-options li > b::before {
-  content: counter(option) ". ";
 }
 
 .option-row {
