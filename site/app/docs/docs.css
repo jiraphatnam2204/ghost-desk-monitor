@@ -292,12 +292,70 @@
   fill: var(--toner);
 }
 
+/* ---------- print frame: a plain block on screen ---------- */
+
+.print-frame,
+.print-frame > tbody,
+.print-frame > tbody > tr,
+.print-frame > tbody > tr > td {
+  display: block;
+  padding: 0;
+}
+
+.print-frame > thead,
+.print-frame > tfoot {
+  display: none;
+}
+
 /* ---------- print: only the open document ---------- */
 
 @media print {
+  /* No top or bottom page margin: browsers print their own URL, title and date in that space when it exists.
+     The frame's repeating head and foot give every page its top and bottom margin instead. */
   @page {
     size: A4;
-    margin: 18mm 16mm;
+    margin: 0 18mm;
+  }
+
+  .print-frame {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .print-frame > thead {
+    display: table-header-group;
+  }
+
+  .print-frame > tfoot {
+    display: table-footer-group;
+  }
+
+  .print-frame > tbody {
+    display: table-row-group;
+  }
+
+  .print-frame > * > tr {
+    display: table-row;
+  }
+
+  .print-frame > * > tr > td {
+    display: table-cell;
+    padding: 0;
+  }
+
+  .print-space {
+    height: 16mm;
+  }
+
+  .print-foot {
+    display: flex;
+    align-items: flex-end;
+    height: 14mm;
+    padding-bottom: 7mm;
+    border-top: 0.5pt solid #c9c9c9;
+    font-size: 8.5pt;
+    color: #6b6b6b;
   }
 
   body {
@@ -325,12 +383,86 @@
     margin: 0;
   }
 
+  /* compact print type: the proposal must fit the brief's 1–2 pages */
   .doc-paper {
     max-width: none;
     padding: 0;
     border: 0;
-    font-size: 11pt;
-    line-height: 1.55;
+    font-size: 9.5pt;
+    line-height: 1.38;
+  }
+
+  .doc-head {
+    padding-bottom: 6pt;
+    margin-bottom: 0;
+  }
+
+  .doc-head h2 {
+    font-size: 18pt;
+  }
+
+  .doc-subtitle {
+    margin-top: 2pt;
+    font-size: 10.5pt;
+  }
+
+  .doc-meta {
+    margin-top: 6pt;
+    gap: 0 12pt;
+    font-size: 8.5pt;
+  }
+
+  .doc-section {
+    margin-top: 10pt;
+  }
+
+  .doc-section h3 {
+    margin-bottom: 4pt;
+    font-size: 11.5pt;
+  }
+
+  .doc-section p,
+  .doc-section ul,
+  .doc-section ol {
+    margin-bottom: 5pt;
+  }
+
+  .doc-section li + li {
+    margin-top: 2pt;
+  }
+
+  .doc-table {
+    margin: 2pt 0 6pt;
+    font-size: 8.5pt;
+    line-height: 1.35;
+  }
+
+  .doc-table caption {
+    padding-bottom: 3pt;
+    font-size: 8pt;
+  }
+
+  .doc-table th {
+    padding: 2pt 8pt 3pt 0;
+    font-size: 7.5pt;
+  }
+
+  .doc-table td {
+    padding: 2pt 8pt 2pt 0;
+  }
+
+  .doc-figure {
+    margin: 4pt 0 6pt;
+  }
+
+  .doc-figure figcaption {
+    margin-top: 2pt;
+    font-size: 8pt;
+  }
+
+  .doc-figure-svg {
+    width: 74%;
+    margin: 0 auto;
   }
 
   .doc-section {

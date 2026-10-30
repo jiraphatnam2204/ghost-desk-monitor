@@ -7,6 +7,7 @@ import { NodeFigure } from "@/components/figures/node/figure";
 import { PartsRegister } from "@/components/parts-register";
 import { PowerDiagram } from "@/components/power-diagram";
 import { MISC, SUNDRIES, baht } from "@/lib/project";
+import { SENSORS } from "@/lib/sensors";
 import "@/components/figure-side.css";
 import "../pages.css";
 import "./equipment.css";
@@ -26,6 +27,46 @@ export default function EquipmentPage() {
         </p>
       </header>
 
+      <section className="sheet section" aria-labelledby="sensors">
+        <div className="section-head">
+          <h2 id="sensors">Sensors · เซนเซอร์ 6 ชนิด</h2>
+          <span className="ref">M1 · node 3 ชนิด, gateway 3 ชนิด</span>
+        </div>
+        <div className="scroll-x">
+          <table className="register sensor-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>ชื่อรุ่น</th>
+                <th>เป็นเซนเซอร์แบบไหน</th>
+                <th>อยู่ที่</th>
+                <th>วัดอะไร</th>
+                <th>ใช้ทำอะไร</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SENSORS.map((sensor) => (
+                <tr key={sensor.no}>
+                  <td>
+                    <b>{sensor.no}</b>
+                  </td>
+                  <td>
+                    <b>{sensor.name}</b>
+                  </td>
+                  <td>{sensor.kind}</td>
+                  <td>{sensor.where === "node" ? "Sensor node" : "Gateway"}</td>
+                  <td>{sensor.measures}</td>
+                  <td>{sensor.use}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="more">
+          <Link href="/how-it-works/#sensors">แต่ละตัวทำงานอย่างไร · How It Works</Link>
+        </p>
+      </section>
+
       <section className="sheet section" aria-labelledby="node">
         <div className="section-head">
           <h2 id="node">Sensor node · ที่โต๊ะ</h2>
@@ -40,11 +81,11 @@ export default function EquipmentPage() {
               apartLabel="ถอดประกอบดูข้างใน"
               note="ถอดออกเป็น 5 ชิ้นส่วนที่ถอดได้จริง สายไฟยังต่ออยู่และยืดตามชิ้นที่มันต่อ"
               parts={[
-                { part: "radar", title: "LD2410", text: "เรดาร์ 24 GHz ใต้ขอบโต๊ะ จับการหายใจ จึงรู้ว่ามีคนแม้นั่งอ่านหนังสือนิ่ง ๆ" },
-                { part: "tof", title: "VL53L1X", text: "วัดระยะด้วยแสงเลเซอร์ลงที่เบาะเก้าอี้ 10 ครั้ง/วินาที มีคนนั่งระยะสั้นลง · ป้อนโมเดล AI ที่ gateway คู่กับเรดาร์" },
+                { part: "radar", title: "S1 LD2410 · เรดาร์", text: "เรดาร์ 24 GHz ใต้ขอบโต๊ะ จับการหายใจ จึงรู้ว่ามีคนแม้นั่งอ่านหนังสือนิ่ง ๆ" },
+                { part: "tof", title: "S2 VL53L1X · วัดระยะ", text: "วัดระยะด้วยแสงเลเซอร์ลงที่เบาะเก้าอี้ 10 ครั้ง/วินาที มีคนนั่งระยะสั้นลง · ป้อนโมเดล AI ที่ gateway คู่กับเรดาร์" },
                 {
                   part: "head",
-                  title: "กล้อง → AI บน cloud",
+                  title: "S3 กล้อง OV2640 → AI บน cloud",
                   text: "ถ่ายภาพเดียวเมื่อ gateway ขอ (ไม่เห็นคน 2 นาที และนาทีที่ 30) gateway ส่งไปถาม cloud ว่า empty / person / items_only · โต๊ะโล่งปล่อยได้ทันที · ภาพไม่ถูกเก็บ",
                 },
                 { part: "prism", title: "ป้ายปริซึม", text: "สามหน้า ชมพู / เหลือง / เขียว หมุนรอบแกนเดียวระหว่างแผ่นข้างสองแผ่น มีหมุดกันหมุนเกิน" },
@@ -91,9 +132,9 @@ export default function EquipmentPage() {
                   title: "YD-ESP32-23",
                   text: "บอร์ดจาก Lab 10 รันโมเดล AI จากข้อมูลเรดาร์ + ToF ของทุกโต๊ะ (E7) เป็นเจ้าของ state machine และเวลา 2 / 20 / 30 นาที ส่งภาพไปถาม cloud AI ส่งข้อมูลขึ้น Supabase และส่ง LINE",
                 },
-                { part: "scd", title: "SCD41", text: "CO₂ ในห้อง แสดงบน dashboard ดูคุณภาพอากาศและประมาณว่าห้องแน่นแค่ไหน" },
-                { part: "lux", title: "BH1750", text: "แสงในห้อง แสดงบน dashboard ใช้ I²C สองเส้นเดียวกับ SCD41" },
-                { part: "mic", title: "MAX4466", text: "ระดับเสียง แสดงบน dashboard อ่านด้วย analogRead แบบ Lab 8 แจ้ง staff ถ้า quiet zone ดังเกิน" },
+                { part: "scd", title: "S4 SCD41 · CO₂", text: "CO₂ ในห้อง แสดงบน dashboard ดูคุณภาพอากาศและประมาณว่าห้องแน่นแค่ไหน" },
+                { part: "lux", title: "S6 BH1750 · วัดแสง", text: "แสงในห้อง แสดงบน dashboard ใช้ I²C สองเส้นเดียวกับ SCD41" },
+                { part: "mic", title: "S5 MAX4466 · ไมโครโฟน", text: "ระดับเสียง แสดงบน dashboard อ่านด้วย analogRead แบบ Lab 8 แจ้ง staff ถ้า quiet zone ดังเกิน" },
               ]}
               assemblies={[
                 {

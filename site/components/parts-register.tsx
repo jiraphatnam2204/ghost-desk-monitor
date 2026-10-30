@@ -2,6 +2,15 @@
 
 import * as React from "react";
 import { PARTS, SUNDRIES, baht, lineTotal, type Level, type Part } from "@/lib/project";
+import { SENSOR_BY_PART } from "@/lib/sensors";
+
+// What each non-sensor part is; sensors take their label from lib/sensors.ts
+const KIND: Record<string, string> = {
+  servo: "Actuator · servo",
+  "yd-esp32": "บอร์ด gateway",
+  "adapter-node": "ไฟเลี้ยง",
+  "adapter-gw": "ไฟเลี้ยง",
+};
 
 type Where = "all" | Part["where"];
 const WHERE: { id: Where; label: string }[] = [
@@ -61,11 +70,15 @@ export function PartsRegister() {
 
       <ol className="parts">
         {shown.map((part) => {
+          const sensor = SENSOR_BY_PART[part.id];
           return (
             <li className="part" id={part.id} key={part.id}>
               <div className="part-name">
                 <h3>{part.name}</h3>
                 <span className="part-tags">
+                  <span className="part-kind" data-sensor={sensor ? "" : undefined}>
+                    {sensor ? `Sensor ${sensor.no} · ${sensor.kind}` : KIND[part.id]}
+                  </span>
                   <span className="level" data-level={part.level}>
                     {part.level}
                   </span>

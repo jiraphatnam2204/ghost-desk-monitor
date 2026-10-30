@@ -7,6 +7,7 @@ import { PacketMap } from "@/components/theory/packet-map";
 import { StateDiagram } from "@/components/theory/state-diagram";
 import { SenseFeatures } from "@/components/theory/sense-features";
 import { WireScope } from "@/components/theory/wire-scope";
+import { SENSORS } from "@/lib/sensors";
 import "@/components/seating-plan.css";
 import "../pages.css";
 import "./how.css";
@@ -379,6 +380,50 @@ export default function HowItWorksPage() {
             </tbody>
           </table>
         </div>
+      </section>
+
+      <section className="sheet section" id="sensors" aria-labelledby="sensors-title">
+        <div className="section-head">
+          <h2 id="sensors-title">เซนเซอร์แต่ละตัวทำงานอย่างไร</h2>
+          <span className="ref">6 ชนิด · S1–S6 ตามหน้า Equipment</span>
+        </div>
+        <p className="lede">
+          เซนเซอร์ทุกตัวทำสิ่งเดียวกัน: เปลี่ยนปริมาณจริง (คลื่น แสง ก๊าซ เสียง) เป็นไฟฟ้า แล้วแปลงเป็นตัวเลขให้ ESP32-S3 อ่าน การ์ดแต่ละใบบอกหลักการ, ค่าที่บอร์ดได้รับ
+          และเรื่องที่ต้องระวังตอนใช้งานจริง
+        </p>
+        <ol className="sensor-cards">
+          {SENSORS.map((sensor) => (
+            <li className="sensor-card" key={sensor.no}>
+              <div className="sensor-card-head">
+                <span className="sensor-no">{sensor.no}</span>
+                <div>
+                  <h3>{sensor.name}</h3>
+                  <p className="sensor-kind">
+                    {sensor.kind} · {sensor.where === "node" ? "Sensor node" : "Gateway"}
+                  </p>
+                </div>
+              </div>
+              <dl>
+                <div>
+                  <dt className="field-label">วัดอะไร</dt>
+                  <dd>{sensor.measures}</dd>
+                </div>
+                <div>
+                  <dt className="field-label">ทำงานอย่างไร</dt>
+                  <dd>{sensor.principle}</dd>
+                </div>
+                <div>
+                  <dt className="field-label">บอร์ดได้อะไร</dt>
+                  <dd>{sensor.reads}</dd>
+                </div>
+                <div>
+                  <dt className="field-label">ระวัง</dt>
+                  <dd>{sensor.watch}</dd>
+                </div>
+              </dl>
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section className="sheet section" id="bus" aria-labelledby="bus-title">

@@ -107,6 +107,23 @@ function BlockView({ block, lang }: { block: Block; lang: Lang }) {
   }
 }
 
+const PRINT_NAME: Record<Doc["id"], Record<Lang, string>> = {
+  proposal: { en: "Project proposal", th: "ข้อเสนอโครงงาน" },
+  report: { en: "Final report", th: "รายงานฉบับสมบูรณ์" },
+};
+
+// The page title becomes the PDF's file name, so name it after the document while the print dialog is open.
+function printDoc(title: string) {
+  const previous = document.title;
+  const restore = () => {
+    document.title = previous;
+    window.removeEventListener("afterprint", restore);
+  };
+  window.addEventListener("afterprint", restore);
+  document.title = title;
+  window.print();
+}
+
 export function DocView() {
   const [docId, setDocId] = React.useState<Doc["id"]>("proposal");
   const [lang, setLang] = React.useState<Lang>("en");
@@ -132,7 +149,7 @@ export function DocView() {
             ไทย
           </button>
         </div>
-        <button type="button" className="action" onClick={() => window.print()}>
+        <button type="button" className="action" onClick={() => printDoc(`Ghost-Desk Monitor - ${PRINT_NAME[doc.id].en} (${lang.toUpperCase()})`)}>
           Print / Save PDF
         </button>
       </div>
@@ -158,33 +175,57 @@ export function DocView() {
         </nav>
 
         <article className="doc-paper" lang={lang}>
-          <header className="doc-head">
-            <h2>{doc.title[lang]}</h2>
-            <p className="doc-subtitle">{doc.subtitle[lang]}</p>
-            <dl className="doc-meta">
-              {doc.meta.map((item) => (
-                <div key={item.label.en}>
-                  <dt>{item.label[lang]}</dt>
-                  <dd>
-                    <Inline text={item.value[lang]} />
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </header>
-          {doc.sections.map((section) => (
-            <section key={section.id} id={`${doc.id}-${section.id}`} className="doc-section" data-status={section.status}>
-              <h3>
-                {section.title[lang]}
-                <span className="doc-status" data-status={section.status}>
-                  {STATUS[section.status][lang]}
-                </span>
-              </h3>
-              {section.blocks.map((block, index) => (
-                <BlockView key={index} block={block} lang={lang} />
-              ))}
-            </section>
-          ))}
+          {/* A table only when printing: its head and foot repeat on every page and stand in for page margins,
+              because the @page margins are zero to keep the browser's URL and date out of the PDF. */}
+          <table className="print-frame" role="presentation">
+            <thead>
+              <tr>
+                <td>
+                  <div className="print-space" />
+                </td>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <td>
+                  <div className="print-foot">{`Ghost-Desk Monitor · ${PRINT_NAME[doc.id][lang]} · Embedded System (CEDT) 2026`}</div>
+                </td>
+              </tr>
+            </tfoot>
+            <tbody>
+              <tr>
+                <td>
+                  <header className="doc-head">
+                    <h2>{doc.title[lang]}</h2>
+                    <p className="doc-subtitle">{doc.subtitle[lang]}</p>
+                    <dl className="doc-meta">
+                      {doc.meta.map((item) => (
+                        <div key={item.label.en}>
+                          <dt>{item.label[lang]}</dt>
+                          <dd>
+                            <Inline text={item.value[lang]} />
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </header>
+                  {doc.sections.map((section) => (
+                    <section key={section.id} id={`${doc.id}-${section.id}`} className="doc-section" data-status={section.status}>
+                      <h3>
+                        {section.title[lang]}
+                        <span className="doc-status" data-status={section.status}>
+                          {STATUS[section.status][lang]}
+                        </span>
+                      </h3>
+                      {section.blocks.map((block, index) => (
+                        <BlockView key={index} block={block} lang={lang} />
+                      ))}
+                    </section>
+                  ))}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </article>
       </div>
     </div>

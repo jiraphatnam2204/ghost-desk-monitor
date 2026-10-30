@@ -825,3 +825,60 @@
   line-height: 1.6;
   color: var(--toner-2);
 }
+
+/* ---------- one card per sensor ---------- */
+
+.sensor-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: 16px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sensor-card {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 14px 16px 16px;
+  border: 2px solid var(--rule);
+}
+
+.sensor-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.sensor-no {
+  flex: none;
+  padding: 2px 8px 3px;
+  background: var(--toner);
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.sensor-card h3 {
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.sensor-kind {
+  font-size: 14px;
+  color: var(--toner-2);
+}
+
+.sensor-card dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.sensor-card dd {
+  margin: 2px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+}

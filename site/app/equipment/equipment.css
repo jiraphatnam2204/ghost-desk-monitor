@@ -85,10 +85,25 @@
   color: var(--toner-2);
 }
 
-.struck-price {
-  text-decoration: line-through;
-  text-decoration-thickness: 2px;
-  color: var(--toner-3);
+/* what the part is: sensors carry their S-number from the sensor table */
+.part-kind {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--toner-2);
+}
+
+.part-kind[data-sensor] {
+  color: var(--stamp);
+}
+
+/* ---------- sensor table ---------- */
+
+.sensor-table td:first-child b {
+  color: var(--stamp);
+}
+
+.sensor-table td:nth-child(2) {
+  white-space: nowrap;
 }
 
 /* ---------- power per desk ---------- */
