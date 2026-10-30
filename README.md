@@ -86,7 +86,6 @@ feat(node): read LD2410 frames over UART
 | `site/` | The team site (Next.js, static export, deployed to GitHub Pages) |
 | `site/data/` | Shared status the team edits: `progress.json` (rubric), `problems.json`, `workflow.json` (build steps) |
 | `docs/strategy.md` | Product strategy session: positioning, problem framing, roadmap, decisions |
-| `docs/proposal.txt` | The proposal as plain text (1–2 pages), ready to paste into the submission |
 | `docs/order-list.md` | What to buy, from which shop, with links and a check before paying |
 | `PRODUCT.md`, `DESIGN.md` | Product context and the site's design system |
 

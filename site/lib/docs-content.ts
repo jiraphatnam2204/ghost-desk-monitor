@@ -54,6 +54,13 @@ export const PROPOSAL: Doc = {
           ),
         },
         {
+          kind: "p",
+          text: t(
+            "Ghost-Desk Monitor puts a sensor node on each desk that checks whether a person is really seated and turns a three-face sign (in use / away / free). There is no booking, no check-in and no app login. A desk left with belongings gets a LINE warning at 20 minutes and is released at 30 minutes; a desk left clear is released at once.",
+            "Ghost-Desk Monitor ติด sensor node ที่ทุกโต๊ะเพื่อตรวจว่ามีผู้นั่งอยู่จริงหรือไม่ และหมุนป้ายสามหน้า (ใช้งาน / ไม่อยู่ / ว่าง) โดยไม่ต้องจอง ไม่ต้องเช็กอิน และไม่ต้องล็อกอินแอป โต๊ะที่ถูกทิ้งไว้พร้อมสิ่งของจะได้รับข้อความเตือนทาง LINE เมื่อครบ 20 นาที และถูกปล่อยเมื่อครบ 30 นาที ส่วนโต๊ะที่เจ้าของเก็บของไปแล้วจะถูกปล่อยทันที",
+          ),
+        },
+        {
           kind: "table",
           head: [t("User group", "กลุ่มผู้ใช้"), t("Need", "ความต้องการ"), t("What the system provides", "สิ่งที่ระบบให้")],
           rows: [
@@ -85,15 +92,29 @@ export const PROPOSAL: Doc = {
     },
     {
       id: "design",
-      title: t("2. System overview and block diagram", "2. ภาพรวมระบบและแผนภาพบล็อก"),
-      status: "draft",
+      title: t("2. Block diagram: sensor node, gateway, cloud, dashboard", "2. แผนภาพบล็อก: sensor node, gateway, cloud, dashboard"),
+      status: "ready",
       blocks: [
         {
-          kind: "p",
-          text: t(
-            "Each desk has a **sensor node** that measures presence (a 24 GHz mmWave radar read per range gate and a VL53L1X time-of-flight sensor aimed at the seat), takes a photo when asked, and turns a three-face prism sign (in use / away / free) with a servo. Nodes send a batch of ten readings every second to a single **gateway** over ESP-NOW. The gateway runs a small **AI model** (Edge Impulse) on the radar and distance data of each desk to decide whether someone is seated, owns the per-desk state machine and timers, reads its own room sensors, uploads raw data to **Supabase** over HTTPS, and sends LINE alerts. When a desk has been empty for 2 minutes, the gateway sends one photo from that desk to a **cloud vision model** to tell a clear desk from one with belongings left on it. A static **web dashboard** shows the room map and a staff view. Photos are taken only at these decision points and are not stored.",
-            "แต่ละโต๊ะมี **sensor node** ที่วัดการมีผู้นั่ง (เรดาร์ mmWave 24 GHz ที่อ่านค่าแยกตามช่วงระยะ และเซนเซอร์วัดระยะด้วยแสง VL53L1X ที่เล็งไปที่เบาะเก้าอี้) ถ่ายภาพเมื่อได้รับคำสั่ง และหมุนป้ายปริซึมสามหน้า (ใช้งาน / ไม่อยู่ / ว่าง) ด้วย servo โดย node ส่งค่าที่อ่านได้ชุดละ 10 ค่าทุก 1 วินาทีไปยัง **gateway** หนึ่งตัวผ่าน ESP-NOW เกตเวย์รัน **โมเดล AI** ขนาดเล็ก (Edge Impulse) จากข้อมูลเรดาร์และระยะของแต่ละโต๊ะเพื่อตัดสินว่ามีผู้นั่งหรือไม่ ดูแล state machine และตัวจับเวลาของแต่ละโต๊ะ อ่านค่าเซนเซอร์ของห้อง ส่งข้อมูลดิบขึ้น **Supabase** ผ่าน HTTPS และส่งการแจ้งเตือนทาง LINE เมื่อโต๊ะไม่มีผู้นั่งครบ 2 นาที gateway จะส่งภาพหนึ่งภาพจากโต๊ะนั้นให้ **cloud vision model** เพื่อแยกโต๊ะที่โล่งออกจากโต๊ะที่มีของวางทิ้งไว้ ส่วน **web dashboard** แบบ static แสดงผังห้องและหน้าสำหรับเจ้าหน้าที่ ภาพถูกถ่ายเฉพาะตอนตัดสินและไม่ถูกเก็บไว้",
-          ),
+          kind: "list",
+          items: [
+            t(
+              "**Sensor node × 2 (one per desk).** FireBeetle 2 ESP32-S3 with an LD2410 mmWave radar (energy per 0.75 m range gate, OUT pin on an interrupt), a VL53L1X time-of-flight sensor aimed at the seat, an OV2640 camera that takes a photo only when the gateway asks, and a 270° servo that turns the three-face sign. It reads the radar and the distance 10 times a second and sends one 210-byte batch (with its node ID) every second over ESP-NOW.",
+              "**Sensor node × 2 (โต๊ะละตัว)** FireBeetle 2 ESP32-S3 พร้อมเรดาร์ mmWave LD2410 (พลังงานแยกตามช่วงระยะ 0.75 m และขา OUT ต่อ interrupt) เซนเซอร์วัดระยะ VL53L1X ที่เล็งไปที่เบาะเก้าอี้ กล้อง OV2640 ที่ถ่ายภาพเฉพาะเมื่อ gateway ขอ และ servo 270° ที่หมุนป้ายสามหน้า อ่านค่าเรดาร์และระยะ 10 ครั้งต่อวินาที แล้วส่งชุดข้อมูล 210 ไบต์ (พร้อมหมายเลข node) ทุก 1 วินาทีผ่าน ESP-NOW",
+            ),
+            t(
+              "**Gateway × 1.** YD-ESP32-23 (ESP32-S3) with an SCD41 CO₂ sensor, a BH1750 light sensor and a MAX4466 microphone. It runs a small Edge Impulse model on the last 5 seconds of radar and distance data from each desk (person / empty / nearby), owns the per-desk state machine and timers, sends SET_SIGN back to the node, asks for a photo when a desk needs checking, and is the only board on the Internet.",
+              "**Gateway × 1** YD-ESP32-23 (ESP32-S3) พร้อมเซนเซอร์ CO₂ SCD41 เซนเซอร์แสง BH1750 และไมโครโฟน MAX4466 รันโมเดล Edge Impulse ขนาดเล็กกับข้อมูลเรดาร์และระยะ 5 วินาทีล่าสุดของแต่ละโต๊ะ (person / empty / nearby) ดูแล state machine และตัวจับเวลาของแต่ละโต๊ะ ส่งคำสั่ง SET_SIGN กลับไปที่ node ขอภาพเมื่อต้องตรวจโต๊ะ และเป็นบอร์ดเดียวที่ต่ออินเทอร์เน็ต",
+            ),
+            t(
+              "**Cloud.** Supabase (Postgres + REST + Realtime) stores the raw data sent by the gateway over HTTPS. A cloud vision model receives one desk photo at a decision point and answers empty / person / items_only. LINE Messaging API sends the 20-minute warning.",
+              "**Cloud** Supabase (Postgres + REST + Realtime) เก็บข้อมูลดิบที่ gateway ส่งมาผ่าน HTTPS · cloud vision model รับภาพโต๊ะหนึ่งภาพตอนต้องตัดสิน แล้วตอบ empty / person / items_only · LINE Messaging API ส่งข้อความเตือนเมื่อครบ 20 นาที",
+            ),
+            t(
+              "**Dashboard.** A single web page (HTML + JavaScript on GitHub Pages) that shows the live room map, and a staff view with leftover-item flags, CO₂, light and sound level.",
+              "**Dashboard** หน้าเว็บหน้าเดียว (HTML + JavaScript บน GitHub Pages) แสดงผังห้องแบบ real-time และหน้าสำหรับเจ้าหน้าที่ที่แสดงโต๊ะที่มีของค้าง ค่า CO₂ ความสว่าง และระดับเสียง",
+            ),
+          ],
         },
         {
           kind: "figure",
@@ -114,8 +135,8 @@ export const PROPOSAL: Doc = {
     },
     {
       id: "bom",
-      title: t("3. Sensors, actuators and bill of materials", "3. เซนเซอร์ แอคชูเอเตอร์ และรายการอุปกรณ์"),
-      status: "draft",
+      title: t("3. Sensors and actuators (bill of materials)", "3. เซนเซอร์และแอคชูเอเตอร์ (รายการอุปกรณ์)"),
+      status: "ready",
       blocks: [
         {
           kind: "table",
@@ -143,8 +164,8 @@ export const PROPOSAL: Doc = {
     },
     {
       id: "depth",
-      title: t("4. Embedded Engineering Depth items", "4. หัวข้อ Embedded Engineering Depth"),
-      status: "draft",
+      title: t("4. Chosen Embedded Engineering Depth items (Section 5, II′)", "4. หัวข้อ Embedded Engineering Depth ที่เลือก (หัวข้อ 5, II′)"),
+      status: "ready",
       blocks: [
         {
           kind: "table",
@@ -161,29 +182,8 @@ export const PROPOSAL: Doc = {
       ],
     },
     {
-      id: "minimums",
-      title: t("5. Minimum requirements", "5. เกณฑ์ขั้นต่ำ"),
-      status: "draft",
-      blocks: [
-        {
-          kind: "table",
-          head: [t("Item", "ข้อ"), t("How it is met", "วิธีที่ระบบผ่านเกณฑ์")],
-          rows: [
-            [same("M1"), t("Node: LD2410, VL53L1X, OV2640 camera. Gateway: SCD41, MAX4466, BH1750 (six types).", "Node: LD2410, VL53L1X, กล้อง OV2640 · Gateway: SCD41, MAX4466, BH1750 (6 ชนิด)")],
-            [same("M2"), t("270° servo turning the prism sign.", "servo 270° หมุนป้ายปริซึม")],
-            [same("M3"), t("ESP-NOW from node to gateway.", "ESP-NOW จาก node ไปยัง gateway")],
-            [same("M4"), t("The gateway model decides whether a desk is occupied, and the cloud vision model decides whether an unattended desk is released immediately or held; both drive the sign and the staff alert.", "โมเดลบน gateway ตัดสินว่าโต๊ะมีผู้นั่งหรือไม่ และ cloud vision model ตัดสินว่าโต๊ะที่ไม่มีผู้นั่งจะถูกปล่อยทันทีหรือรอ ทั้งสองควบคุมป้ายและการแจ้งเจ้าหน้าที่")],
-            [same("M5"), t("Raw data in Supabase (Postgres) with a web dashboard.", "ข้อมูลดิบใน Supabase (Postgres) พร้อม web dashboard")],
-            [same("M6"), t("LINE Messaging API broadcast at 20 minutes.", "LINE Messaging API แบบ broadcast เมื่อครบ 20 นาที")],
-            [same("M7"), t("5 V supply only; the servo has a mechanical stop and a command timeout.", "ใช้ไฟ 5 V เท่านั้น servo มีตัวหยุดเชิงกลและ timeout ของคำสั่ง")],
-            [same("M8"), t("Public Git repository with commits from every member.", "Git repository สาธารณะที่สมาชิกทุกคนมี commit")],
-          ],
-        },
-      ],
-    },
-    {
       id: "roles",
-      title: t("6. Roles", "6. บทบาทของสมาชิก"),
+      title: t("5. Role of each member", "5. บทบาทของสมาชิกแต่ละคน"),
       status: "draft",
       blocks: [
         {
@@ -195,25 +195,6 @@ export const PROPOSAL: Doc = {
             [same("AI & Node Vision"), t("[name]", "[ชื่อ]"), t("Sensor dataset, Edge Impulse model on the gateway, camera capture and cloud vision call", "ชุดข้อมูลเซนเซอร์ โมเดล Edge Impulse บน gateway การถ่ายภาพ และการเรียก cloud vision")],
             [same("Embedded Developer (Gateway & Cloud)"), t("[name]", "[ชื่อ]"), t("ESP-NOW, state machine, buffering, Supabase, TLS, LINE", "ESP-NOW, state machine, การพักข้อมูล, Supabase, TLS และ LINE")],
             [same("UI/UX Dashboard, Project Manager & Test Lead"), t("[name]", "[ชื่อ]"), t("Dashboard, timeline, test plan and performance metrics", "dashboard แผนเวลา แผนการทดสอบ และการวัดประสิทธิภาพ")],
-          ],
-        },
-      ],
-    },
-    {
-      id: "timeline",
-      title: t("7. Timeline", "7. แผนการดำเนินงาน"),
-      status: "draft",
-      blocks: [
-        {
-          kind: "table",
-          head: [t("Date", "วันที่"), t("Milestone", "เป้าหมาย")],
-          rows: [
-            [t("30 Oct", "30 ต.ค."), t("Proposal submitted; parts ordered", "ส่งข้อเสนอโครงงาน และสั่งซื้ออุปกรณ์")],
-            [t("6 Nov", "6 พ.ย."), t("Every sensor read separately; message format frozen; data collection for the model starts", "อ่านค่าเซนเซอร์ทุกตัวแยกกันได้ กำหนด message format และเริ่มเก็บข้อมูลสำหรับโมเดล")],
-            [t("13 Nov", "13 พ.ย."), t("Gateway AI review against the threshold rule; cloud vision call working", "ประเมินโมเดลบน gateway เทียบกับกติกา threshold และเรียก cloud vision ได้")],
-            [t("20 Nov", "20 พ.ย."), t("Checkpoint video: node → gateway → cloud → dashboard", "วิดีโอ checkpoint: node → gateway → cloud → dashboard")],
-            [t("30 Nov", "30 พ.ย."), t("Feature freeze; 24-hour test and metric collection", "หยุดเพิ่มฟีเจอร์ ทดสอบต่อเนื่อง 24 ชั่วโมง และเก็บค่าวัด")],
-            [t("8 Dec", "8 ธ.ค."), t("Presentation, live demonstration and final submission", "นำเสนอ สาธิตจริง และส่งงานฉบับสมบูรณ์")],
           ],
         },
       ],
