@@ -44,13 +44,13 @@ export const PROPOSAL: Doc = {
     {
       id: "problem",
       title: t("1. Problem and target users", "1. ปัญหาและกลุ่มผู้ใช้"),
-      status: "draft",
+      status: "ready",
       blocks: [
         {
           kind: "p",
           text: t(
-            "During examination periods, many university library desks are reserved with belongings (bags, books) while their owners are absent for long periods. Students who need a seat cannot find one, and library staff have neither the data nor the time to check every desk. Existing QR seat-booking systems record that a desk was **booked**, not whether anyone is **actually sitting** there.",
-            "ในช่วงสอบ โต๊ะในห้องสมุดของมหาวิทยาลัยจำนวนมากถูกจองไว้ด้วยสิ่งของ (กระเป๋า หนังสือ) ขณะที่เจ้าของไม่อยู่เป็นเวลานาน นิสิตที่ต้องการที่นั่งจึงหาที่นั่งไม่ได้ และเจ้าหน้าที่ห้องสมุดไม่มีทั้งข้อมูลและเวลาในการตรวจทุกโต๊ะ ระบบจองที่นั่งด้วย QR ที่มีอยู่บันทึกได้เพียงว่าโต๊ะ**ถูกจอง** แต่ไม่รู้ว่ามี**ผู้นั่งอยู่จริง**หรือไม่",
+            "During examination periods, many university library desks are reserved with belongings (bags, books) while their owners are absent for long periods. Students who need a seat cannot find one, and library staff have neither the data nor the time to check every desk. Existing QR seat-booking systems record that a desk was **booked**, not whether anyone is **actually sitting** there. Team members see this regularly in the faculty library during exams.",
+            "ในช่วงสอบ โต๊ะในห้องสมุดของมหาวิทยาลัยจำนวนมากถูกจองไว้ด้วยสิ่งของ (กระเป๋า หนังสือ) ขณะที่เจ้าของไม่อยู่เป็นเวลานาน นิสิตที่ต้องการที่นั่งจึงหาที่นั่งไม่ได้ และเจ้าหน้าที่ห้องสมุดไม่มีทั้งข้อมูลและเวลาในการตรวจทุกโต๊ะ ระบบจองที่นั่งด้วย QR ที่มีอยู่บันทึกได้เพียงว่าโต๊ะ**ถูกจอง** แต่ไม่รู้ว่ามี**ผู้นั่งอยู่จริง**หรือไม่ สมาชิกในทีมพบเหตุการณ์นี้เป็นประจำในห้องสมุดคณะช่วงสอบ",
           ),
         },
         {
@@ -80,13 +80,6 @@ export const PROPOSAL: Doc = {
               t("A staff page with leftover-item flags, CO₂ and sound level", "หน้าเว็บสำหรับเจ้าหน้าที่ แสดงโต๊ะที่มีของค้าง ค่า CO₂ และระดับเสียง"),
             ],
           ],
-        },
-        {
-          kind: "todo",
-          text: t(
-            "Evidence to add before submission: (1) a ghost-desk count in the faculty library, two rounds 30 minutes apart (total desks, occupied, belongings without a person); (2) a 5-question Google Form with at least 30 responses (time spent finding a seat, experience of ghost desks, acceptance of a 30-minute rule, acceptance of a camera that sends one photo to a cloud AI only when a desk is checked). Insert two or three figures from these results here.",
-            "หลักฐานที่ต้องเพิ่มก่อนส่ง: (1) ผลการนับโต๊ะที่ถูกทิ้งไว้ในห้องสมุดคณะ 2 รอบห่างกัน 30 นาที (จำนวนโต๊ะทั้งหมด มีผู้นั่ง และมีของแต่ไม่มีผู้นั่ง) (2) ผลแบบสอบถาม Google Form 5 ข้อ อย่างน้อย 30 คำตอบ (เวลาที่ใช้หาที่นั่ง ประสบการณ์เจอโต๊ะที่มีแต่ของ การยอมรับกติกา 30 นาที และการยอมรับกล้องที่ส่งภาพหนึ่งภาพให้ cloud AI เฉพาะตอนตรวจโต๊ะ) แล้วใส่ตัวเลขสำคัญ 2–3 ค่าในส่วนนี้",
-          ),
         },
       ],
     },
