@@ -125,7 +125,7 @@ function StepRow({ step, open, onToggle, onJump }: { step: Step; open: boolean; 
               </thead>
               <tbody>
                 {step.table.rows.map((row) => (
-                  <tr key={row[0]}>
+                  <tr key={row.join("|")}>
                     {row.map((cell, index) => (
                       <td key={index}>{index === 0 ? <code>{cell}</code> : cell}</td>
                     ))}
