@@ -9,3 +9,6 @@ secrets.h
 
 # the course brief is the instructor's document: keep it local
 Embedded System (CEDT) - Final Project 2026.pdf
+
+# the submitted proposal with student IDs stays local (the repo is public)
+docs/proposal-overleaf/private/

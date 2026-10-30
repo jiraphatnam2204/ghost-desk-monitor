@@ -87,6 +87,7 @@ feat(node): read LD2410 frames over UART
 | `site/data/` | Shared status the team edits: `progress.json` (rubric), `problems.json`, `workflow.json` (build steps) |
 | `docs/strategy.md` | Product strategy session: positioning, problem framing, roadmap, decisions |
 | `docs/order-list.md` | What to buy, from which shop, with links and a check before paying |
+| `docs/proposal-overleaf/` | The proposal as submitted on 30 Oct (Thai, LaTeX for Overleaf, compile with XeLaTeX), without student IDs; the copy with IDs and the PDF stay in a git-ignored `private/` folder |
 | `PRODUCT.md`, `DESIGN.md` | Product context and the site's design system |
 
 Firmware for the node and the gateway goes in its own folders as the build plan reaches it. Never commit `secrets.h` (Wi-Fi password, Supabase key, LINE token); `.gitignore` already blocks it.

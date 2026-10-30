@@ -1,0 +1,4 @@
+# Build with XeLaTeX (needed for the Thai font and Thai line breaking),
+# even if the Overleaf project compiler is left at pdfLaTeX.
+$pdf_mode = 1;
+$pdflatex = 'xelatex %O %S';

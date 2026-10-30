@@ -1,0 +1,200 @@
+% Ghost-Desk Monitor: project proposal (Thai with English technical terms)
+% Compile with XeLaTeX. On Overleaf: Settings (gear icon, bottom left) -> Compiler -> XeLaTeX.
+% latexmkrc in this folder also swaps pdfLaTeX for XeLaTeX as a fallback.
+% Font: Laksaman from the TLWG Thai fonts in TeX Live (a Sarabun-style face with Latin glyphs), so nothing needs uploading.
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[a4paper,top=1.3cm,bottom=1.3cm,left=1.7cm,right=1.7cm]{geometry}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[hidelinks]{hyperref}
+
+% Thai text: break lines between Thai words (XeTeX uses ICU's Thai dictionary)
+\XeTeXlinebreaklocale "th"
+\XeTeXlinebreakskip = 0pt plus 1pt
+
+% Script=Thai turns on the font's Thai mark positioning; without it vowels and tone marks sit too high or off-centre
+\setmainfont{Laksaman}[
+  Script = Thai,
+  Language = Thai,
+  Extension = .otf,
+  UprightFont = *,
+  BoldFont = *-Bold,
+  ItalicFont = *-Italic,
+  BoldItalicFont = *-BoldItalic,
+  Scale = 1.13,
+]
+\setmonofont{TlwgTypewriter}[
+  Extension = .otf,
+  UprightFont = *,
+  BoldFont = *-Bold,
+  Scale = 1.05,
+]
+
+\linespread{0.95}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\renewcommand{\arraystretch}{1.0}
+\setlength{\tabcolsep}{4pt}
+
+\definecolor{muted}{gray}{0.35}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.4em}{}
+\titlespacing*{\section}{0pt}{5pt}{1pt}
+\setlist{nosep,leftmargin=1.1em,itemsep=1pt}
+
+% ragged-right columns: Thai has no spaces between words, so justified narrow cells stretch badly
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+\begin{document}
+
+% ---------- title block ----------
+{\LARGE\bfseries Ghost-Desk Monitor}\par
+\vspace{1pt}
+{\color{muted} ข้อเสนอโครงงาน (Project Proposal)}\par
+\vspace{4pt}
+{\small
+\begin{tabular}{@{}>{\bfseries}l l@{}}
+รายวิชา & Embedded System (CEDT) Final Project 2026: Smart Devices \\
+กลุ่ม & TomyumSea \\
+วันที่ & 30 ตุลาคม 2026 \\
+Repository & \url{https://github.com/jiraphatnam2204/ghost-desk-monitor} \\
+\end{tabular}}
+\par\vspace{3pt}\hrule\vspace{2pt}
+
+% ---------- 1 ----------
+\section{ปัญหาและกลุ่มผู้ใช้ (Problem and Target Users)}
+
+ในช่วงสอบ โต๊ะในห้องสมุดของมหาวิทยาลัยจำนวนมากถูกจองไว้ด้วยสิ่งของ (กระเป๋า หนังสือ) ขณะที่เจ้าของไม่อยู่เป็นเวลานาน
+นิสิตที่ต้องการที่นั่งจึงหาที่นั่งไม่ได้ และเจ้าหน้าที่ห้องสมุดไม่มีทั้งข้อมูลและเวลาในการตรวจทุกโต๊ะ
+ระบบจองที่นั่งด้วย QR ที่มีอยู่บันทึกได้เพียงว่าโต๊ะ\textbf{ถูกจอง} แต่ไม่รู้ว่ามี\textbf{ผู้นั่งอยู่จริง}หรือไม่
+สมาชิกในทีมพบเหตุการณ์นี้เป็นประจำในห้องสมุดคณะช่วงสอบ
+
+Ghost-Desk Monitor ติด sensor node ที่ทุกโต๊ะเพื่อตรวจว่ามีผู้นั่งอยู่จริงหรือไม่ และหมุนป้ายสามหน้า (ใช้งาน / ไม่อยู่ / ว่าง)
+โดยไม่ต้องจอง ไม่ต้องเช็กอิน และไม่ต้องล็อกอินแอป โต๊ะที่ถูกทิ้งไว้พร้อมสิ่งของจะได้รับข้อความเตือนทาง LINE เมื่อครบ 20 นาที
+และถูกปล่อยเมื่อครบ 30 นาที ส่วนโต๊ะที่เจ้าของเก็บของไปแล้วจะถูกปล่อยทันที
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{@{}P{3.1cm}LL@{}}
+\toprule
+\textbf{กลุ่มผู้ใช้} & \textbf{ความต้องการ} & \textbf{สิ่งที่ระบบให้} \\
+\midrule
+นิสิตที่หาที่นั่ง & รู้ทันทีว่าโต๊ะใดว่างจริง & ป้ายสามหน้าบนทุกโต๊ะ และผังห้องแบบ real-time บนเว็บ \\
+นิสิตที่ใช้โต๊ะอยู่ & ลุกไปชั่วครู่ได้โดยไม่เสียโต๊ะ & สถานะ ``ไม่อยู่'' และข้อความเตือนทาง LINE เมื่อครบ 20 นาที \\
+เจ้าหน้าที่ห้องสมุด & รู้ว่าโต๊ะใดมีของค้าง ห้องแออัดหรือเสียงดัง โดยไม่ต้องเดินตรวจ & หน้า staff แสดงโต๊ะที่มีของค้าง ค่า CO\textsubscript{2} และระดับเสียง \\
+\bottomrule
+\end{tabularx}}
+
+% ---------- 2 ----------
+\section{แผนภาพบล็อก (Block Diagram)}
+
+\begin{center}
+\begin{tikzpicture}[
+  font=\scriptsize,
+  box/.style={draw, rounded corners=1pt, align=left, inner sep=3pt, text width=#1},
+  arr/.style={-{Stealth[length=2mm]}, semithick},
+  lab/.style={font=\tiny, align=center},
+  every node/.append style={execute at begin node=\setlength{\baselineskip}{1.05em}},
+]
+\node[box=4.4cm] (node) {{\bfseries Sensor node $\times$ 2 (โต๊ะละตัว)}\\
+  FireBeetle 2 ESP32-S3\\ LD2410 mmWave (UART, OUT)\\ VL53L1X ToF (I\textsuperscript{2}C)\\ OV2640 ถ่ายภาพเมื่อ gateway ขอ\\ Servo 270° $\rightarrow$ ป้ายปริซึม};
+\node[box=4.1cm, right=2.0cm of node, line width=0.9pt] (gw) {{\bfseries Gateway $\times$ 1}\\
+  YD-ESP32-23 (ESP32-S3)\\ SCD41 CO\textsubscript{2} (I\textsuperscript{2}C)\\ BH1750 แสง (I\textsuperscript{2}C)\\ MAX4466 ไมค์ (ADC1)\\ AI local + state machine};
+\node[box=3.9cm, right=1.2cm of gw, yshift=6mm] (cloud) {{\bfseries Cloud}\\ Supabase: Postgres, REST, Realtime\\ Vision API (ภาพจาก gateway)};
+\node[box=3.9cm, below=5mm of cloud] (dash) {{\bfseries Dashboard}\\ ผังห้อง + หน้า staff};
+\node[box=4.1cm, below=4mm of gw] (line) {{\bfseries LINE Official Account}\\ broadcast เตือนนาทีที่ 20};
+
+\draw[arr] ([yshift=3mm]node.east) -- node[lab, above]{ESP-NOW\\ ทุก 1 วิ} ([yshift=3mm]gw.west);
+\draw[arr] ([yshift=-3mm]gw.west) -- node[lab, below]{SET\_SIGN,\\ SNAP, ack} ([yshift=-3mm]node.east);
+\draw[arr] (gw.east |- cloud.west) -- node[lab, above]{HTTPS} (cloud.west);
+\draw[arr] (cloud.south) -- node[lab, right]{Realtime} (dash.north);
+\draw[arr] (gw.south) -- node[lab, right]{Messaging API} (line.north);
+\end{tikzpicture}
+\end{center}
+\vspace{-4pt}
+
+\begin{itemize}
+\item \textbf{Sensor node} อ่านเรดาร์ (พลังงานแยกตามช่วงระยะ 0.75 m) และระยะจาก VL53L1X ถึงเบาะเก้าอี้ 10 ครั้งต่อวินาที
+  ส่งชุดข้อมูล 210 ไบต์ (มี node ID) ทุก 1 วินาทีผ่าน ESP-NOW ถ่ายภาพเมื่อ gateway ขอ และหมุนป้ายด้วย servo
+\item \textbf{Gateway} รันโมเดล AI (Edge Impulse) กับข้อมูล 5 วินาทีล่าสุดของแต่ละโต๊ะ (person / empty / nearby)
+  ดูแล state machine และตัวจับเวลา ส่ง SET\_SIGN กลับไปที่ node และเป็นบอร์ดเดียวที่ต่ออินเทอร์เน็ต
+\item \textbf{Cloud} Supabase เก็บข้อมูลดิบผ่าน HTTPS · cloud vision model ดูภาพหนึ่งภาพตอนต้องตัดสิน
+  แล้วตอบ empty / person / items\_only · LINE Messaging API ส่งข้อความเตือน
+\item \textbf{Dashboard} หน้าเว็บบน GitHub Pages แสดงผังห้องแบบ real-time และหน้า staff
+  (โต๊ะที่มีของค้าง CO\textsubscript{2} ความสว่าง ระดับเสียง)
+\end{itemize}
+
+\textbf{กติกาของโต๊ะ} โต๊ะเป็น \emph{ใช้งาน} เมื่อโมเดลบน gateway เห็นผู้นั่งต่อเนื่อง 60 วินาที เมื่อไม่เห็นผู้นั่ง 2 นาที gateway ขอภาพจาก node
+แล้วส่งให้ cloud vision model: \texttt{empty} ปล่อยโต๊ะทันที, \texttt{items\_only} เปลี่ยนเป็น \emph{ไม่อยู่} เตือนทาง LINE ที่ 20 นาที
+และปล่อยที่ 30 นาทีพร้อมแจ้ง staff ว่ามีของค้าง, \texttt{person} คงสถานะใช้งาน หาก cloud ไม่ตอบ ใช้กติกา 30 นาทีตามปกติ
+ภาพถูกถ่ายเฉพาะตอนตัดสินและไม่ถูกเก็บไว้
+
+% ---------- 3 ----------
+\section{เซนเซอร์และแอคชูเอเตอร์ (Bill of Materials)}
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{@{}P{5.6cm}P{1.4cm}R{0.95cm}R{1.2cm}L@{}}
+\toprule
+\textbf{อุปกรณ์} & \textbf{บอร์ด} & \textbf{จำนวน} & \textbf{บาท} & \textbf{หมายเหตุ} \\
+\midrule
+FireBeetle 2 ESP32-S3 + OV2640 & Node & 2 & 2,370 & MCU และเซนเซอร์ 3: กล้อง \\
+HLK-LD2410 mmWave 24 GHz & Node & 2 & 360 & เซนเซอร์ 1: ตรวจผู้นั่งแม้นั่งนิ่ง \\
+VL53L1X time-of-flight & Node & 2 & 420 & เซนเซอร์ 2: ระยะถึงเบาะเก้าอี้ \\
+TD-7120MG servo 0--270° & Node & 2 & 880 & แอคชูเอเตอร์: หมุนป้ายสามหน้า \\
+YD-ESP32-23 (ESP32-S3) & Gateway & 1 & 0 & มีอยู่แล้ว (บอร์ดจาก Lab 10) \\
+SCD41 CO\textsubscript{2} & Gateway & 1 & 820 & เซนเซอร์ 4: CO\textsubscript{2} (หมด: ใช้ MH-Z19C 895 แทน) \\
+MAX4466 ไมโครโฟน & Gateway & 1 & 65 & เซนเซอร์ 5: ระดับเสียง \\
+GY-302 BH1750 & Gateway & 1 & 50 & เซนเซอร์ 6: ความสว่าง \\
+อแดปเตอร์ 5 V 2 A & Node & 2 & 260 & gateway ใช้ที่ชาร์จ USB-C ที่มีอยู่ \\
+สายไฟ ตัวเก็บประจุ กล่อง งานพิมพ์ & -- & -- & \textasciitilde 400 & ประมาณการ \\
+\midrule
+\textbf{รวม} & & & \textbf{\textasciitilde 5,625} & ประมาณคนละ 1,125 บาท \\
+\bottomrule
+\end{tabularx}}
+
+{\scriptsize\color{muted} ราคาร้านในไทย 28--30 ต.ค. 2026 ไม่รวมค่าส่ง · เซนเซอร์ 6 ชนิด (node 3 รวมกล้องตาม FAQ ข้อ 6, gateway 3) ผ่าน M1 แม้ไม่นับกล้อง}
+
+% ---------- 4 ----------
+\section{หัวข้อ Embedded Engineering Depth ที่เลือก (Section 5, II′)}
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{@{}P{3.9cm}L@{}}
+\toprule
+\textbf{หัวข้อ} & \textbf{แนวทางการพัฒนา} \\
+\midrule
+\textbf{E1} RTOS multitasking & node มี 5 task (เรดาร์ ToF สื่อสาร กล้อง ป้าย) ส่งค่าผ่าน queue และใช้ mutex คุม I\textsuperscript{2}C bus \\
+\textbf{E2} Interrupt-driven I/O & ขา OUT ของ LD2410 $\rightarrow$ ISR $\rightarrow$ semaphore ปลุก task เรดาร์ (ไม่ใช้ busy polling) \\
+\textbf{E4} Reliable comm. & ack จาก send callback ของ ESP-NOW + retry 3 ครั้ง และ gateway พักข้อมูลใน RAM ตอนเน็ตหลุด (store-and-forward) \\
+\textbf{E5} Security & HTTPS (TLS) ไป Supabase, LINE, vision API · key และ token อยู่ใน \texttt{secrets.h} ที่ไม่ commit \\
+\textbf{E7} On-device AI & โมเดล Edge Impulse จากข้อมูลเรดาร์ + ToF รันบน gateway ESP32-S3 (FAQ ข้อ 4) ต้องแม่นกว่ากติกา threshold บนชุดทดสอบเดียวกัน · ประเมิน 13 พ.ย. \\
+\bottomrule
+\end{tabularx}}
+
+% ---------- 5 ----------
+\section{บทบาทของสมาชิก (Roles)}
+
+{\footnotesize
+\renewcommand{\arraystretch}{1.25}
+% member cells: one person per line, "name (student ID)"; \newline starts the next person
+% \addlinespace after each role keeps its names visibly grouped with it
+\begin{tabularx}{\linewidth}{@{}P{7.2cm}L@{}}
+\toprule
+\textbf{บทบาท} & \textbf{สมาชิก} \\
+\midrule
+System Architect \& Integration & จิรภัทร นามวงศ์ \\ \addlinespace[3pt]
+Embedded Developer (Sensor Node) & เขตโสภณ ครองยุติ\newline ชากิร บากา \\ \addlinespace[3pt]
+Embedded Developer (Gateway \& Cloud) & เขตโสภณ ครองยุติ\newline ชากิร บากา \\ \addlinespace[3pt]
+UI/UX \& Dashboard Developer & ธนกฤต สุนทรเวชพงษ์\newline ก้องภพ แสงแก้ว \\ \addlinespace[3pt]
+Project Manager \& Test Lead & ก้องภพ แสงแก้ว \\
+\bottomrule
+\end{tabularx}}
+
+\end{document}
