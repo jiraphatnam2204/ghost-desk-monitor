@@ -1,6 +1,6 @@
 # Ghost-Desk Monitor
 
-A desk sign that knows whether a library seat is really in use. Each desk has a sensor node (mmWave radar, 8×8 thermal array and an on-board camera classifier) and a three-face prism sign turned by a servo. A gateway owns the desk rule (away after 2 minutes, LINE warning at 20, release at 30; a clean desk is released at once), stores data in Supabase and drives a web room map.
+A desk sign that knows whether a library seat is really in use. Each desk has a sensor node (mmWave radar, VL53L1X time-of-flight sensor and a camera) and a three-face prism sign turned by a servo. A gateway runs a small AI model on the radar and distance data to tell whether someone is seated, asks a cloud vision model about a desk photo when a desk has been empty for 2 minutes, owns the desk rule (away after 2 minutes, LINE warning at 20, release at 30; a clean desk is released at once), stores data in Supabase and drives a web room map.
 
 Final project for **Embedded System (CEDT) 2026: Smart Devices** · second-year computer engineering · team of 5.
 
@@ -86,6 +86,8 @@ feat(node): read LD2410 frames over UART
 | `site/` | The team site (Next.js, static export, deployed to GitHub Pages) |
 | `site/data/` | Shared status the team edits: `progress.json` (rubric), `problems.json`, `workflow.json` (build steps) |
 | `docs/strategy.md` | Product strategy session: positioning, problem framing, roadmap, decisions |
+| `docs/proposal.txt` | The proposal as plain text (1–2 pages), ready to paste into the submission |
+| `docs/order-list.md` | What to buy, from which shop, with links and a check before paying |
 | `PRODUCT.md`, `DESIGN.md` | Product context and the site's design system |
 
 Firmware for the node and the gateway goes in its own folders as the build plan reaches it. Never commit `secrets.h` (Wi-Fi password, Supabase key, LINE token); `.gitignore` already blocks it.

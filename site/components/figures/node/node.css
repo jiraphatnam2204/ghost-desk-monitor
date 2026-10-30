@@ -52,7 +52,7 @@
 
 /* parts named by the list beside the figure or by a build step (space-separated): heavy toner edge and a cool tint */
 .gdm-node[data-focus~="radar"] .gdm-radar .iso-edge,
-.gdm-node[data-focus~="thermal"] .gdm-thermal .iso-edge,
+.gdm-node[data-focus~="tof"] .gdm-tof .iso-edge,
 .gdm-node[data-focus~="head"] .gdm-head .iso-edge,
 .gdm-node[data-focus~="board"] .gdm-board .iso-edge,
 .gdm-node[data-focus~="prism"] .gdm-prism .iso-edge,
@@ -67,7 +67,7 @@
 }
 
 .gdm-node[data-focus~="radar"] .gdm-radar :is(.iso-top, .iso-shade, .iso-fill),
-.gdm-node[data-focus~="thermal"] .gdm-thermal :is(.iso-top, .iso-shade, .iso-fill),
+.gdm-node[data-focus~="tof"] .gdm-tof :is(.iso-top, .iso-shade, .iso-fill),
 .gdm-node[data-focus~="head"] .gdm-head :is(.iso-top, .iso-shade, .iso-fill),
 .gdm-node[data-focus~="board"] .gdm-board :is(.iso-top, .iso-shade, .iso-fill),
 .gdm-node[data-focus~="servo"] .gdm-servo :is(.iso-top, .iso-shade, .iso-fill),

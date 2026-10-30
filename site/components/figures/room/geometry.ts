@@ -332,15 +332,15 @@ export const MAST_ART = {
   headSeam: sideSeam(HEAD, HEAD_Z + 6, P, 3),
   lens: [sideRing(LENS_AT, 3, "y", P, 24), sideRing(LENS_AT, 1.8, "y", P, 20)].join(""),
   lensHood: quadY(HEAD_FACE + 0.05, -31.4, 138.6, -22.6, 147.4),
-  thermal: slab({ x: -18, y: HEAD_FACE, w: 5, d: 1, r: 0.2 }, 141, 5, 2),
-  thermalEye: [at([-15.5, HEAD_FACE + 1, 143.5])],
+  tof: slab({ x: -18, y: HEAD_FACE, w: 5, d: 1, r: 0.2 }, 141, 5, 2),
+  tofEye: [at([-15.5, HEAD_FACE + 1, 143.5])],
   antenna: round(NODE_ANT[0], NODE_ANT[1], 0.9, HEAD_Z + 12, NODE_ANT[2] - HEAD_Z - 12, 12),
   led: [at([-34.2, HEAD_FACE, 139.4])],
   // the lead from the head down the mast to the grommet
   lead: pathOf([at([-36, -38, 143]), at([-60, -38, 143]), at([-60, -38, 78]), at([-46, -32, 76.4])]),
 };
 
-// What the camera and the AMG8833 look at: a patch of the desk in front of the seat.
+// What the camera and the VL53L1X look at: a patch of the desk in front of the seat.
 const VIEW_PATCH: Plan = { x: -62, y: -14, w: 104, d: 37, r: 0 };
 export const VIEW_ART = {
   patch: planOutline(VIEW_PATCH, TOP + 0.1, P, 1),

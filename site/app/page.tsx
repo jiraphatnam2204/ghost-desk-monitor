@@ -65,7 +65,7 @@ export default function Home() {
           <span className="hl" data-ink="pink">
             ใช้งาน
           </span>{" "}
-          · ไม่เห็นคน 2 นาที แล้วกล้องเห็นโต๊ะโล่ง →{" "}
+          · ไม่เห็นคน 2 นาที แล้ว cloud AI เห็นโต๊ะโล่งจากภาพ →{" "}
           <span className="hl" data-ink="green">
             ว่าง
           </span>{" "}

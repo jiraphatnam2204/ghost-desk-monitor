@@ -168,8 +168,8 @@ const MAST = (
     <Solid paths={MAST_ART.head} tone="hi" crease="faint" inner={<Line d={MAST_ART.headSeam} tone="faint" />} />
     <Line d={MAST_ART.lensHood} tone="faint" />
     <Line d={MAST_ART.lens} tone="hi" />
-    <Body paths={MAST_ART.thermal} tone="mid" />
-    <Dots points={MAST_ART.thermalEye} size={0.6} tone="hi" />
+    <Body paths={MAST_ART.tof} tone="mid" />
+    <Dots points={MAST_ART.tofEye} size={0.6} tone="hi" />
     <g className="rm-led">
       <Dots points={MAST_ART.led} size={0.6} tone="hi" pulse />
     </g>
@@ -197,7 +197,7 @@ const SIGN_FRONT = (
   </g>
 );
 
-// What the camera and the AMG8833 look at, shown when they are asked.
+// What the camera and the VL53L1X look at, shown when they are asked.
 const VIEW = (
   <g key="view" className="rm-view">
     <Line d={VIEW_ART.patch} tone="mid" dashed />

@@ -57,7 +57,7 @@ import {
   SERVO,
   SERVO_TOP,
   SERVO_Z,
-  THERMAL,
+  TOF,
   TOP,
   at,
 } from "./view";
@@ -281,9 +281,9 @@ export const MAST_ART = {
     [5.2, 3.8, 2.2].map((r, index) => sideRing([LENS.x + LENS.w / 2, LENS.y + LENS.d, (LENS_Z + LENS_TOP) / 2], r - index * 0.1, "y", P, 32)),
   ),
   lensGlint: [at([LENS.x + LENS.w / 2 - 1, LENS.y + LENS.d, (LENS_Z + LENS_TOP) / 2 + 1])],
-  thermal: slab(THERMAL, LENS_Z + 1, 10, 2),
-  thermalCan: slab({ x: THERMAL.x + 2.4, y: THERMAL.y + THERMAL.d, w: 5.2, d: 2.6, r: 0.6 }, LENS_Z + 3.6, 5, 2),
-  thermalEye: sideRing([THERMAL.x + 5, THERMAL.y + THERMAL.d + 2.6, LENS_Z + 6.1], 1.5, "y", P, 20),
+  tof: slab(TOF, LENS_Z + 1, 10, 2),
+  tofCan: slab({ x: TOF.x + 2.4, y: TOF.y + TOF.d, w: 5.2, d: 2.6, r: 0.6 }, LENS_Z + 3.6, 5, 2),
+  tofEye: sideRing([TOF.x + 5, TOF.y + TOF.d + 2.6, LENS_Z + 6.1], 1.5, "y", P, 20),
 };
 
 // From the head, under the arm, down the mast, across the desk top to the terminal block.

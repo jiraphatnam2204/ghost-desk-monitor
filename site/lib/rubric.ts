@@ -64,7 +64,7 @@ export const CATEGORIES: Category[] = [
       { id: "E2", name: "E2 Interrupt-driven I/O", max: 2, what: "input อย่างน้อย 1 ตัวผ่าน ISR + deferred processing ไม่ busy poll" },
       { id: "E4", name: "E4 Reliable communication", max: 2, what: "ack / retry ระหว่าง node กับ gateway และ store-and-forward ตอนเน็ตหรือ cloud ล่ม" },
       { id: "E5", name: "E5 Security", max: 2, what: "ต่อ cloud แบบเข้ารหัสและยืนยันตัวตน ไม่มี secret ใน repo" },
-      { id: "E7", name: "E7 On-device AI", max: 2, what: "โมเดลรันบน MCU เอง (ESP32-S3 + Edge Impulse)" },
+      { id: "E7", name: "E7 On-device AI", max: 2, what: "โมเดลรันบน MCU เอง (sensor node หรือ gateway ตาม FAQ ข้อ 4) · ของเรา: Edge Impulse บน gateway ESP32-S3" },
     ],
   },
   {

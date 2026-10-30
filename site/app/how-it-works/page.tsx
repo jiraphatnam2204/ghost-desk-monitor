@@ -5,7 +5,7 @@ import { RoomFigure } from "@/components/figures/room/figure";
 import { SignalLadder, SignalStep } from "@/components/signal-story";
 import { PacketMap } from "@/components/theory/packet-map";
 import { StateDiagram } from "@/components/theory/state-diagram";
-import { ThermalGrid } from "@/components/theory/thermal-grid";
+import { SenseFeatures } from "@/components/theory/sense-features";
 import { WireScope } from "@/components/theory/wire-scope";
 import "@/components/seating-plan.css";
 import "../pages.css";
@@ -22,21 +22,21 @@ const CHAIN = [
     part: "LD2410 เรดาร์ 24 GHz",
     signal: "คลื่นสะท้อน → โมดูลประมวลผลเอง",
     bus: "UART 256000 baud + ขา OUT",
-    gets: "มี/ไม่มีเป้า, ระยะ, ความแรง",
+    gets: "พลังงาน 9 ช่วงระยะ × 2 (ขยับ/นิ่ง) 10 ครั้ง/วินาที",
   },
   {
-    real: "ความร้อนจากตัวคน",
-    part: "AMG8833 thermopile 8 × 8",
-    signal: "แรงดันเล็ก ๆ ต่อพิกเซล → ADC ในชิป",
-    bus: "I²C ที่อยู่ 0x69",
-    gets: "อุณหภูมิ 64 จุด",
+    real: "ระยะถึงเบาะเก้าอี้",
+    part: "VL53L1X ToF เลเซอร์ 940 nm",
+    signal: "จับเวลาแสงสะท้อนกลับ → ชิปคำนวณระยะเอง",
+    bus: "I²C ที่อยู่ 0x29 + ขา GPIO1",
+    gets: "ระยะ mm 10 ครั้ง/วินาที",
   },
   {
     real: "แสงที่สะท้อนจากโต๊ะ",
     part: "OV2640 กล้อง",
     signal: "พิกเซลทีละไบต์แบบขนาน",
     bus: "DVP: 8 สายข้อมูล + PCLK, VSYNC, HREF",
-    gets: "ภาพ JPEG → ตัวจำแนก",
+    gets: "ภาพ JPEG → gateway → cloud AI",
   },
   {
     real: "CO₂ ในห้อง",
@@ -69,45 +69,53 @@ const CHAIN = [
 ];
 
 const FUSION = [
-  { radar: "เห็น", thermal: "อุ่น", camera: "—", says: "มีคน", ink: "pink" },
+  { radar: "หายใจที่ช่วง 0–1", tof: "สั้น (~45 cm)", local: "person", camera: "—", says: "มีคน", ink: "pink" },
   {
-    radar: "ไม่เห็น 2 นาที",
-    thermal: "ไม่อุ่น",
+    radar: "ไม่มีจังหวะหายใจ 2 นาที",
+    tof: "สั้นหรือถึงเบาะ",
+    local: "empty",
     camera: "items_only",
     says: "ไม่อยู่ (ทิ้งของ)",
     ink: "yellow",
   },
   {
-    radar: "ไม่เห็น 2 นาที",
-    thermal: "ไม่อุ่น",
+    radar: "ไม่มีจังหวะหายใจ 2 นาที",
+    tof: "ถึงเบาะ (~90 cm)",
+    local: "empty",
     camera: "empty",
     says: "ว่าง",
     ink: "green",
   },
   {
-    radar: "เห็น",
-    thermal: "ไม่อุ่น",
+    radar: "หายใจที่ช่วง 2–3",
+    tof: "ถึงเบาะ",
+    local: "nearby",
     camera: "—",
-    says: "สงสัย: พัดลม/ม่านไหว รอกล้องยืนยัน",
+    says: "ไม่นับ: คนโต๊ะข้าง ๆ หรือเดินผ่าน",
     ink: null,
   },
 ];
 
 const TASKS = [
   {
-    name: "sensor",
+    name: "radar",
     when: "10 ครั้ง/วินาที และเมื่อ ISR ปลุก",
-    job: "อ่านเฟรม UART ของเรดาร์ และ 64 พิกเซลจาก I²C แล้วใส่ queue",
+    job: "อ่านเฟรม UART โหมด engineering: พลังงาน 9 ช่วงระยะ × 2 แล้วใส่ queue",
   },
   {
-    name: "vision",
-    when: "เมื่อ gateway ขอ (ไม่เห็นคน 2 นาที)",
-    job: "ถ่าย 1 ภาพ จำแนก empty / person / items_only · ภาพไม่ถูกเก็บ",
+    name: "tof",
+    when: "ทุก 100 ms (ขา GPIO1 บอกว่าค่าพร้อม)",
+    job: "อ่านระยะจาก VL53L1X ผ่าน I²C แล้วใส่ queue",
   },
   {
     name: "radio",
-    when: "ทุก 2 วินาที และทันทีเมื่อค่าเปลี่ยน",
-    job: "รวมค่าจาก queue เป็น node_report_t ส่ง ESP-NOW รอ ACK และ retry",
+    when: "ครบ 10 ค่า (ทุก 1 วินาที)",
+    job: "รวมค่าจาก queue เป็น node_batch_t ส่ง ESP-NOW รอ ACK และ retry",
+  },
+  {
+    name: "camera",
+    when: "เมื่อ gateway สั่ง SNAP",
+    job: "ถ่าย 1 ภาพ JPEG แล้ว HTTP POST ให้ gateway ผ่าน Wi-Fi วงเดียวกัน · ภาพไม่ถูกเก็บ",
   },
   {
     name: "sign",
@@ -125,7 +133,12 @@ const BUDGET = [
   {
     hop: "ESP-NOW node → gateway",
     time: "< 1 ms",
-    why: "18 ไบต์บนอากาศ (+ retry ถ้าไม่ได้ ACK)",
+    why: "210 ไบต์บนอากาศ ทุก 1 วินาที (+ retry ถ้าไม่ได้ ACK)",
+  },
+  {
+    hop: "โมเดล AI บน gateway",
+    time: "< 0.1 s",
+    why: "โครงข่ายเล็กมาก รันทุกวินาทีต่อโต๊ะ",
   },
   {
     hop: "กติกา “เห็นครบ 1 นาที”",
@@ -176,6 +189,14 @@ const GLOSSARY = [
   },
   { term: "ADC", text: "ตัวแปลงแรงดันแอนะล็อกเป็นตัวเลข 12 บิต = 0–4095" },
   {
+    term: "ToF",
+    text: "Time of Flight วัดระยะจากเวลาที่แสงเลเซอร์ใช้วิ่งไปกระทบวัตถุแล้วกลับมา · ที่นี่คือ VL53L1X",
+  },
+  {
+    term: "Edge Impulse",
+    text: "เว็บสำหรับเก็บข้อมูล เทรนโมเดล AI ขนาดเล็ก แล้ว export เป็น Arduino library ไปรันบน ESP32 โดยไม่ต้องเขียนโค้ด ML เอง",
+  },
+  {
     term: "ESP-NOW",
     text: "โปรโตคอลของ Espressif ส่งข้อความสั้นถึงบอร์ดอื่นตรง ๆ ด้วยวิทยุ Wi-Fi โดยไม่ต้องต่อ router",
   },
@@ -201,9 +222,10 @@ Content-Type: application/json
   "desk": "D07",
   "state": "inUse",
   "at": "2026-11-20T13:01:00Z",
-  "mmw_dist_cm": 62,
-  "th_max_c": 31.8,
-  "ai_class": null,
+  "ai_local": "person",
+  "ai_conf": 94,
+  "ai_cloud": null,
+  "tof_mm": 452,
   "seq": 1042
 }`;
 
@@ -214,12 +236,12 @@ void IRAM_ATTR onRadarOut() {
   portYIELD_FROM_ISR(woke);
 }
 
-void sensorTask(void *) {
+void radarTask(void *) {
   for (;;) {
     xSemaphoreTake(radarSem, pdMS_TO_TICKS(100));  // ตื่นเมื่อ ISR ปลุก หรือทุก 100 ms
     Reading r = readRadarFrame();                  // UART
-    readThermal(r.pixels);                         // I²C 64 พิกเซล
-    xQueueSend(readings, &r, 0);                   // ให้ radio task รวมเป็นรายงาน
+    readEngineering(r.move_e, r.still_e);          // 9 ช่วงระยะ × 2
+    xQueueSend(readings, &r, 0);                   // ให้ radio task รวมเป็นชุดละ 10 ค่า
   }
 }`;
 
@@ -233,7 +255,8 @@ export default function HowItWorksPage() {
           ESP32-S3 อ่านผ่านสายแบบต่าง ๆ, ส่งต่อทางวิทยุ, gateway ตัดสิน แล้วสั่ง servo และขึ้น cloud
         </p>
         <p className="note">
-          ทุกรูปและตัวเลขจำลองตามแบบที่วางไว้ ยังไม่ใช่ค่าที่วัดจากเครื่องจริง · AI บนบอร์ดหรือบน cloud ยังรอทีมตัดสินใน <Link href="/problems/#P1">P1</Link>
+          ทุกรูปและตัวเลขจำลองตามแบบที่วางไว้ ยังไม่ใช่ค่าที่วัดจากเครื่องจริง · AI มีสองตัว: โมเดลบน gateway จากข้อมูลเรดาร์ + ToF และ cloud AI ที่ดูภาพจากกล้อง
+          เฉพาะตอนตัดสิน (ดู <Link href="/problems/#P1">P1</Link>)
         </p>
       </header>
 
@@ -305,20 +328,21 @@ export default function HowItWorksPage() {
             </p>
             <p>
               คนนั่งนิ่งก็ยังหายใจ หน้าอกขยับไม่กี่มิลลิเมตร ทำให้เฟสของคลื่นสะท้อนเปลี่ยนเป็นจังหวะ เรดาร์จึงรายงาน <b>เป้านิ่ง</b> ได้ ซึ่ง PIR ธรรมดาทำไม่ได้
-              · ข้อควรระวัง: เรดาร์ทะลุโต๊ะบาง ๆ และเห็นคนโต๊ะข้าง ๆ ต้องตั้ง gate สูงสุดให้ไม่เกินระยะเก้าอี้
+              · ในโหมด engineering เรดาร์บอกพลังงานแยกทีละช่วงระยะ จึงรู้ว่าจังหวะหายใจมาจากเก้าอี้ของโต๊ะนี้ (ช่วง 0–1) หรือจากโต๊ะข้าง ๆ (ช่วง 2–3)
             </p>
-            <h3>Thermal: แยกคนออกจากของ</h3>
+            <h3>ToF: วัดระยะลงไปที่เบาะ</h3>
             <p>
-              ทุกวัตถุแผ่รังสีอินฟราเรดตามอุณหภูมิ (กำลัง ∝ T⁴) แต่ละพิกเซลของ AMG8833 เป็น thermopile ที่ร้อนขึ้นตามรังสีที่ได้รับ แล้วชิปแปลงเป็นอุณหภูมิให้ ·
-              คนผ่านเสื้อผ้าราว 30 °C ส่วนกระเป๋าเท่าห้อง จึงตอบได้ว่าสิ่งที่อยู่บนโต๊ะ <b>เป็นคนหรือเป็นของ</b>
+              VL53L1X ยิงแสงเลเซอร์อินฟราเรด 940 nm ที่ตามองไม่เห็น แล้วจับเวลาที่แสงสะท้อนกลับมา <i>d = c · t / 2</i> แสงวิ่งเร็วมาก 1 m ใช้แค่ราว 6.7 ns
+              ชิปจึงจับเวลาแทนเราแล้วตอบเป็นมิลลิเมตร · เล็งลงที่เบาะ: เก้าอี้ว่างได้ระยะถึงเบาะ มีคนนั่งระยะสั้นลงมาก และขยับเล็กน้อยตามลมหายใจ
             </p>
-            <h3>กล้อง: ใช้เมื่อจำเป็นเท่านั้น</h3>
+            <h3>AI สองตัว แบ่งงานกัน</h3>
             <p>
-              กล้องถ่ายภาพเดียวตอน gateway ขอ คือเมื่อไม่เห็นคนครบ 2 นาที เพื่อตอบว่าโต๊ะโล่งหรือมีของ ภาพไม่ถูกเก็บ ใช้แล้วทิ้ง
-              ประหยัดไฟและรักษาความเป็นส่วนตัว
+              <b>AI local บน gateway</b> (Edge Impulse) ดูข้อมูลเรดาร์ + ToF ย้อนหลัง 5 วินาทีของแต่ละโต๊ะทุกวินาที แล้วตอบ person / empty / nearby
+              ข้อมูลตามเวลาทำให้มันเห็นจังหวะหายใจ ซึ่งกติกา if-else ธรรมดาทำได้ยาก · <b>Cloud AI</b> ดูภาพจากกล้องแค่ตอนที่ต้องตัดสิน
+              คือไม่เห็นคนครบ 2 นาที และนาทีที่ 30 เพื่อตอบว่าโต๊ะโล่งหรือมีของค้าง ภาพไม่ถูกเก็บ
             </p>
           </div>
-          <ThermalGrid />
+          <SenseFeatures />
         </div>
         <div className="scroll-x fusion-wrap">
           <table className="register fusion">
@@ -326,8 +350,9 @@ export default function HowItWorksPage() {
             <thead>
               <tr>
                 <th>เรดาร์</th>
-                <th>Thermal</th>
-                <th>กล้อง</th>
+                <th>ToF</th>
+                <th>AI local</th>
+                <th>Cloud AI (ภาพ)</th>
                 <th>Gateway สรุปว่า</th>
               </tr>
             </thead>
@@ -335,8 +360,11 @@ export default function HowItWorksPage() {
               {FUSION.map((row) => (
                 <tr key={row.says}>
                   <td>{row.radar}</td>
-                  <td>{row.thermal}</td>
-                  <td>{row.camera}</td>
+                  <td>{row.tof}</td>
+                  <td>
+                    <code>{row.local}</code>
+                  </td>
+                  <td>{row.camera === "—" ? row.camera : <code>{row.camera}</code>}</td>
                   <td>
                     {row.ink ? (
                       <span className="hl" data-ink={row.ink === "yellow" ? undefined : row.ink}>
@@ -438,13 +466,14 @@ export default function HowItWorksPage() {
       <section className="sheet section" id="radio" aria-labelledby="radio-title">
         <div className="section-head">
           <h2 id="radio-title">ส่งทางวิทยุด้วย ESP-NOW</h2>
-          <span className="ref">ขั้น 3 · 18 ไบต์</span>
+          <span className="ref">ขั้น 3 · 210 ไบต์ทุก 1 วินาที</span>
         </div>
         <div className="theory">
           <div className="theory-text">
             <p>
               ESP-NOW ใช้วิทยุ Wi-Fi ตัวเดิมของ ESP32 ส่งข้อความสั้นถึงบอร์ดอื่นตรง ๆ ด้วย MAC address <b>ไม่ต้องต่อ router และไม่ต้องมี IP</b>{" "}
-              ข้อความหนึ่งยาวได้ถึง 250 ไบต์ ของเรามี 18
+              ข้อความหนึ่งยาวได้ถึง 250 ไบต์ ของเรามี 210: node อ่านค่า 10 ครั้งต่อวินาทีแล้วส่งรวมเป็นชุด โมเดลจึงเห็นจังหวะหายใจ (รอบละ 3–5 วินาที)
+              ซึ่งการส่งทีละค่าทุก 2 วินาทีจะมองไม่เห็น
             </p>
             <ul className="theory-list">
               <li>
@@ -455,10 +484,11 @@ export default function HowItWorksPage() {
                 <b>ช่องสัญญาณต้องตรงกัน:</b> gateway ต่อ Wi-Fi ห้องสมุดด้วย วิทยุตัวเดียวจึงอยู่ได้ช่องเดียว node ต้องส่งบนช่องเดียวกับ access point
               </li>
               <li>
-                <b>ทางกลับ:</b> gateway สั่ง node ด้วยข้อความสั้นกว่า <code>{"{ver, node_id, seq, cmd = SET_SIGN, face}"}</code>
+                <b>ทางกลับ:</b> gateway สั่ง node ด้วยข้อความสั้นกว่า <code>{"{ver, node_id, seq, cmd = SET_SIGN | SNAP, face}"}</code> · ภาพจากคำสั่ง
+                SNAP ใหญ่เกิน ESP-NOW จึงส่งทาง HTTP บน Wi-Fi วงเดียวกันแทน
               </li>
             </ul>
-            <p className="note">ตัวอย่างไบต์ด้านขวาคือรายงานหนึ่งวินาทีหลังมีคนนั่งที่ D07 · โครงสร้างเต็มอยู่ใน Docs และ Build Plan ขั้น B2</p>
+            <p className="note">ตัวอย่างไบต์ด้านขวาคือชุดข้อมูลหนึ่งวินาทีหลังมีคนนั่งที่ D07 · โครงสร้างเต็มอยู่ใน Docs และ Build Plan ขั้น B2</p>
           </div>
           <PacketMap />
         </div>
@@ -473,7 +503,7 @@ export default function HowItWorksPage() {
           <div className="theory-text">
             <p>
               โต๊ะหนึ่งตัวอยู่ได้ทีละ <b>สถานะ</b> และเปลี่ยนสถานะเมื่อเงื่อนไขครบเท่านั้น gateway เก็บ state machine แยกต่อโต๊ะ พร้อมเวลาที่เห็นคนครั้งล่าสุด
-              (จาก <code>millis()</code>) ทุกรายงานที่เข้ามาจะถูกเอามาเทียบกับเงื่อนไขในรูป
+              (จาก <code>millis()</code>) ทุกวินาทีผลของ AI local จะถูกเอามาเทียบกับเงื่อนไขในรูป และเมื่อต้องตัดสินว่าโต๊ะโล่งหรือมีของ gateway ถามผล cloud AI
             </p>
             <p>
               ทำไมตัดสินที่ gateway ไม่ใช่ที่ node: กติกาอยู่ที่เดียว แก้ทีเดียวได้ทุกโต๊ะ, cloud เห็นความจริงชุดเดียว และ node เหลือหน้าที่แค่วัดกับหมุนป้าย
@@ -534,7 +564,11 @@ export default function HowItWorksPage() {
               <code>secrets.h</code> ที่ไม่ขึ้น GitHub
             </p>
             <p>
-              ถ้าเน็ตหลุด gateway ยังตัดสินสถานะและสั่งป้ายได้ตามปกติ (ทุกอย่างในห้องใช้ ESP-NOW) แล้วเก็บแถวไว้ใน RAM ส่งตามทีหลังเมื่อเน็ตกลับมา
+              Cloud AI ก็ใช้ HTTPS เหมือนกัน: gateway ส่งภาพที่ได้จาก node พร้อมคำสั่งให้ตอบคำเดียว (empty / person / items_only) ไปที่ vision API
+              ถ้าไม่ตอบใน 10 วินาทีหรือตอบผิดรูปแบบ gateway ใช้กติกา 30 นาทีแทน
+            </p>
+            <p>
+              ถ้าเน็ตหลุด gateway ยังรันโมเดล ตัดสินสถานะ และสั่งป้ายได้ตามปกติ (ทุกอย่างในห้องใช้ ESP-NOW) แล้วเก็บแถวไว้ใน RAM ส่งตามทีหลังเมื่อเน็ตกลับมา
               (store-and-forward)
             </p>
           </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { LOAN, PARTS, SUNDRIES, baht, lineTotal, type Level, type Part } from "@/lib/project";
+import { PARTS, SUNDRIES, baht, lineTotal, type Level, type Part } from "@/lib/project";
 
 type Where = "all" | Part["where"];
 const WHERE: { id: Where; label: string }[] = [
@@ -16,12 +16,11 @@ const TEAM = 5;
 export function PartsRegister() {
   const [where, setWhere] = React.useState<Where>("all");
   const [level, setLevel] = React.useState<Level | null>(null);
-  const [borrow, setBorrow] = React.useState(true);
   const [sundries, setSundries] = React.useState(true);
 
   const shown = PARTS.filter((part) => (where === "all" || part.where === where) && (!level || part.level === level));
   const parts = PARTS.reduce((sum, part) => sum + lineTotal(part), 0);
-  const total = parts - (borrow ? LOAN : 0) + (sundries ? SUNDRIES : 0);
+  const total = parts + (sundries ? SUNDRIES : 0);
 
   return (
     <div className="register-tool">
@@ -34,10 +33,6 @@ export function PartsRegister() {
           </span>
         </div>
         <div className="budget-switches">
-          <label className="switch">
-            <input type="checkbox" checked={borrow} onChange={(event) => setBorrow(event.target.checked)} />
-            <span>ยืม AMG8833 × 2 จากวิชา (−{baht(LOAN)})</span>
-          </label>
           <label className="switch">
             <input type="checkbox" checked={sundries} onChange={(event) => setSundries(event.target.checked)} />
             <span>รวมของจิปาถะ สาย กล่อง ตัวเก็บประจุ (~{baht(SUNDRIES)})</span>
@@ -66,7 +61,6 @@ export function PartsRegister() {
 
       <ol className="parts">
         {shown.map((part) => {
-          const borrowed = borrow && part.id === "amg8833";
           return (
             <li className="part" id={part.id} key={part.id}>
               <div className="part-name">
@@ -105,8 +99,8 @@ export function PartsRegister() {
               </dl>
               <div className="part-price">
                 <span className="field-label">{part.estimate ? "ราคาประมาณ" : "ราคา"}</span>
-                <b className={borrowed ? "struck-price" : undefined}>{part.price === 0 ? "มีแล้ว" : `${baht(part.price)} × ${part.qty}`}</b>
-                <span className="part-line">{borrowed ? "ยืมจากวิชา · 0 บาท" : part.price === 0 ? "0 บาท" : `${baht(lineTotal(part))} บาท`}</span>
+                <b>{part.price === 0 ? "มีแล้ว" : `${baht(part.price)} × ${part.qty}`}</b>
+                <span className="part-line">{part.price === 0 ? "0 บาท" : `${baht(lineTotal(part))} บาท`}</span>
                 {part.url ? (
                   <a href={part.url} target="_blank" rel="noreferrer">
                     {part.shop}
@@ -119,7 +113,7 @@ export function PartsRegister() {
           );
         })}
       </ol>
-      <p className="note gap">ราคาเช็กจากหน้าร้าน 28 ต.ค. 2026 ยังไม่รวมค่าส่ง · ไมค์ MAX4466 และของจิปาถะเป็นราคาประมาณ</p>
+      <p className="note gap">ราคาเช็กจากหน้าร้าน 28–29 ต.ค. 2026 ยังไม่รวมค่าส่ง · ไมค์ MAX4466 และของจิปาถะเป็นราคาประมาณ · ยืม AMG8833 จากวิชาไม่ได้ จึงเปลี่ยนเป็น VL53L1X</p>
     </div>
   );
 }

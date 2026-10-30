@@ -7,7 +7,7 @@ import * as React from "react";
 type Bus = "uart" | "i2c" | "pwm" | "adc";
 const BUSES: { id: Bus; label: string; part: string }[] = [
   { id: "uart", label: "UART", part: "LD2410 → node" },
-  { id: "i2c", label: "I²C", part: "AMG8833 ↔ node" },
+  { id: "i2c", label: "I²C", part: "VL53L1X ↔ node" },
   { id: "pwm", label: "PWM", part: "node → servo" },
   { id: "adc", label: "ADC", part: "MAX4466 → gateway" },
 ];
@@ -76,8 +76,8 @@ function Uart() {
 }
 
 function I2c() {
-  // START, address 0x69 (AMG8833 with AD_SELECT high), W, ACK from the sensor
-  const address = 0x69;
+  // START, address 0x29 (VL53L1X default), W, ACK from the sensor
+  const address = 0x29;
   const bits = Array.from({ length: 7 }, (_, index) => (address >> (6 - index)) & 1);
   const sda = [1, 0, ...bits, 0, 0, 0];
   const names = ["", "S", "A6", "A5", "A4", "A3", "A2", "A1", "A0", "W", "ACK", ""];
@@ -92,9 +92,9 @@ function I2c() {
   return (
     <>
       <div className="widget-bar">
-        <span className="field-label">ไบต์แรกของการอ่าน · ที่อยู่ 0x69 + เขียน</span>
+        <span className="field-label">ไบต์แรกของการอ่าน · ที่อยู่ 0x29 + เขียน</span>
       </div>
-      <svg className="scope" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="I2C: start, ที่อยู่ 0x69, บิตเขียน, ACK">
+      <svg className="scope" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="I2C: start, ที่อยู่ 0x29, บิตเขียน, ACK">
         {sda.map((_, index) => (
           <line key={index} className="scope-grid" x1={PAD + index * slot} x2={PAD + index * slot} y1={14} y2={110} />
         ))}
@@ -118,8 +118,8 @@ function I2c() {
         ))}
       </svg>
       <p className="widget-read">
-        2 สาย (SDA ข้อมูล, SCL นาฬิกา) ต่อพ่วงได้หลายตัว แยกด้วยที่อยู่: AMG8833 <b>0x69</b> · SCD41 <b>0x62</b> · BH1750 <b>0x23</b> · ข้อมูลเปลี่ยนตอน SCL ต่ำ
-        อ่านตอน SCL สูง · ต่อจากนี้เขียน register 0x80 แล้วอ่าน 128 ไบต์ (64 พิกเซล × 2) ที่ 400 kHz ใช้เวลาราว <b>3 ms</b>
+        2 สาย (SDA ข้อมูล, SCL นาฬิกา) ต่อพ่วงได้หลายตัว แยกด้วยที่อยู่: VL53L1X <b>0x29</b> (node) · SCD41 <b>0x62</b> · BH1750 <b>0x23</b> (gateway) ·
+        ข้อมูลเปลี่ยนตอน SCL ต่ำ อ่านตอน SCL สูง · ต่อจากนี้เขียนเลข register 16 บิต แล้วอ่านระยะกลับมา 2 ไบต์ ที่ 400 kHz ใช้เวลาราว <b>0.15 ms</b>
       </p>
     </>
   );

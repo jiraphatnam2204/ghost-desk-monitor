@@ -57,7 +57,7 @@ export const HEAD_FACE = HEAD.y + HEAD.d;
 export const LENS: Plan = { x: -55, y: HEAD_FACE, w: 15, d: 5, r: 1.5 };
 export const LENS_Z = 151;
 export const LENS_TOP = 163;
-export const THERMAL: Plan = { x: -36, y: HEAD_FACE, w: 10, d: 1.4, r: 0.3 };
+export const TOF: Plan = { x: -36, y: HEAD_FACE, w: 10, d: 1.4, r: 0.3 };
 
 // Things on the desk.
 export const BOOK: Plan = { x: -120, y: -8, w: 64, d: 46, r: 1 };

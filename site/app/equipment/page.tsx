@@ -41,11 +41,11 @@ export default function EquipmentPage() {
               note="ถอดออกเป็น 5 ชิ้นส่วนที่ถอดได้จริง สายไฟยังต่ออยู่และยืดตามชิ้นที่มันต่อ"
               parts={[
                 { part: "radar", title: "LD2410", text: "เรดาร์ 24 GHz ใต้ขอบโต๊ะ จับการหายใจ จึงรู้ว่ามีคนแม้นั่งอ่านหนังสือนิ่ง ๆ" },
-                { part: "thermal", title: "AMG8833", text: "ภาพความร้อน 8×8 บนหัวกล้อง แยกคนจริงออกจากกระเป๋า" },
+                { part: "tof", title: "VL53L1X", text: "วัดระยะด้วยแสงเลเซอร์ลงที่เบาะเก้าอี้ 10 ครั้ง/วินาที มีคนนั่งระยะสั้นลง · ป้อนโมเดล AI ที่ gateway คู่กับเรดาร์" },
                 {
                   part: "head",
-                  title: "กล้อง + AI บนบอร์ด",
-                  text: "จำแนก empty / person / items_only · โต๊ะโล่งปล่อยได้ทันที มีของค้างจึงนับ 30 นาที · ภาพไม่ออกจากบอร์ด",
+                  title: "กล้อง → AI บน cloud",
+                  text: "ถ่ายภาพเดียวเมื่อ gateway ขอ (ไม่เห็นคน 2 นาที และนาทีที่ 30) gateway ส่งไปถาม cloud ว่า empty / person / items_only · โต๊ะโล่งปล่อยได้ทันที · ภาพไม่ถูกเก็บ",
                 },
                 { part: "prism", title: "ป้ายปริซึม", text: "สามหน้า ชมพู / เหลือง / เขียว หมุนรอบแกนเดียวระหว่างแผ่นข้างสองแผ่น มีหมุดกันหมุนเกิน" },
                 {
@@ -56,7 +56,7 @@ export default function EquipmentPage() {
                 { part: "qr", title: "ป้าย QR", text: "เสียบในฐาน เปิดหน้าสถานะโต๊ะและลิงก์เพิ่มเพื่อน LINE Official Account" },
               ]}
               assemblies={[
-                { part: "head", title: "ฝาครอบหัวกล้อง", text: "เลื่อนลงจากแผ่นหลังที่ห้อยจากแขน ช่องเลนส์และ AMG8833 อยู่ที่ฝาด้านหน้า" },
+                { part: "head", title: "ฝาครอบหัวกล้อง", text: "เลื่อนลงจากแผ่นหลังที่ห้อยจากแขน ช่องเลนส์และ VL53L1X อยู่ที่ฝาด้านหน้า" },
                 {
                   part: "board",
                   title: "บอร์ด FireBeetle 2 + OV2640",
@@ -89,11 +89,11 @@ export default function EquipmentPage() {
                 {
                   part: "esp",
                   title: "YD-ESP32-23",
-                  text: "บอร์ดจาก Lab 10 เป็นเจ้าของ state machine และเวลา 2 / 20 / 30 นาทีของทุกโต๊ะ รับ ESP-NOW ส่งข้อมูลขึ้น Supabase และส่ง LINE",
+                  text: "บอร์ดจาก Lab 10 รันโมเดล AI จากข้อมูลเรดาร์ + ToF ของทุกโต๊ะ (E7) เป็นเจ้าของ state machine และเวลา 2 / 20 / 30 นาที ส่งภาพไปถาม cloud AI ส่งข้อมูลขึ้น Supabase และส่ง LINE",
                 },
-                { part: "scd", title: "SCD41", text: "CO₂ ในห้อง ใช้ดูคุณภาพอากาศและประมาณว่าห้องแน่นแค่ไหน" },
-                { part: "lux", title: "BH1750", text: "แสงในห้อง ใช้ I²C สองเส้นเดียวกับ SCD41" },
-                { part: "mic", title: "MAX4466", text: "ระดับเสียง อ่านด้วย analogRead แบบ Lab 8 แจ้ง staff ถ้า quiet zone ดังเกิน" },
+                { part: "scd", title: "SCD41", text: "CO₂ ในห้อง แสดงบน dashboard ดูคุณภาพอากาศและประมาณว่าห้องแน่นแค่ไหน" },
+                { part: "lux", title: "BH1750", text: "แสงในห้อง แสดงบน dashboard ใช้ I²C สองเส้นเดียวกับ SCD41" },
+                { part: "mic", title: "MAX4466", text: "ระดับเสียง แสดงบน dashboard อ่านด้วย analogRead แบบ Lab 8 แจ้ง staff ถ้า quiet zone ดังเกิน" },
               ]}
               assemblies={[
                 {

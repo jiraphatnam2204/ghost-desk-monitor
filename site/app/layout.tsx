@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: "%s · Ghost-Desk Monitor",
   },
   description:
-    "ป้ายบนโต๊ะห้องสมุดที่รู้จริงว่ามีคนนั่ง: mmWave + thermal + กล้อง AI บนบอร์ด ปล่อยโต๊ะที่ถูกทิ้งไว้เกิน 30 นาทีเอง · Embedded System (CEDT) Final Project 2026",
+    "ป้ายบนโต๊ะห้องสมุดที่รู้จริงว่ามีคนนั่ง: AI บน gateway จาก mmWave + ToF และ cloud AI จากภาพ ปล่อยโต๊ะที่ถูกทิ้งไว้เกิน 30 นาทีเอง · Embedded System (CEDT) Final Project 2026",
 };
 
 export const viewport: Viewport = {

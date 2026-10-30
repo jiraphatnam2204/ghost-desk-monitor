@@ -17,14 +17,14 @@ const EDGES = [
   {
     d: "M300 86 Q262 150 190 164",
     label: "โต๊ะโล่ง",
-    sub: "กล้อง: empty",
+    sub: "cloud AI: empty",
     at: [262, 128],
     anchor: "start",
   },
   {
     d: "M420 86 Q458 150 530 164",
     label: "มีของค้าง",
-    sub: "กล้อง: items_only",
+    sub: "cloud AI: items_only",
     at: [458, 128],
     anchor: "end",
   },
@@ -78,7 +78,7 @@ export function StateDiagram() {
             </g>
           ))}
           <text className="fsm-sub" x={360} y={104} textAnchor="middle">
-            {`ไม่เห็นคน ${AWAY_AFTER} นาที → ถามกล้อง`}
+            {`AI local ไม่เห็นคน ${AWAY_AFTER} นาที → ถาม cloud AI จากภาพ`}
           </text>
           <text className="fsm-sub" x={610} y={214} textAnchor="middle">
             {`นาทีที่ ${WARN_AT}: LINE เตือนเจ้าของ`}
@@ -86,7 +86,7 @@ export function StateDiagram() {
         </svg>
       </div>
       <figcaption>
-        ตัวเลขทุกตัวในรูปมาจากค่าคงที่ชุดเดียวกับเดโมในหน้า Overview (lib/session.ts) · ถ้า AI ล่ม gateway ใช้กติกาเดียวคือไม่เห็นคนครบ {RELEASE_AT}{" "}
+        ตัวเลขทุกตัวในรูปมาจากค่าคงที่ชุดเดียวกับเดโมในหน้า Overview (lib/session.ts) · ถ้า cloud AI ไม่ตอบ gateway ใช้กติกาเดียวคือไม่เห็นคนครบ {RELEASE_AT}{" "}
         นาทีแล้วปล่อยโต๊ะ
       </figcaption>
     </figure>

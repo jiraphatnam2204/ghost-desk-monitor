@@ -123,10 +123,10 @@ const HOUSING = (
     <Solid paths={MAST_ART.lens} tone="mid" crease="faint" />
     <Line d={MAST_ART.lensRings} tone="hi" />
     <Dots points={MAST_ART.lensGlint} size={0.5} tone="faint" />
-    <g className="gdm-thermal">
-      <Solid paths={MAST_ART.thermal} tone="mid" crease="none" />
-      <Solid paths={MAST_ART.thermalCan} tone="hi" crease="faint" />
-      <Line d={MAST_ART.thermalEye} tone="mid" />
+    <g className="gdm-tof">
+      <Solid paths={MAST_ART.tof} tone="mid" crease="none" />
+      <Solid paths={MAST_ART.tofCan} tone="hi" crease="faint" />
+      <Line d={MAST_ART.tofEye} tone="mid" />
     </g>
   </g>
 );

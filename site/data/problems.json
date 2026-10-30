@@ -5,7 +5,7 @@
       "id": "P1",
       "type": "issue",
       "title": "AI (E7) จะ run ที่ไหน: บน node, บน gateway หรือบน cloud",
-      "status": "open",
+      "status": "fixed",
       "severity": "high",
       "area": "ai",
       "owner": "ทั้งทีม · ตัดสินในประชุมก่อนส่ง proposal",
@@ -35,6 +35,12 @@
           "good": "ไม่ต้องเทรนโมเดล · vision model ใหญ่น่าจะแม่นกว่า · แยกโต๊ะโล่งกับของค้างได้",
           "bad": "ทางเดียวที่ไม่ได้ E7 · ต้องมีเน็ตตอนตัดสิน · ภาพหนึ่งภาพออกจากห้องขึ้นอินเทอร์เน็ต · ต้องดูแล API key และ quota · node ต้องส่งภาพให้ gateway อยู่ดี",
           "points": "Depth 10/10 ก็ต่อเมื่อทำ E6 OTA เพิ่มแทน E7"
+        },
+        {
+          "name": "E · C + D รวมกัน (ทีมเลือก)",
+          "good": "ได้ E7 จากโมเดลบน gateway ที่ใช้ข้อมูล LD2410 (โหมด engineering) + VL53L1X และได้ฟีเจอร์ “โต๊ะโล่งปล่อยทันที / มีของค้างแจ้ง staff” กลับมาจาก cloud vision · ไม่ต้องเก็บ dataset ภาพเพื่อเทรน · ไม่ต้องยืม AMG8833",
+          "bad": "ภาพหนึ่งภาพขึ้น cloud ตอนตัดสิน (จุดขาย “ภาพไม่ออกจากบอร์ด” ใช้ไม่ได้แล้ว) · ต้องดูแล API key และ quota · E7 ขึ้นอยู่กับว่าโมเดลจะดีกว่า if-else ชัดเจนหรือไม่ · node ต้องส่งภาพให้ gateway ทาง Wi-Fi",
+          "points": "Depth 10/10 ได้ E7 (สำรอง E6 OTA) · M4 ครบจาก AI ทั้งสองตัว · metric AI วัดได้จากโมเดลบน gateway เทียบกับกติกา threshold"
         }
       ],
       "questions": [
@@ -45,7 +51,7 @@
         "ถ้าเลือก C อย่างเดียว ยังต้องใช้กล้อง OV2640 ไหม · M1 ยังครบเพราะ node มี LD2410 + AMG8833 สองชนิดแล้ว · คงกล้องไว้เผื่อ B ก็ได้",
         "proposal ส่งศุกร์ 30 ต.ค. ต้องบอกว่า AI run ที่ไหนและใช้ input อะไร จึงต้องตัดสินภายในคืนพฤหัส 29 ต.ค."
       ],
-      "action": "เลือกทาง C: เทรนโครงข่ายประสาทเล็กบนข้อมูล thermal + radar แล้ว run บน gateway ได้ทั้ง M4 และ E7 ตาม FAQ ข้อ 4 ด้วยงานน้อยที่สุด เสร็จได้ใน W2 · E-items คงเดิม (E1 E2 E4 E5 E7) proposal แก้แค่ว่า AI run ที่ gateway และใช้ input อะไร · เพิ่มพิกเซล thermal 64 ตัวใน node_report_t ก่อน freeze 6 พ.ย. · ถ้ามีเวลาเหลือค่อยเพิ่ม B ให้กล้องตรวจของค้าง · เมื่อทีมตัดสินแล้ว อัปเดต Build Plan (C6, D3) หน้า How It Works ขั้น 7 และ proposal ในหน้า Docs",
+      "action": "ตัดสินแล้ว 29 ต.ค.: ทาง E · LD2410 + VL53L1X → AI local บน gateway (Edge Impulse, person / empty / nearby, ได้ E7) · กล้อง → ภาพหนึ่งภาพเฉพาะตอนตัดสิน → cloud vision (empty / person / items_only) · SCD41, MAX4466, BH1750 แสดงบน dashboard · ยืม AMG8833 ไม่ได้ จึงใช้ VL53L1X แทน · อัปเดตเว็บทุกหน้าและ proposal แล้ว",
       "logged": "2026-10-28",
       "related": [
         "R1",
@@ -66,6 +72,10 @@
         {
           "date": "2026-10-29",
           "note": "แก้ทาง C: node_report_t ยังไม่มีพิกเซล thermal 64 ตัว ต้องเพิ่มก่อน freeze 6 พ.ย. (18 → 82 bytes)"
+        },
+        {
+          "date": "2026-10-29",
+          "note": "ทีมตัดสิน: AI local บน gateway จาก LD2410 + VL53L1X (E7) และ cloud AI จากภาพกล้อง · ยืม AMG8833 ไม่ได้ เปลี่ยนเป็น VL53L1X (210 บาท × 2) · งบรวมเหลือ ~5,790 บาท"
         }
       ]
     },
@@ -114,16 +124,21 @@
     {
       "id": "F4",
       "type": "expected",
-      "title": "โมเดลภาพจะผิดบ้าง และต้องใช้เวลาเก็บภาพ",
+      "title": "Cloud AI จะตอบผิดบ้าง",
       "status": "open",
       "severity": "high",
       "area": "ai",
       "owner": "AI & Node Vision",
-      "cause": "AI บนบอร์ด E7 และกติกาโต๊ะโล่ง",
-      "detail": "ต้องเก็บ ~300 ภาพต่อ class หลายแสง หลายของ ก่อนเส้นตาย 13 พ.ย. ถ้าโมเดลบอก empty ผิดทั้งที่มีของ โต๊ะจะถูกปล่อยทั้งที่ยังมีกระเป๋าอยู่",
-      "action": "เริ่มเก็บภาพ W1 · กันภาพ 20% ไว้ทดสอบ · ต้องเห็น empty ซ้ำ 2 ครั้งติดกันก่อนปล่อย · นับ false release ตอนรัน 24 ชม.",
+      "cause": "cloud vision ตัดสินโต๊ะโล่ง / มีของค้าง",
+      "detail": "ถ้าตอบ empty ทั้งที่ยังมีของ โต๊ะจะถูกปล่อยทั้งที่ยังมีกระเป๋าอยู่ · ไม่ต้องเก็บภาพเพื่อเทรนแล้ว แต่ยังต้องมีภาพทดสอบจากโต๊ะจริงของเรา (~100 ภาพ) ไว้วัดความแม่น",
+      "action": "สั่งให้ตอบคำเดียว (empty / person / items_only) · ถ้าตอบ empty ให้ถ่ายอีกภาพถามซ้ำก่อนปล่อย · วัดความแม่นบนภาพทดสอบของเรา · นับ false release ตอนรัน 24 ชม.",
       "logged": "2026-10-28",
-      "updates": []
+      "updates": [
+        {
+          "date": "2026-10-29",
+          "note": "เปลี่ยนจากโมเดลภาพบนบอร์ดเป็น cloud vision ตาม P1"
+        }
+      ]
     },
     {
       "id": "F5",
@@ -133,11 +148,16 @@
       "severity": "medium",
       "area": "team",
       "owner": "PM & Test Lead",
-      "cause": "ใช้กล้องตัดสิน",
-      "detail": "ถึงภาพไม่ออกจากบอร์ด คนที่นั่งก็อาจไม่สบายใจ และกรรมการน่าจะถามใน Q&A",
-      "action": "ข้อ 5 ใน Google Form ถามเรื่องนี้ตรง ๆ · ติดป้ายบอกว่ามีกล้องและภาพไม่ถูกส่งออก · ตอบใน Q&A ด้วยตัวเลขจาก Form",
+      "cause": "กล้องส่งภาพให้ cloud AI",
+      "detail": "ภาพหนึ่งภาพถูกส่งไป cloud ตอนตรวจโต๊ะ (ไม่เห็นคน 2 นาที และนาทีที่ 30) คนที่นั่งอาจไม่สบายใจ และกรรมการน่าจะถามใน Q&A",
+      "action": "ข้อ 5 ใน Google Form ถามเรื่องนี้ตรง ๆ · ติดป้ายบอกว่ามีกล้อง ถ่ายเฉพาะตอนตรวจโต๊ะ และไม่เก็บภาพ · ตอบใน Q&A ด้วยตัวเลขจาก Form",
       "logged": "2026-10-28",
-      "updates": []
+      "updates": [
+        {
+          "date": "2026-10-29",
+          "note": "ภาพขึ้น cloud แล้วตาม P1 จึงปรับข้อความที่จะบอกผู้ใช้"
+        }
+      ]
     },
     {
       "id": "F6",
@@ -212,16 +232,21 @@
     {
       "id": "F11",
       "type": "expected",
-      "title": "ต้องคืนของยืมในสภาพดี และบริการฟรีมีเงื่อนไข",
+      "title": "บริการฟรีมีเงื่อนไข",
       "status": "open",
       "severity": "low",
       "area": "team",
       "owner": "PM & Test Lead",
-      "cause": "ยืม AMG8833 และใช้ Supabase แผนฟรี",
-      "detail": "ของที่ยืมจากวิชาต้องคืนหลังนำเสนอในสภาพใช้งานได้ โปรเจกต์ฟรีของ Supabase อาจถูกพักถ้าไม่มีการใช้งานนาน ให้เช็กเงื่อนไขตอนสมัคร",
-      "action": "ไม่บัดกรี AMG8833 ตรง ใช้ header · รันระบบสม่ำเสมอ และเก็บ export ข้อมูลไว้ทำ report",
+      "cause": "Supabase แผนฟรี และ API ของ cloud AI",
+      "detail": "โปรเจกต์ฟรีของ Supabase อาจถูกพักถ้าไม่มีการใช้งานนาน และ vision API แต่ละเจ้ามี quota และเงื่อนไขของแผนฟรีต่างกัน ให้เช็กตอนสมัคร",
+      "action": "รันระบบสม่ำเสมอ และเก็บ export ข้อมูลไว้ทำ report · เช็ก free tier ของ vision API ก่อนเลือกเจ้า",
       "logged": "2026-10-28",
-      "updates": []
+      "updates": [
+        {
+          "date": "2026-10-29",
+          "note": "ไม่มีของยืมแล้ว (ใช้ VL53L1X แทน AMG8833) · เพิ่มเรื่อง quota ของ cloud AI"
+        }
+      ]
     },
     {
       "id": "F12",
@@ -240,23 +265,28 @@
     {
       "id": "R1",
       "type": "risk",
-      "title": "AI บน ESP32-S3 ไม่ผ่านเส้นตาย",
+      "title": "โมเดลบน gateway ไม่ผ่านเส้นตาย",
       "status": "watching",
       "severity": "high",
       "likelihood": 2,
       "impact": 3,
       "area": "ai",
       "owner": "AI & Node Vision",
-      "cause": "accuracy < 80% หรือ inference > 2 วิ ที่ gate 13 พ.ย.",
+      "cause": "ที่ 13 พ.ย. accuracy < 80% หรือไม่ดีกว่ากติกา if-else อย่างเห็นได้ชัด",
       "detail": "",
-      "action": "โน้ตบุ๊ก/Pi รันโมเดลเดียวกันกับภาพเฉพาะตอนสถานะเปลี่ยน · E6 แทน E7",
+      "action": "เปิดโหมด engineering ของ LD2410 และใช้หน้าต่าง 5 วิ ให้โมเดลเห็นจังหวะหายใจ · เก็บข้อมูลเพิ่มในกรณีที่พลาด · ไม่ผ่าน: ใช้ E6 OTA แทน E7 (AI ยังปิด loop ตาม M4)",
       "logged": "2026-10-28",
-      "updates": []
+      "updates": [
+        {
+          "date": "2026-10-29",
+          "note": "AI ย้ายจากโมเดลภาพบน node มาเป็นโมเดลข้อมูล sensor บน gateway ตาม P1"
+        }
+      ]
     },
     {
       "id": "R2",
       "type": "risk",
-      "title": "กล้องบอกว่าโต๊ะโล่งทั้งที่มีของ",
+      "title": "Cloud AI บอกว่าโต๊ะโล่งทั้งที่มีของ",
       "status": "watching",
       "severity": "high",
       "likelihood": 2,
@@ -265,9 +295,14 @@
       "owner": "AI & Node Vision",
       "cause": "มี release ที่ reason=empty แต่ยังมีของใน log ตอนรัน 24 ชม.",
       "detail": "",
-      "action": "ดู confusion matrix · เพิ่มภาพ class ที่พลาดแล้วฝึกใหม่ · ต้องเห็น empty ซ้ำ 2 ครั้ง",
+      "action": "ดูภาพที่พลาด · ปรับคำสั่งที่ส่งให้โมเดล · ถามซ้ำอีกภาพก่อนปล่อย",
       "logged": "2026-10-28",
-      "updates": []
+      "updates": [
+        {
+          "date": "2026-10-29",
+          "note": "ผู้ตัดสินเปลี่ยนเป็น cloud vision ตาม P1"
+        }
+      ]
     },
     {
       "id": "R3",
@@ -352,18 +387,23 @@
     {
       "id": "R8",
       "type": "risk",
-      "title": "AI ล่มระหว่างใช้งาน",
+      "title": "Cloud AI ไม่ตอบระหว่างใช้งาน",
       "status": "watching",
       "severity": "medium",
       "likelihood": 2,
       "impact": 2,
       "area": "ai",
       "owner": "Gateway & Cloud",
-      "cause": "ไม่มีผล AI ใหม่เกิน 10 วิ",
+      "cause": "เน็ตหลุด quota หมด หรือไม่ตอบใน 10 วิ",
       "detail": "",
-      "action": "gateway กลับไปใช้กติกา 30 นาทีแบบไม่มี AI ป้ายยังทำงาน",
+      "action": "gateway ใช้กติกา 30 นาทีแทน ป้ายยังทำงาน · AI local บน gateway ไม่ต้องใช้เน็ต จึงยังบอกได้ว่ามีคนนั่งไหม",
       "logged": "2026-10-28",
-      "updates": []
+      "updates": [
+        {
+          "date": "2026-10-29",
+          "note": "แยก AI สองตัวตาม P1: ตัวที่ใช้เน็ตคือ cloud vision"
+        }
+      ]
     },
     {
       "id": "R9",
@@ -417,7 +457,7 @@
       "id": "R12",
       "type": "risk",
       "title": "กรรมการไม่นับกล้องเป็น sensor",
-      "status": "watching",
+      "status": "fixed",
       "severity": "low",
       "likelihood": 1,
       "impact": 3,
@@ -427,22 +467,89 @@
       "detail": "",
       "action": "BH1750 ที่ gateway ทำให้ครบ 5 ชนิดโดยไม่นับกล้อง",
       "logged": "2026-10-28",
-      "updates": []
+      "updates": [
+        {
+          "date": "2026-10-29",
+          "note": "FAQ ข้อ 6: กล้องที่ต่อกับ node และโค้ดของกลุ่มอ่านภาพเอง นับเป็น sensor 1 ชนิด · รวมเป็น 6 ชนิดแล้ว"
+        }
+      ]
     },
     {
       "id": "R13",
       "type": "risk",
       "title": "ของที่ยืมเสีย",
-      "status": "watching",
+      "status": "fixed",
       "severity": "low",
       "likelihood": 1,
       "impact": 2,
       "area": "hardware",
       "owner": "Sensor Node",
       "cause": "AMG8833 อ่านค่าไม่ได้หลังย้ายหรือบัดกรี",
-      "detail": "",
+      "detail": "ไม่มีของยืมแล้ว: ยืม AMG8833 จากวิชาไม่ได้ จึงซื้อ VL53L1X แทน",
       "action": "ใช้ header ไม่บัดกรีตรง · เก็บในกล่องตอนขนย้าย",
       "logged": "2026-10-28",
+      "updates": [
+        {
+          "date": "2026-10-29",
+          "note": "ไม่มีของยืมในแผนแล้ว"
+        }
+      ]
+    },
+    {
+      "id": "R14",
+      "type": "risk",
+      "title": "ไลบรารี ld2410 อ่านโหมด engineering ไม่ได้",
+      "status": "watching",
+      "severity": "high",
+      "likelihood": 2,
+      "impact": 3,
+      "area": "node",
+      "owner": "Sensor Node",
+      "cause": "ใน C1 พิมพ์พลังงานแยกตามช่วงระยะไม่ได้",
+      "detail": "โมเดลบน gateway ใช้พลังงาน 9 ช่วงระยะ × 2 เป็น feature หลัก ถ้าอ่านไม่ได้จะเหลือแค่สถานะ ระยะ และพลังงานรวม โมเดลจะดูเป็น threshold และ format ที่ freeze 6 พ.ย. ต้องเปลี่ยน",
+      "action": "เช็กให้จบใน W1 ก่อน freeze · ลองไลบรารีตัวอื่นที่รองรับโหมด engineering · ถ้าไม่ได้ ให้ ToF กับค่ารวมของเรดาร์เป็น feature หลักและเพิ่มหน้าต่างเวลา",
+      "logged": "2026-10-29",
+      "related": [
+        "R1",
+        "P1"
+      ],
+      "updates": []
+    },
+    {
+      "id": "F13",
+      "type": "expected",
+      "title": "Node ต้องส่งภาพให้ gateway ผ่าน hotspot",
+      "status": "open",
+      "severity": "medium",
+      "area": "node",
+      "owner": "AI & Node Vision",
+      "cause": "cloud AI ต้องได้ภาพ แต่ sensor node ห้ามส่งขึ้น cloud เอง และ ESP-NOW ส่งได้ครั้งละ 250 ไบต์",
+      "detail": "node กับ gateway ต้องต่อ hotspot ตัวเดียวกันแล้ว node ส่ง JPEG ด้วย HTTP POST ไปที่ gateway · hotspot บางเครื่องกันไม่ให้เครื่องที่ต่ออยู่คุยกันเอง",
+      "action": "ทดลองใน C6 ตั้งแต่ W1 · ถ้า hotspot กันไว้ ให้เปลี่ยนเครื่อง hotspot หรือแบ่งภาพส่งทาง ESP-NOW พร้อม ack (หนักกว่า แต่โชว์ E4 ได้)",
+      "logged": "2026-10-29",
+      "related": [
+        "P1",
+        "F1"
+      ],
+      "updates": []
+    },
+    {
+      "id": "F14",
+      "type": "expected",
+      "title": "Cloud AI ต้องมี key, quota และเน็ต",
+      "status": "open",
+      "severity": "medium",
+      "area": "cloud",
+      "owner": "Gateway & Cloud",
+      "cause": "เรียก vision API จาก gateway",
+      "detail": "ต้องมีบัญชีและ API key ของเจ้าใดเจ้าหนึ่ง ตอบช้าได้หลายวินาที และอาจตอบไม่ตรงรูปแบบ",
+      "action": "เก็บ key ใน secrets.h · ตกลงว่าบัญชีเป็นของใคร · เรียกเฉพาะตอนตัดสิน · timeout 10 วิ แล้วใช้กติกา 30 นาที · ตรวจคำตอบว่าเป็นหนึ่งในสามคำเท่านั้น",
+      "logged": "2026-10-29",
+      "related": [
+        "P1",
+        "R8",
+        "F11"
+      ],
       "updates": []
     }
   ]

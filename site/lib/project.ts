@@ -1,5 +1,5 @@
-// Project facts shown on the site. Source: docs/strategy.md (28 Oct 2026).
-// Prices were checked on shop pages on 28 Oct 2026 unless marked as an estimate.
+// Project facts shown on the site. Source: docs/strategy.md (28 Oct 2026); sensor and AI plan changed 29 Oct 2026.
+// Prices were checked on shop pages on 28–29 Oct 2026 unless marked as an estimate.
 
 export type Level = "ง่าย" | "กลาง" | "ยาก";
 
@@ -26,25 +26,25 @@ export const PARTS: Part[] = [
     id: "firebeetle",
     name: "FireBeetle 2 ESP32-S3 + กล้อง OV2640",
     where: "node",
-    role: "สมองของ node: อ่าน sensor ทุกตัว, รันโมเดลภาพบนบอร์ด, ส่งผลให้ gateway, สั่ง servo",
+    role: "สมองของ node: อ่านเรดาร์และ ToF 10 ครั้ง/วินาทีส่งให้ gateway, ถ่ายภาพเมื่อ gateway ขอ, สั่ง servo",
     bus: "กล้องต่อสาย FPC มากับบอร์ด",
-    library: "esp32 core 3.x (มี esp_camera) + ไลบรารีที่ Edge Impulse export ให้",
-    start: "ตัวอย่าง ESP32 camera ของ Edge Impulse",
-    level: "ยาก",
+    library: "esp32 core 3.x (มี esp_camera และ HTTPClient)",
+    start: "ตัวอย่าง CameraWebServer ของ esp32 core (แก้ขากล้องตาม wiki ของ DFRobot)",
+    level: "กลาง",
     shop: "arduitronics",
     url: "https://www.arduitronics.com/product/5665/firebeetle-2-esp32-s3-ai-board-with-ov2640-camera-image-recognition-ble-5-%E0%B9%81%E0%B8%97%E0%B9%89%E0%B8%88%E0%B8%B2%E0%B8%81-dfrobot",
     price: 1185,
     qty: 2,
-    why: "ESP32-S3 N16R8 มี PSRAM 8 MB พอรันโมเดลภาพบนบอร์ด (E7) · กล้องมากับบอร์ด · ขาว่างเหลือพอสำหรับ 7 ขาที่ต้องใช้ · มีของในไทย",
-    note: "ส่วนที่ยากคือ AI ไม่ใช่ตัวบอร์ด: ถ้าไม่ผ่านเส้นตาย 13 พ.ย. ย้ายโมเดลไปรันบนโน้ตบุ๊ก/Pi",
+    why: "กล้องมากับบอร์ด (นับเป็น sensor 1 ชนิดตาม FAQ ข้อ 6) · PSRAM 8 MB พอพักภาพ JPEG ก่อนส่ง · ขาว่างเหลือพอ · มีของในไทย",
+    note: "ภาพไม่ถูกเก็บ: ถ่ายเฉพาะตอน gateway ขอ แล้วส่งให้ gateway ผ่าน Wi-Fi วงเดียวกัน",
   },
   {
     id: "ld2410",
     name: "HLK-LD2410 mmWave 24 GHz",
     where: "node",
-    role: "รู้ว่ามีคนนั่งแม้นั่งนิ่ง เพราะจับการหายใจได้ (PIR ทำไม่ได้)",
+    role: "รู้ว่ามีคนนั่งแม้นั่งนิ่ง เพราะจับการหายใจได้ (PIR ทำไม่ได้) · โหมด engineering ให้พลังงาน 9 ช่วงระยะ × 2 (ขยับ/นิ่ง) เป็น feature หลักของโมเดล AI ที่ gateway",
     bus: "UART + ขา OUT (ใช้ทำ interrupt)",
-    library: "ld2410 (ncmreynolds)",
+    library: "ld2410 (ncmreynolds) · ต้องเช็กว่ารองรับโหมด engineering",
     start: "ตัวอย่างในไลบรารี ld2410 + ขา OUT แบบ ISR เหมือน Lab 10",
     level: "ง่าย",
     shop: "allnewstep",
@@ -54,19 +54,20 @@ export const PARTS: Part[] = [
     why: "ขา OUT ให้ทำ E2 (ISR) ได้ทันที · ราคาถูก · มีไลบรารีพร้อมใช้ ไม่ต้องเขียน parser เอง",
   },
   {
-    id: "amg8833",
-    name: "GY-AMG8833 thermal 8×8",
+    id: "vl53l1x",
+    name: "VL53L1X วัดระยะด้วยแสงเลเซอร์ (ToF)",
     where: "node",
-    role: "แยกคนจริงกับกระเป๋าด้วยความร้อน",
-    bus: "I²C",
-    library: "Adafruit AMG88xx",
-    start: "ตัวอย่าง pixels_test",
+    role: "วัดระยะจากหัว node ลงไปที่เบาะเก้าอี้: มีคนนั่งระยะจะสั้นลงและขยับตามการหายใจ · ป้อนโมเดล AI ที่ gateway คู่กับเรดาร์",
+    bus: "I²C + ขา GPIO1 (data ready)",
+    library: "VL53L1X (Pololu) หรือ SparkFun VL53L1X",
+    start: "ตัวอย่าง Continuous ในไลบรารี อ่านระยะ 10 ครั้ง/วินาที",
     level: "ง่าย",
-    shop: "arduitronics",
-    url: "https://www.arduitronics.com/product/4293/gy-amg8833-ir-8x8-camera-array-temperature-sensor-module-%E0%B9%82%E0%B8%A1%E0%B8%94%E0%B8%B9%E0%B8%A5%E0%B8%81%E0%B8%A5%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%AD%E0%B8%B4%E0%B8%99%E0%B8%9F%E0%B8%B2%E0%B9%80%E0%B8%A3%E0%B8%94-%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%88%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B8%A3%E0%B9%89%E0%B8%AD%E0%B8%99",
-    price: 1650,
+    shop: "cybertice",
+    url: "https://www.cybertice.com/product/5302/vl53l1x-%E0%B9%80%E0%B8%8B%E0%B9%87%E0%B8%99%E0%B9%80%E0%B8%8B%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%A3%E0%B8%B0%E0%B8%A2%E0%B8%B0%E0%B8%97%E0%B8%B2%E0%B8%87%E0%B9%81%E0%B8%AA%E0%B8%87%E0%B9%80%E0%B8%A5%E0%B9%80%E0%B8%8B%E0%B8%AD%E0%B8%A3%E0%B9%8C-%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%99%E0%B8%A2%E0%B8%B3%E0%B8%AA%E0%B8%B9%E0%B8%87-laser-ranging-sensor-module-%E0%B8%A3%E0%B8%B0%E0%B8%A2%E0%B8%B0%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%88%E0%B8%88%E0%B8%B1%E0%B8%9A-0-400cm",
+    price: 210,
     qty: 2,
-    why: "แพงที่สุดในรายการ จึงขอยืมจากวิชาก่อน · I²C ต่อง่าย 4 สาย",
+    why: "แทน AMG8833 ที่ยืมจากวิชาไม่ได้ (1,650 บาท/ตัว) · วัดได้ไกล 4 m และตั้งกรอบมองให้แคบได้ จึงเล็งเฉพาะเก้าอี้ของโต๊ะนี้ · VL53L0X ถูกกว่า แต่วัดได้ใกล้กว่าและทนแสงแดดน้อยกว่า",
+    note: "เสื้อสีดำสะท้อนแสงน้อย: เก็บข้อมูลเทรนให้มีเสื้อหลายสี",
   },
   {
     id: "servo",
@@ -103,21 +104,21 @@ export const PARTS: Part[] = [
     id: "yd-esp32",
     name: "YD-ESP32-23 (ESP32-S3 N16R8)",
     where: "gateway",
-    role: "สมองของ gateway: state machine, ตัวจับเวลา 2/20/30 นาที, ส่งข้อมูลขึ้น cloud, ส่ง LINE",
+    role: "สมองของ gateway: รันโมเดล AI (E7), state machine, ตัวจับเวลา 2/20/30 นาที, ส่งภาพไปถาม cloud AI, ส่งข้อมูลขึ้น cloud, ส่ง LINE",
     bus: "Wi-Fi + ESP-NOW",
-    library: "esp32 core 3.x (ESP-NOW, WiFiClientSecure, HTTPClient)",
+    library: "esp32 core 3.x (ESP-NOW, WiFiClientSecure, HTTPClient, WebServer) + ไลบรารีที่ Edge Impulse export ให้",
     start: "บอร์ดเดียวกับ Lab 10 ตั้งค่า Tools เหมือนเดิม",
     level: "กลาง",
     shop: "มีอยู่แล้วจาก Lab 10",
     price: 0,
     qty: 1,
-    why: "ทีมมีบอร์ดนี้และคุ้นกับมันแล้ว ไม่ต้องซื้อเพิ่ม",
+    why: "ทีมมีบอร์ดนี้และคุ้นกับมันแล้ว ไม่ต้องซื้อเพิ่ม · ESP32-S3 N16R8 มี PSRAM 8 MB พอรันโมเดลและพักภาพก่อนส่ง cloud",
   },
   {
     id: "scd41",
     name: "SCD41 CO₂",
     where: "gateway",
-    role: "คุณภาพอากาศในห้อง และใช้ประมาณความหนาแน่นของคน",
+    role: "แสดงบน dashboard: คุณภาพอากาศในห้อง และใช้ประมาณความหนาแน่นของคน",
     bus: "I²C (bus เดียวกับ BH1750)",
     library: "Sensirion I2C SCD4x",
     start: "ตัวอย่าง exampleUsage",
@@ -132,7 +133,7 @@ export const PARTS: Part[] = [
     id: "max4466",
     name: "ไมค์อนาล็อก MAX4466",
     where: "gateway",
-    role: "ระดับเสียงในห้อง แจ้ง staff ถ้า quiet zone ดังเกิน",
+    role: "แสดงบน dashboard: ระดับเสียงในห้อง แจ้ง staff ถ้า quiet zone ดังเกิน",
     bus: "ADC 1 ขา",
     library: "ไม่ต้องใช้: analogRead()",
     start: "โค้ดอ่าน ADC แบบ Lab 8 แล้วหาค่า peak-to-peak ทุก 50 ms",
@@ -148,7 +149,7 @@ export const PARTS: Part[] = [
     id: "bh1750",
     name: "GY-302 BH1750 วัดแสง",
     where: "gateway",
-    role: "แสงในห้อง: บอกช่วงเปิด/ปิดไฟ และกัน M1 พลาด",
+    role: "แสดงบน dashboard: แสงในห้อง และบอกช่วงเปิด/ปิดไฟ",
     bus: "I²C",
     library: "BH1750 (claws)",
     start: "ตัวอย่าง BH1750test",
@@ -157,7 +158,7 @@ export const PARTS: Part[] = [
     url: "https://www.cybertice.com/product/784/gy-302-%E0%B9%80%E0%B8%8B%E0%B9%87%E0%B8%99%E0%B9%80%E0%B8%8B%E0%B8%AD%E0%B8%A3%E0%B9%8C-%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B9%80%E0%B8%82%E0%B9%89%E0%B8%A1%E0%B9%81%E0%B8%AA%E0%B8%87-ambient-light-sensor-module-bh1750fvi",
     price: 50,
     qty: 1,
-    why: "ถ้ากรรมการไม่นับกล้องเป็น sensor ก็ยังครบ 5 ชนิด · ถูกที่สุดในรายการ",
+    why: "gateway ต้องมี sensor ของตัวเอง ≥ 2 ชนิด ตัวนี้ทำให้ยังครบถ้าวันหนึ่งตัด SCD41 · ถูกที่สุดในรายการ",
   },
   {
     id: "adapter-gw",
@@ -177,7 +178,6 @@ export const PARTS: Part[] = [
 ];
 
 export const SUNDRIES = 400; // jumpers, breadboard, 1000 µF capacitors, enclosure, printing: an estimate
-export const LOAN = 3300; // two AMG8833 borrowed from the course
 
 export const lineTotal = (part: Part) => part.price * part.qty;
 
@@ -190,7 +190,7 @@ export const LABS = [
   {
     lab: "Lab 10 · Tasks",
     learned: "xTaskCreate หลาย task พร้อมกัน",
-    reuse: "node แยก task: sensor / AI / ส่งข้อมูล / servo (E1)",
+    reuse: "node แยก task: เรดาร์ / ToF / ส่งข้อมูล / กล้อง / servo (E1)",
   },
   {
     lab: "Lab 10 · Mutex",
@@ -200,7 +200,7 @@ export const LABS = [
   {
     lab: "Lab 10 · Queue",
     learned: "xQueueCreate ส่งข้อความระหว่าง task",
-    reuse: "ส่งผล sensor/AI เข้า queue ให้ task ส่งข้อมูล · buffer ตอนเน็ตหลุด (E4)",
+    reuse: "ส่งค่า sensor เข้า queue ให้ task ส่งข้อมูล · buffer ตอนเน็ตหลุด (E4)",
   },
   {
     lab: "Lab 10 · บอร์ด",
@@ -210,14 +210,14 @@ export const LABS = [
 ];
 
 export const DEPTH = [
-  { id: "E1", name: "RTOS multitasking", plan: "node มี ≥ 4 task คุยกันด้วย queue (แบบ Lab 10)" },
+  { id: "E1", name: "RTOS multitasking", plan: "node มี 5 task คุยกันด้วย queue (แบบ Lab 10)" },
   { id: "E2", name: "Interrupt-driven I/O", plan: "ขา OUT ของ LD2410 → ISR → semaphore ปลุก task" },
   { id: "E4", name: "Reliable communication", plan: "ESP-NOW ดูผล ack จาก send callback + retry · buffer ใน RAM ตอนเน็ตหลุด" },
   { id: "E5", name: "Security", plan: "HTTPS/TLS ไป Supabase · key อยู่ใน secrets.h ที่ไม่ commit" },
-  { id: "E7", name: "On-device AI", plan: "โมเดล Edge Impulse รันบน ESP32-S3 · ตัดสินที่เส้นตาย 13 พ.ย." },
+  { id: "E7", name: "On-device AI", plan: "โมเดล Edge Impulse จากข้อมูลเรดาร์ + ToF รันบน gateway ESP32-S3 (FAQ ข้อ 4) · ต้องแม่นกว่ากติกา if-else" },
 ];
 
-export const SPARE_DEPTH = { id: "E6", name: "OTA update", plan: "ตัวอย่าง ArduinoOTA · ใช้แทน E7 ถ้า AI ไม่ผ่านเส้นตาย" };
+export const SPARE_DEPTH = { id: "E6", name: "OTA update", plan: "ตัวอย่าง ArduinoOTA · ใช้แทน E7 ถ้าโมเดลไม่ผ่านเส้นตาย 13 พ.ย." };
 
 export const baht = (value: number) => value.toLocaleString("en-US");
 
@@ -261,7 +261,7 @@ export const MISC: Misc[] = [
     qty: "ตามใช้",
     job: "ทดลองบน breadboard ก่อน แล้วย้ายวงจร node ลง perfboard เมื่อ pin map นิ่ง สายจะไม่หลุดตอนยกโต๊ะ",
     make: "ใช้ header ตัวเมียเสียบบอร์ดและโมดูล จะถอดคืนได้",
-    watch: "AMG8833 เป็นของยืม ห้ามบัดกรีตรง ใช้ header",
+    watch: "ใช้ header ไม่บัดกรีโมดูลตรง จะได้ถอดเปลี่ยนตัวที่เสียได้",
     step: "F4",
   },
   {
@@ -269,9 +269,9 @@ export const MISC: Misc[] = [
     name: "เสาและแขนจับหัวกล้อง",
     where: "node",
     qty: "1 ต่อโต๊ะ",
-    job: "ยกกล้องและ AMG8833 ให้สูงพอจะเห็นทั้งพื้นโต๊ะและเก้าอี้ มองลงเฉียง ๆ",
+    job: "ยกกล้องและ VL53L1X ให้สูงพอจะเห็นทั้งพื้นโต๊ะและเก้าอี้ มองลงเฉียง ๆ · VL53L1X เล็งลงที่เบาะเก้าอี้",
     make: "ต้นแบบ: ขาตั้งมือถือแบบหนีบขอบโต๊ะ ปรับมุมได้ · ตัวจริง: แขนพิมพ์ 3D หรือท่อ PVC + ตัวหนีบ",
-    watch: "ปรับความสูงจนภาพจากกล้องเห็นพื้นโต๊ะครบก่อนเริ่มเก็บ dataset ห้ามขยับมุมหลังจากนั้น",
+    watch: "ปรับจนภาพเห็นพื้นโต๊ะครบและ ToF เห็นเบาะ ก่อนเริ่มเก็บ dataset ห้ามขยับมุมหลังจากนั้น",
     step: "C5",
   },
   {
@@ -279,9 +279,9 @@ export const MISC: Misc[] = [
     name: "กล่องหัวกล้อง",
     where: "node",
     qty: "1 ต่อโต๊ะ",
-    job: "ครอบ FireBeetle 2 ให้เป็นชิ้นเดียวกับเลนส์และ AMG8833 กันฝุ่นและมือ",
+    job: "ครอบ FireBeetle 2 ให้เป็นชิ้นเดียวกับเลนส์และ VL53L1X กันฝุ่นและมือ",
     make: "กล่องพิมพ์ 3D หรือกล่องพลาสติกเล็ก เจาะรูเลนส์และช่องเซ็นเซอร์",
-    watch: "หน้า AMG8833 ต้องเปิดโล่ง: แผ่นพลาสติก / อะคริลิกบังรังสีความร้อนจนวัดไม่ได้",
+    watch: "หน้า VL53L1X ต้องเปิดโล่ง: แผ่นพลาสติก / อะคริลิกสะท้อนเลเซอร์กลับเข้าเซนเซอร์ ระยะจะเพี้ยน",
     step: "F4",
   },
   {
