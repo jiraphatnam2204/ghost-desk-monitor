@@ -1,9 +1,9 @@
 {
-  "updated": "2026-10-28",
+  "updated": "2026-10-30",
   "steps": {
     "A1": "not-started",
-    "A2": "not-started",
-    "A3": "not-started",
+    "A2": "in-progress",
+    "A3": "in-progress",
     "A4": "not-started",
     "B1": "not-started",
     "B2": "not-started",
