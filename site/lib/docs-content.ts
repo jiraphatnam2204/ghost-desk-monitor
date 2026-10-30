@@ -35,9 +35,9 @@ export const PROPOSAL: Doc = {
   ),
   meta: [
     { label: t("Course", "รายวิชา"), value: COURSE },
-    { label: t("Group", "กลุ่ม"), value: t("[group]", "[ชื่อกลุ่ม]") },
-    { label: t("Members", "สมาชิก"), value: t("[five members, see Roles]", "[สมาชิก 5 คน ดูหัวข้อบทบาท]") },
-    { label: t("Date", "วันที่"), value: t("30 October 2026", "30 ตุลาคม 2026") },
+    { label: t("Group", "กลุ่ม"), value: same("TomyumSea") },
+    { label: t("Members", "สมาชิก"), value: t("Five members, see Roles", "สมาชิก 5 คน ดูหัวข้อบทบาท") },
+    { label: t("Date", "วันที่"), value: t("30 October 2026 (submitted)", "30 ตุลาคม 2026 (ส่งแล้ว)") },
     { label: t("Repository", "Repository"), value: t("https://github.com/jiraphatnam2204/ghost-desk-monitor", "https://github.com/jiraphatnam2204/ghost-desk-monitor") },
   ],
   sections: [
@@ -169,7 +169,6 @@ export const PROPOSAL: Doc = {
             [t("**E4** Reliable communication", "**E4** Reliable communication"), t("ESP-NOW acknowledgement from the send callback with up to three retries; the gateway buffers records in RAM and forwards them when the Internet returns.", "ใช้ acknowledgement จาก send callback ของ ESP-NOW พร้อมส่งซ้ำสูงสุด 3 ครั้ง และ gateway เก็บข้อมูลไว้ใน RAM แล้วส่งต่อเมื่ออินเทอร์เน็ตกลับมา (store-and-forward)")],
             [t("**E5** Security", "**E5** Security"), t("HTTPS (TLS) to Supabase, LINE and the vision API; Wi-Fi password, API keys and LINE token kept in an uncommitted `secrets.h`.", "เชื่อมต่อ Supabase, LINE และ vision API ผ่าน HTTPS (TLS) โดยเก็บรหัส Wi-Fi, API key และ LINE token ไว้ใน `secrets.h` ที่ไม่ถูก commit")],
             [t("**E7** On-device AI", "**E7** On-device AI"), t("Edge Impulse classifier (person / empty / nearby) trained on our own radar range-gate and time-of-flight data, running on the gateway ESP32-S3 (allowed by FAQ 4); it must beat a hand-written threshold rule on the same test set. Review on 13 Nov 2026.", "ตัวจำแนกจาก Edge Impulse (person / empty / nearby) ที่เทรนจากข้อมูลเรดาร์แยกช่วงระยะและข้อมูลระยะ ToF ของทีมเอง ทำงานบน gateway ESP32-S3 (อนุญาตตาม FAQ ข้อ 4) และต้องแม่นกว่ากติกา threshold ที่เขียนเองบนชุดทดสอบเดียวกัน ประเมินในวันที่ 13 พ.ย. 2026")],
-            [t("Spare: **E6** OTA update", "สำรอง: **E6** OTA update"), t("ArduinoOTA; used in place of E7 if the gateway model does not pass the 13 Nov review.", "ใช้ ArduinoOTA แทน E7 หากโมเดลบน gateway ไม่ผ่านการประเมินวันที่ 13 พ.ย.")],
           ],
         },
       ],
@@ -177,18 +176,22 @@ export const PROPOSAL: Doc = {
     {
       id: "roles",
       title: t("5. Role of each member", "5. บทบาทของสมาชิกแต่ละคน"),
-      status: "draft",
+      status: "ready",
       blocks: [
         {
           kind: "table",
-          head: [t("Role", "บทบาท"), t("Member", "สมาชิก"), t("Responsibilities", "หน้าที่")],
+          head: [t("Role", "บทบาท"), t("Members", "สมาชิก")],
           rows: [
-            [same("System Architect & Integration"), t("[name]", "[ชื่อ]"), t("Block diagram, message format, state machine, integration", "แผนภาพระบบ message format state machine และการรวมระบบ")],
-            [same("Embedded Developer (Sensor Node)"), t("[name]", "[ชื่อ]"), t("Node firmware: FreeRTOS, LD2410, VL53L1X, servo, ISR", "เฟิร์มแวร์ของ node: FreeRTOS, LD2410, VL53L1X, servo และ ISR")],
-            [same("AI & Node Vision"), t("[name]", "[ชื่อ]"), t("Sensor dataset, Edge Impulse model on the gateway, camera capture and cloud vision call", "ชุดข้อมูลเซนเซอร์ โมเดล Edge Impulse บน gateway การถ่ายภาพ และการเรียก cloud vision")],
-            [same("Embedded Developer (Gateway & Cloud)"), t("[name]", "[ชื่อ]"), t("ESP-NOW, state machine, buffering, Supabase, TLS, LINE", "ESP-NOW, state machine, การพักข้อมูล, Supabase, TLS และ LINE")],
-            [same("UI/UX Dashboard, Project Manager & Test Lead"), t("[name]", "[ชื่อ]"), t("Dashboard, timeline, test plan and performance metrics", "dashboard แผนเวลา แผนการทดสอบ และการวัดประสิทธิภาพ")],
+            [same("System Architect & Integration"), same("จิรภัทร นามวงศ์")],
+            [same("Embedded Developer (Sensor Node)"), same("เขตโสภณ ครองยุติ, ชากิร บากา")],
+            [same("Embedded Developer (Gateway & Cloud)"), same("เขตโสภณ ครองยุติ, ชากิร บากา")],
+            [same("UI/UX & Dashboard Developer"), same("ธนกฤต สุนทรเวชพงษ์, ก้องภพ แสงแก้ว")],
+            [same("Project Manager & Test Lead"), same("ก้องภพ แสงแก้ว")],
           ],
+          caption: t(
+            "Table 2. Roles as submitted on 30 Oct 2026, using the five roles in the course brief. Student IDs are in the submitted PDF, not on this public page.",
+            "ตารางที่ 2 บทบาทตามที่ส่งเมื่อ 30 ต.ค. 2026 ใช้ 5 บทบาทตามเอกสารโจทย์ เลขประจำตัวอยู่ใน PDF ที่ส่ง ไม่แสดงบนหน้าเว็บสาธารณะนี้",
+          ),
         },
       ],
     },
@@ -205,7 +208,7 @@ export const REPORT: Doc = {
   subtitle: t("Final report (working draft, at most 10 pages)", "รายงานฉบับสมบูรณ์ (ฉบับร่าง ไม่เกิน 10 หน้า)"),
   meta: [
     { label: t("Course", "รายวิชา"), value: COURSE },
-    { label: t("Group", "กลุ่ม"), value: t("[group]", "[ชื่อกลุ่ม]") },
+    { label: t("Group", "กลุ่ม"), value: same("TomyumSea") },
     { label: t("Submission", "กำหนดส่ง"), value: t("8 December 2026, 23:59", "8 ธันวาคม 2026 เวลา 23:59 น.") },
     { label: t("Repository", "Repository"), value: t("https://github.com/jiraphatnam2204/ghost-desk-monitor", "https://github.com/jiraphatnam2204/ghost-desk-monitor") },
   ],
@@ -376,11 +379,11 @@ export const REPORT: Doc = {
           kind: "table",
           head: [t("Member", "สมาชิก"), t("Role", "บทบาท"), t("Contribution", "ผลงาน")],
           rows: [
-            [t("[name]", "[ชื่อ]"), same("System Architect & Integration"), t("[contribution]", "[ผลงาน]")],
-            [t("[name]", "[ชื่อ]"), same("Embedded Developer (Sensor Node)"), t("[contribution]", "[ผลงาน]")],
-            [t("[name]", "[ชื่อ]"), same("AI & Node Vision"), t("[contribution]", "[ผลงาน]")],
-            [t("[name]", "[ชื่อ]"), same("Embedded Developer (Gateway & Cloud)"), t("[contribution]", "[ผลงาน]")],
-            [t("[name]", "[ชื่อ]"), same("UI/UX Dashboard, Project Manager & Test Lead"), t("[contribution]", "[ผลงาน]")],
+            [same("จิรภัทร นามวงศ์"), same("System Architect & Integration"), t("[contribution]", "[ผลงาน]")],
+            [same("เขตโสภณ ครองยุติ"), same("Embedded Developer (Sensor Node), Embedded Developer (Gateway & Cloud)"), t("[contribution]", "[ผลงาน]")],
+            [same("ชากิร บากา"), same("Embedded Developer (Sensor Node), Embedded Developer (Gateway & Cloud)"), t("[contribution]", "[ผลงาน]")],
+            [same("ธนกฤต สุนทรเวชพงษ์"), same("UI/UX & Dashboard Developer"), t("[contribution]", "[ผลงาน]")],
+            [same("ก้องภพ แสงแก้ว"), same("UI/UX & Dashboard Developer, Project Manager & Test Lead"), t("[contribution]", "[ผลงาน]")],
           ],
         },
         {

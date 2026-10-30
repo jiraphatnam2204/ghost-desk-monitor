@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-29",
+  "updated": "2026-10-30",
   "target": 64,
   "items": {
     "I.1": { "status": "in-progress", "aim": 3, "owner": "PM & Test Lead", "plan": "problem statement ใน proposal + ผู้ใช้ 3 กลุ่ม" },
@@ -35,7 +35,7 @@
     "M6": { "status": "not-started", "aim": 0, "owner": "Gateway & Cloud", "plan": "LINE broadcast นาทีที่ 20" },
     "M7": { "status": "in-progress", "aim": 0, "owner": "Sensor Node", "plan": "ไฟ 5 V · หมุดกันหมุนเกิน + timeout ของ servo" },
     "M8": { "status": "not-started", "aim": 0, "owner": "PM & Test Lead", "plan": "สร้าง repo บน GitHub · ทุกคน commit ทุกสัปดาห์" },
-    "proposal": { "status": "in-progress", "aim": 0, "owner": "PM & Test Lead", "plan": "ร่างในหน้า Docs · ตรวจ 1 รอบ · ส่งศุกร์" },
+    "proposal": { "status": "done", "aim": 0, "owner": "PM & Test Lead", "plan": "ส่งแล้ว 30 ต.ค. · ไฟล์ LaTeX และ PDF ที่ส่งอยู่ใน docs/proposal-overleaf" },
     "checkpoint": { "status": "not-started", "aim": 0, "owner": "PM & Test Lead", "plan": "ถ่ายข้อมูลไหลครบ 4 ชั้น" },
     "final": { "status": "not-started", "aim": 0, "owner": "PM & Test Lead", "plan": "ส่งครบ 5 อย่างก่อน 23:59" }
   }
