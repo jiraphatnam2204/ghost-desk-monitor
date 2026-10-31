@@ -154,10 +154,10 @@ export const PARTS: Part[] = [
     level: "ง่าย",
     shop: "cybertice",
     url: "https://www.cybertice.com/category/30/modules-sensors/%E0%B9%80%E0%B8%8B%E0%B9%87%E0%B8%99%E0%B9%80%E0%B8%8B%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B9%81%E0%B8%81%E0%B9%8A%E0%B8%AA",
-    price: 820,
+    price: 622,
     qty: 1,
     why: "ถูกกว่า MH-Z19C ในร้านที่เช็ก · I²C ไม่เปลืองขา · วัดอุณหภูมิ/ความชื้นในตัว",
-    note: "cybertice ของหมด · สั่งจาก Shopee แล้ว 31 ต.ค. (P2) · ราคาในรายการยังเป็นของ cybertice",
+    note: "cybertice ของหมด · สั่งจาก Shopee แล้ว 31 ต.ค. (P2) · 622 คือยอดที่จ่ายจริงใน Shopee",
   },
   {
     id: "max4466",
@@ -233,7 +233,7 @@ export const ACCESSORIES: Accessory[] = [
   { code: "A247", name: "Breadboard MB-102", use: "ต่อวงจรทดลอง", shop: "allnewstep", price: 37, qty: 2, order: "ordered" },
   { code: "A2329", name: "สายจัมเปอร์ ผู้-เมีย", use: "ต่อขาบอร์ดกับโมดูล", shop: "allnewstep", price: 2, qty: 20, order: "ordered" },
   { code: "A2331", name: "สายจัมเปอร์ ผู้-ผู้", use: "ต่อบน breadboard · ตัดใช้เป็นสายแจ็ก DC", shop: "allnewstep", price: 2, qty: 20, order: "ordered" },
-  { code: "A2330", name: "สายจัมเปอร์ เมีย-เมีย", use: "ต่อขาโมดูลกับขาบอร์ดตรง ๆ", shop: "allnewstep", price: 2, qty: 10, order: "ordered" },
+  { code: "A2330", name: "สายจัมเปอร์ เมีย-เมีย", use: "ต่อขาโมดูลกับขาบอร์ดตรง ๆ", shop: "allnewstep", price: 2, qty: 20, order: "ordered" },
   { code: "A233", name: "Pin header 1×40", use: "บัดกรีขาให้บอร์ดและโมดูล", shop: "allnewstep", price: 5, qty: 3, order: "ordered" },
   { code: "SK217", name: "Terminal block KF301-2P ระยะขา 5 mm", use: "แยกไฟ 5V ไปบอร์ดกับ servo โต๊ะละ 1 (สำรอง 2)", shop: "cybertice", price: 4, qty: 4, order: "pending" },
   { code: "SK002", name: "แผ่นปริ๊นอเนกประสงค์ 7×9 cm ไข่ปลา 2.54 mm", use: "วงจรตัวจริงของ node ละ 1 แผ่น (สำรอง 1)", shop: "cybertice", price: 12, qty: 3, order: "pending" },
@@ -242,6 +242,7 @@ export const ACCESSORIES: Accessory[] = [
 /* ---------- small and mechanical parts: made or bought later, one estimate ---------- */
 
 export const MISC_ESTIMATE = 150; // enclosure material, glue, fixings, printing
+export const SHIPPING_PAID = 140; // arduitronics 2 × 50, allnewstep 40; cybertice and Shopee had none on top
 
 export interface Misc {
   id: string;
@@ -434,9 +435,9 @@ export const BUDGET = (() => {
   const parts = sum(PARTS);
   const accessories = sum(ACCESSORIES);
   const tools = sum(TOOLS);
-  const total = parts + accessories + MISC_ESTIMATE + tools;
+  const total = parts + accessories + MISC_ESTIMATE + tools + SHIPPING_PAID;
   const left = partsLeft + pending(ACCESSORIES) + pending(TOOLS) + MISC_ESTIMATE;
-  return { parts, accessories, misc: MISC_ESTIMATE, tools, total, left, ordered: total - left };
+  return { parts, accessories, misc: MISC_ESTIMATE, tools, shipping: SHIPPING_PAID, total, left, ordered: total - left };
 })();
 
 export const TEAM_SIZE = 5;

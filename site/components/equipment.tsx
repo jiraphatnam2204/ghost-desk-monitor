@@ -65,7 +65,7 @@ export function Budget() {
           <dd>~{baht(BUDGET.left)}</dd>
         </div>
         <p>
-          ชิ้นส่วนหลัก {baht(BUDGET.parts)} + อุปกรณ์เสริม {baht(BUDGET.accessories)} + ของจิปาถะ ~{baht(BUDGET.misc)} + เครื่องมือ {baht(BUDGET.tools)} · ยังไม่รวมค่าส่ง
+          ชิ้นส่วนหลัก {baht(BUDGET.parts)} + อุปกรณ์เสริม {baht(BUDGET.accessories)} + ของจิปาถะ ~{baht(BUDGET.misc)} + เครื่องมือ {baht(BUDGET.tools)} + ค่าส่งที่จ่ายแล้ว {baht(BUDGET.shipping)} · ใบที่ยังไม่สั่งจะมีค่าส่งเพิ่ม
         </p>
       </dl>
     </div>
