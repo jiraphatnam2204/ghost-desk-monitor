@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PARTS, SUNDRIES, baht, lineTotal, type Level, type Part } from "@/lib/project";
+import { PARTS, SUNDRIES, TOOLS_TOTAL, baht, lineTotal, type Level, type Part } from "@/lib/project";
 import { SENSOR_BY_PART } from "@/lib/sensors";
 
 // What each non-sensor part is; sensors take their label from lib/sensors.ts
@@ -26,10 +26,11 @@ export function PartsRegister() {
   const [where, setWhere] = React.useState<Where>("all");
   const [level, setLevel] = React.useState<Level | null>(null);
   const [sundries, setSundries] = React.useState(true);
+  const [tools, setTools] = React.useState(true);
 
   const shown = PARTS.filter((part) => (where === "all" || part.where === where) && (!level || part.level === level));
   const parts = PARTS.reduce((sum, part) => sum + lineTotal(part), 0);
-  const total = parts + (sundries ? SUNDRIES : 0);
+  const total = parts + (sundries ? SUNDRIES : 0) + (tools ? TOOLS_TOTAL : 0);
 
   return (
     <div className="register-tool">
@@ -45,6 +46,10 @@ export function PartsRegister() {
           <label className="switch">
             <input type="checkbox" checked={sundries} onChange={(event) => setSundries(event.target.checked)} />
             <span>รวมของจิปาถะ สาย กล่อง ตัวเก็บประจุ (~{baht(SUNDRIES)})</span>
+          </label>
+          <label className="switch">
+            <input type="checkbox" checked={tools} onChange={(event) => setTools(event.target.checked)} />
+            <span>รวมเครื่องมือช่าง หัวแร้ง มัลติมิเตอร์ คีม ({baht(TOOLS_TOTAL)})</span>
           </label>
         </div>
       </div>
@@ -126,7 +131,7 @@ export function PartsRegister() {
           );
         })}
       </ol>
-      <p className="note gap">ราคาเช็กจากหน้าร้าน 28–29 ต.ค. 2026 ยังไม่รวมค่าส่ง · ไมค์ MAX4466 และของจิปาถะเป็นราคาประมาณ · ยืม AMG8833 จากวิชาไม่ได้ จึงเปลี่ยนเป็น VL53L1X</p>
+      <p className="note gap">ราคาเช็กจากหน้าร้าน 28–29 ต.ค. 2026 ยังไม่รวมค่าส่ง · ของจิปาถะเป็นราคาประมาณ · เครื่องมือช่างเช็กจาก cybertice 31 ต.ค. คิดว่าแล็ปไม่มีให้ยืม · ยืม AMG8833 จากวิชาไม่ได้ จึงเปลี่ยนเป็น VL53L1X</p>
     </div>
   );
 }

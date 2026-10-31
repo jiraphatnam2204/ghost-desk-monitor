@@ -6,7 +6,7 @@ import { GatewayFigure } from "@/components/figures/gateway/figure";
 import { NodeFigure } from "@/components/figures/node/figure";
 import { PartsRegister } from "@/components/parts-register";
 import { PowerDiagram } from "@/components/power-diagram";
-import { MISC, SUNDRIES, baht } from "@/lib/project";
+import { MISC, SUNDRIES, TOOLS, TOOLS_TOTAL, baht } from "@/lib/project";
 import { SENSORS } from "@/lib/sensors";
 import "@/components/figure-side.css";
 import "../pages.css";
@@ -231,6 +231,56 @@ export default function EquipmentPage() {
             </li>
           ))}
         </ol>
+      </section>
+
+      <section className="sheet section" aria-labelledby="tools">
+        <div className="section-head">
+          <h2 id="tools">Tools · เครื่องมือช่าง</h2>
+          <span className="ref">cybertice · {baht(TOOLS_TOTAL)} บาท · ยังไม่สั่ง</span>
+        </div>
+        <p className="lede misc-lede">
+          คิดว่าแล็ปไม่มีให้ยืม · ต้องมีก่อนของถึง เพราะ FireBeetle มาแบบยังไม่บัดกรีขา, LD2410 ต้องบัดกรีลงบอร์ดแปลงขา และแจ็ก DC ต้องบัดกรีสายเอง · ถ้าในทีมมีหัวแร้งหรือมัลติมิเตอร์อยู่แล้ว ตัดรายการนั้นออกได้
+        </p>
+        <div className="scroll-x">
+          <table className="register stack-sm">
+            <thead>
+              <tr>
+                <th>รหัส</th>
+                <th>ชื่อ</th>
+                <th>ใช้ทำอะไร</th>
+                <th className="num">จำนวน</th>
+                <th className="num">บาท</th>
+              </tr>
+            </thead>
+            <tbody>
+              {TOOLS.map((tool) => (
+                <tr key={tool.code}>
+                  <td>
+                    <code>{tool.code}</code>
+                  </td>
+                  <td>
+                    {tool.url ? (
+                      <a href={tool.url} target="_blank" rel="noreferrer">
+                        <b>{tool.name}</b>
+                      </a>
+                    ) : (
+                      <b>{tool.name}</b>
+                    )}
+                  </td>
+                  <td>{tool.job}</td>
+                  <td className="num">{tool.qty}</td>
+                  <td className="num">{baht(tool.price * tool.qty)}</td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={4}>รวม</td>
+                <td className="num">{baht(TOOLS_TOTAL)}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </section>
 
       <section className="sheet section" aria-labelledby="bom">

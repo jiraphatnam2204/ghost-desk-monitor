@@ -27,7 +27,7 @@ The parts list with the reason for each item is on the site's Equipment page. Th
 | | | | **Pending subtotal** | **~2,290** |
 | | | | **Grand total** | **~7,264** |
 
-The grand total comes to about 1,455 baht per member, before shipping. The Equipment page budget (~6,310) covers project parts only and does not include the tools in PO-6.
+The grand total comes to about 1,455 baht per member, before shipping. The Equipment page budget (~7,265) covers the same items, tools included; the 1-baht difference is rounding in the estimates.
 
 ## 2. Orders placed
 

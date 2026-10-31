@@ -183,6 +183,44 @@ export const SUNDRIES = 400; // ~250 already ordered (allnewstep jumpers, breadb
 
 export const lineTotal = (part: Part) => part.price * part.qty;
 
+// Tools: assume the lab lends nothing. Checked on cybertice 31 Oct 2026; allnewstep had no multimeter or solder in stock.
+export interface Tool {
+  code: string;
+  name: string;
+  job: string;
+  price: number;
+  qty: number;
+  url?: string;
+}
+
+const CYBERTICE_SOLDERING = "https://www.cybertice.com/category/96/accessories/%E0%B8%AD%E0%B8%B8%E0%B8%9B%E0%B8%81%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%9A%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%A3%E0%B8%B5";
+const CYBERTICE_PLIERS = "https://www.cybertice.com/search?q=%E0%B8%84%E0%B8%B5%E0%B8%A1";
+
+export const TOOLS: Tool[] = [
+  {
+    code: "A0559",
+    name: "ชุดหัวแร้ง 60W ปรับอุณหภูมิ 200–450 °C (มีที่วาง ฟองน้ำ หัวเปลี่ยน 5 หัว ที่ดูดตะกั่ว)",
+    job: "บัดกรีขา header ของ FireBeetle, LD2410 ลงบอร์ดแปลงขา, สายแจ็ก DC",
+    price: 365,
+    qty: 1,
+    url: "https://www.cybertice.com/product/4821/%E0%B8%8A%E0%B8%B8%E0%B8%94%E0%B8%AD%E0%B8%B8%E0%B8%9B%E0%B8%81%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%9A%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%A3%E0%B8%B5-60w-%E0%B8%AB%E0%B8%B1%E0%B8%A7%E0%B9%81%E0%B8%A3%E0%B9%89%E0%B8%87%E0%B8%9B%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%AD%E0%B8%B8%E0%B8%93%E0%B8%AB%E0%B8%A0%E0%B8%B9%E0%B8%A1%E0%B8%B4%E0%B9%84%E0%B8%94%E0%B9%89",
+  },
+  { code: "A0087", name: "ตะกั่วบัดกรี 60/40 ยาว 2 เมตร", job: "ม้วนละ 2 เมตร เผื่อไว้ 2 ม้วน", price: 40, qty: 2, url: CYBERTICE_SOLDERING },
+  {
+    code: "A0341",
+    name: "มัลติมิเตอร์ DT9205A",
+    job: "วัดไฟ 5 V / 3.3 V, หาขั้วบวกของแจ็ก DC ก่อนต่อบอร์ด, หาสายขาด · ใช้ถ่าน 9 V (หน้าร้านไม่บอกว่าแถม)",
+    price: 270,
+    qty: 1,
+    url: "https://www.cybertice.com/search?q=%E0%B8%A1%E0%B8%B1%E0%B8%A5%E0%B8%95%E0%B8%B4%E0%B8%A1%E0%B8%B4%E0%B9%80%E0%B8%95%E0%B8%AD%E0%B8%A3%E0%B9%8C",
+  },
+  { code: "A0499", name: "คีมตัด สำหรับงานอิเล็กทรอนิกส์", job: "ตัดขาที่เกินหลังบัดกรี ตัดสาย", price: 40, qty: 1, url: CYBERTICE_PLIERS },
+  { code: "A0256", name: "คีมปอกสาย TUOSEN 6 นิ้ว", job: "ปอกสายแจ็ก DC และสายไฟ servo", price: 160, qty: 1, url: CYBERTICE_PLIERS },
+  { code: "A0491", name: "ลวดซับตะกั่ว 2.0 mm ยาว 1.5 เมตร", job: "เก็บตะกั่วที่เชื่อมขาติดกันตอนบัดกรีพลาด", price: 40, qty: 1, url: CYBERTICE_SOLDERING },
+];
+
+export const TOOLS_TOTAL = TOOLS.reduce((sum, tool) => sum + tool.price * tool.qty, 0);
+
 export const LABS = [
   {
     lab: "Lab 8 · ADC",
