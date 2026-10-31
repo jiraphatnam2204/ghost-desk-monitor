@@ -1,153 +1,67 @@
-/* wire colours follow the bench convention: red is 5 V, ground is dashed so it never relies on colour alone */
-.wiring {
-  --wire-v5: #d1453b;
-  --wire-v33: #c68412;
-  --wire-sig: var(--stamp);
-  --wire-sda: #1f8a5c;
-  --wire-scl: var(--stamp);
-  --wire-ana: #2f6fb0;
-  --wire-gnd: var(--toner-3);
-}
+/* breadboard-style drawings of the real parts: boards keep their real colours, wires are jumper colours */
 
 .wiring-grid {
   display: grid;
-  gap: clamp(36px, 5vw, 56px);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(40px, 6vw, 64px);
 }
 
-/* one drawing per row, big enough to read pin names; the notes sit beside it on wide screens */
 .wiring-figure {
-  display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
-  grid-template-areas: "title title" "plate points" "key points";
-  gap: 0 clamp(24px, 3vw, 44px);
-  align-items: start;
   margin: 0;
 }
 
 .wiring-figure h3 {
-  grid-area: title;
   margin-bottom: 10px;
   font-size: clamp(19px, 2vw, 22px);
   font-weight: 800;
 }
 
 .wiring-plate {
-  grid-area: plate;
-  padding: 14px;
+  padding: 10px;
   border: 1.5px solid var(--rule);
   background: #ffffff;
 }
 
-.wr-svg {
+.rw-svg {
   display: block;
   width: 100%;
   height: auto;
 }
 
-.wr-box {
-  fill: #ffffff;
-  stroke: var(--toner);
-  stroke-width: 1.5;
+/* the table of numbered wires beside the notes */
+.wiring-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 20px clamp(24px, 3vw, 44px);
+  align-items: start;
+  margin-top: 18px;
 }
 
-.wr-title {
-  font-family: var(--font-sans);
+.rw-table {
   font-size: 15px;
-  font-weight: 800;
-  fill: var(--toner);
 }
 
-.wr-text {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  fill: var(--toner-2);
+.rw-table td,
+.rw-table th {
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
 
-.wr-pin {
-  font-family: var(--font-sans);
-  font-size: 13.5px;
-  font-weight: 700;
-  fill: var(--toner);
+.rw-table td:first-child {
+  white-space: nowrap;
 }
 
-.wr-wire {
-  fill: none;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.wr-v5 {
-  stroke: var(--wire-v5);
-  stroke-width: 3;
-}
-
-.wr-v33 {
-  stroke: var(--wire-v33);
-}
-
-.wr-sig {
-  stroke: var(--wire-sig);
-}
-
-.wr-sda {
-  stroke: var(--wire-sda);
-}
-
-.wr-scl {
-  stroke: var(--wire-scl);
-}
-
-.wr-ana {
-  stroke: var(--wire-ana);
-}
-
-.wr-gnd {
-  stroke: var(--wire-gnd);
-  stroke-dasharray: 7 5;
-}
-
-.wr-link {
-  stroke: var(--toner-2);
-}
-
-.wr-dot {
-  stroke: none;
-}
-
-.wr-dot.wr-sda {
-  fill: var(--wire-sda);
-}
-
-.wr-dot.wr-scl {
-  fill: var(--wire-scl);
-}
-
-.wr-key {
-  grid-area: key;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 18px;
-  margin: 10px 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 14px;
-  color: var(--toner-2);
-}
-
-.wr-key li {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.wr-key svg {
-  width: 30px;
-  height: 10px;
+.rw-swatch {
+  display: inline-block;
+  width: 22px;
+  height: 8px;
+  margin-right: 8px;
+  border: 1px solid var(--toner-3);
+  border-radius: 4px;
+  vertical-align: middle;
 }
 
 .wiring-points {
-  grid-area: points;
   display: grid;
   gap: 10px;
   margin: 0;
@@ -163,24 +77,248 @@
   max-width: var(--measure);
 }
 
-@media (max-width: 960px) {
-  .wiring-figure {
-    grid-template-columns: 1fr;
-    grid-template-areas: "title" "plate" "key" "points";
-  }
+/* ---------- inside the drawing ---------- */
 
-  .wiring-points {
-    margin-top: 14px;
+.rw-board {
+  stroke: #0b0c0e;
+  stroke-width: 1;
+}
+
+.rw-pin {
+  fill: #c9a227;
+  stroke: #7a6012;
+  stroke-width: 0.8;
+}
+
+.rw-pin-hole {
+  fill: #3b2f08;
+}
+
+.rw-silk {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  fill: #f4f4f4;
+}
+
+.rw-off .rw-silk {
+  font-weight: 500;
+  fill-opacity: 0.5;
+}
+
+.rw-off .rw-pin {
+  fill-opacity: 0.55;
+}
+
+/* camera pins on the FireBeetle: on the header, but taken */
+.rw-cam .rw-silk {
+  font-weight: 500;
+  fill: #ff9e8f;
+}
+
+.rw-cam .rw-pin {
+  fill-opacity: 0.55;
+}
+
+.rw-silk-sm,
+.rw-silk-md,
+.rw-silk-lg {
+  font-family: var(--font-sans);
+  fill: #f4f4f4;
+}
+
+.rw-silk-sm {
+  font-size: 11px;
+}
+
+.rw-silk-md {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.rw-silk-lg {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.rw-note {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--toner-2);
+}
+
+.rw-usb {
+  fill: #c4c8ce;
+  stroke: #6f747b;
+}
+
+.rw-cam-body {
+  fill: #2c2f36;
+  stroke: #555a63;
+}
+
+.rw-cam-lens {
+  fill: #0d0e10;
+  stroke: #7d8590;
+  stroke-width: 2;
+}
+
+.rw-hole-mount {
+  fill: #ffffff;
+  stroke: #c9a227;
+  stroke-width: 3;
+}
+
+.rw-tof-eye {
+  fill: #f2c94c;
+}
+
+.rw-chip {
+  fill: #1b1b1b;
+}
+
+.rw-can {
+  fill: #c9ccd1;
+  stroke: #8a8f97;
+}
+
+.rw-antenna {
+  fill: #d9b44a;
+  stroke: #8a8f97;
+}
+
+.rw-mic {
+  fill: #222222;
+  stroke: #9aa0a6;
+  stroke-width: 3;
+}
+
+.rw-brick,
+.rw-jack,
+.rw-servo {
+  fill: #2a2c31;
+  stroke: #111214;
+}
+
+.rw-brick-text {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  fill: #f4f4f4;
+}
+
+.rw-brick-sub {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  fill: #c9ccd1;
+}
+
+.rw-horn {
+  fill: #f4f4f4;
+}
+
+.rw-cable {
+  fill: none;
+  stroke: #2a2c31;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.rw-cap {
+  fill: #2754a8;
+}
+
+.rw-cap-stripe {
+  fill: #c9d6f0;
+}
+
+.rw-leg {
+  fill: none;
+  stroke: #8a8f97;
+  stroke-width: 2.5;
+}
+
+.rw-breadboard {
+  fill: #f2efe6;
+  stroke: #cfc9b8;
+}
+
+.rw-rail-plus,
+.rw-rail-minus {
+  stroke-width: 2;
+}
+
+.rw-rail-plus {
+  stroke: #d1453b;
+}
+
+.rw-rail-minus {
+  stroke: #2f6fb0;
+}
+
+.rw-hole {
+  fill: #b9b2a0;
+}
+
+.rw-rail-label {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.rw-plus {
+  fill: #b5352c;
+}
+
+.rw-minus {
+  fill: #24588f;
+}
+
+.rw-wire {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+/* a white jumper needs an edge to be seen on white paper */
+.rw-wire-edge {
+  fill: none;
+  stroke: #8a8f97;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.rw-end {
+  fill: #ffffff;
+  stroke: #2b2b2b;
+  stroke-width: 1.5;
+}
+
+.rw-tag circle {
+  fill: #1b1c1e;
+}
+
+.rw-tag text {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 800;
+  fill: #ffffff;
+}
+
+@media (max-width: 860px) {
+  .wiring-detail {
+    grid-template-columns: 1fr;
   }
 }
 
 /* keep pin names readable on a phone: the drawing scrolls sideways instead of shrinking */
-@media (max-width: 560px) {
+@media (max-width: 760px) {
   .wiring-plate {
     overflow-x: auto;
   }
 
-  .wr-svg {
-    min-width: 540px;
+  .rw-svg {
+    min-width: 720px;
   }
 }
