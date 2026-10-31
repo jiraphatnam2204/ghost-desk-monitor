@@ -57,7 +57,8 @@ Every push to `main` rebuilds the live site in about 2 minutes; watch it in the 
 |---|---|
 | A problem or the AI decision (P1) | `site/data/problems.json` |
 | Rubric scorecard status | `site/data/progress.json` |
-| Build plan step status | `site/data/workflow.json` |
+| Parts, prices and order status | `site/lib/equipment.ts` |
+| Build plan steps | `site/lib/workflow.ts` |
 | Proposal / report text | `site/lib/docs-content.ts` |
 
 Optional check before pushing: `npm run build` inside `site/` (it fails on a broken JSON file, so the live site never breaks).
@@ -84,7 +85,7 @@ feat(node): read LD2410 frames over UART
 | Path | What's there |
 |---|---|
 | `site/` | The team site (Next.js, static export, deployed to GitHub Pages) |
-| `site/data/` | Shared status the team edits: `progress.json` (rubric), `problems.json`, `workflow.json` (build steps) |
+| `site/data/` | Shared status the team edits: `progress.json` (rubric), `problems.json` |
 | `docs/strategy.md` | Product strategy session: positioning, problem framing, roadmap, decisions |
 | `docs/order-list.md` | What to buy, from which shop, with links and a check before paying |
 | `docs/proposal-overleaf/` | The proposal as submitted on 30 Oct (Thai, LaTeX for Overleaf, compile with XeLaTeX), without student IDs; the copy with IDs and the PDF stay in a git-ignored `private/` folder |

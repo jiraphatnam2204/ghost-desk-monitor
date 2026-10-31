@@ -1,15 +1,6 @@
-// How the project gets built, start to finish: which equipment comes first, each step's done-when test,
-// owner and week. Status lives in data/workflow.json so the team can tick steps off by editing and pushing.
-import status from "@/data/workflow.json";
+// How the project gets built, start to finish: phases by week, and for each step what to do,
+// its done-when test and its owner.
 import { STRUCT } from "./message-format";
-
-export type StepStatus = "not-started" | "in-progress" | "done" | "blocked";
-export const STEP_STATUS_LABEL: Record<StepStatus, string> = {
-  "not-started": "ยังไม่เริ่ม",
-  "in-progress": "กำลังทำ",
-  done: "เสร็จแล้ว",
-  blocked: "ติดอยู่",
-};
 
 export interface Step {
   id: string;
@@ -523,9 +514,3 @@ export const PHASES: Phase[] = [
 ];
 
 export const STEPS = PHASES.flatMap((phase) => phase.steps);
-const saved = status as { updated: string; steps: Record<string, StepStatus> };
-export const WORKFLOW_UPDATED = saved.updated;
-export const statusOf = (id: string): StepStatus => saved.steps[id] ?? "not-started";
-
-// The phase the team is in: the first one with a step not done yet.
-export const CURRENT_PHASE = PHASES.find((phase) => phase.steps.some((step) => statusOf(step.id) !== "done")) ?? PHASES[PHASES.length - 1];

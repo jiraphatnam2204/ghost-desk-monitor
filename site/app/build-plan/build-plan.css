@@ -1,57 +1,3 @@
-/* ---------- now ---------- */
-
-.now {
-  padding-bottom: clamp(40px, 6vw, 64px);
-}
-
-.now-box {
-  display: grid;
-  gap: 8px;
-  padding: 20px 22px 18px;
-  border: 4px double var(--rule);
-}
-
-.now-box h2 {
-  font-size: clamp(24px, 3vw, 34px);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.now-meta {
-  max-width: var(--measure);
-  color: var(--toner-2);
-}
-
-.now-steps {
-  margin: 8px 0 0;
-  padding: 0;
-  list-style: none;
-  border-top: 2px solid var(--rule);
-}
-
-.now-steps li {
-  border-bottom: 1px solid var(--rule-soft);
-}
-
-.now-steps a {
-  display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) auto;
-  gap: 4px 12px;
-  align-items: start;
-  padding: 10px 0;
-  text-decoration: none;
-}
-
-.now-steps a:hover b {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
-
-.now-foot {
-  font-size: 15px;
-  color: var(--toner-2);
-}
-
 /* ---------- phases ---------- */
 
 .phases {
@@ -94,11 +40,6 @@
   border: 2px solid var(--toner);
   font-size: 18px;
   font-weight: 800;
-}
-
-.phase[data-current] .phase-letter {
-  background: var(--toner);
-  color: var(--paper);
 }
 
 .phase-title {
@@ -163,7 +104,7 @@
 
 .step-head {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) auto;
+  grid-template-columns: 44px minmax(0, 1fr);
   gap: 4px 12px;
   align-items: start;
   width: 100%;
@@ -207,43 +148,6 @@
 .step-owner {
   font-size: 13.5px;
   color: var(--toner-2);
-}
-
-.step-status {
-  padding: 1px 8px 2px;
-  border: 1.5px solid var(--rule-soft);
-  font-size: 12.5px;
-  font-weight: 700;
-  color: var(--toner-2);
-  white-space: nowrap;
-}
-
-.step-status[data-status="in-progress"] {
-  border: 1.5px dashed var(--toner);
-  color: var(--toner);
-}
-
-.step-status[data-status="done"] {
-  border-color: var(--toner);
-  background: var(--toner);
-  color: var(--paper);
-}
-
-.step-status[data-status="blocked"] {
-  border: 2px solid var(--stamp);
-  color: var(--stamp);
-}
-
-@media (max-width: 640px) {
-  .step-head,
-  .now-steps a {
-    grid-template-columns: 44px minmax(0, 1fr);
-  }
-
-  .step-status {
-    grid-column: 2;
-    justify-self: start;
-  }
 }
 
 /* ---------- open step ---------- */

@@ -1,15 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { CURRENT_PHASE, PHASES, STEP_STATUS_LABEL, statusOf, type Phase, type Step } from "@/lib/workflow";
+import { PHASES, type Phase, type Step } from "@/lib/workflow";
 
 const phaseOf = new Map(PHASES.flatMap((phase) => phase.steps.map((step) => [step.id, phase.id] as const)));
-const firstOpen = CURRENT_PHASE.steps.find((step) => statusOf(step.id) === "in-progress") ?? CURRENT_PHASE.steps.find((step) => statusOf(step.id) !== "done");
 
-// The build, phase by phase. Only the current phase starts open; a step opens to what to do and when it is done.
+// The build, phase by phase. Every phase starts folded; a step opens to what to do and when it is done.
 export function Workflow({ extras = {} }: { extras?: Record<string, React.ReactNode> }) {
-  const [phases, setPhases] = React.useState<Set<string>>(() => new Set([CURRENT_PHASE.id]));
-  const [open, setOpen] = React.useState<string>(firstOpen?.id ?? "");
+  const [phases, setPhases] = React.useState<Set<string>>(() => new Set());
+  const [open, setOpen] = React.useState("");
   const scrollTo = React.useRef<{ id: string; smooth: boolean } | null>(null);
 
   const choose = React.useCallback((id: string, smooth = true) => {
@@ -56,8 +55,8 @@ export function Workflow({ extras = {} }: { extras?: Record<string, React.ReactN
     <ol className="phases">
       {PHASES.map((phase) => (
         <PhaseRow key={phase.id} phase={phase} expanded={phases.has(phase.id)} onToggle={() => togglePhase(phase.id)}>
-          {phase.steps.map((item) => (
-            <StepRow key={item.id} step={item} open={item.id === open} extra={extras[item.id]} onToggle={() => setOpen(item.id === open ? "" : item.id)} onJump={choose} />
+          {phase.steps.map((step) => (
+            <StepRow key={step.id} step={step} open={step.id === open} extra={extras[step.id]} onToggle={() => setOpen(step.id === open ? "" : step.id)} onJump={choose} />
           ))}
         </PhaseRow>
       ))}
@@ -66,9 +65,8 @@ export function Workflow({ extras = {} }: { extras?: Record<string, React.ReactN
 }
 
 function PhaseRow({ phase, expanded, onToggle, children }: { phase: Phase; expanded: boolean; onToggle: () => void; children: React.ReactNode }) {
-  const done = phase.steps.filter((step) => statusOf(step.id) === "done").length;
   return (
-    <li className="phase" id={`phase-${phase.id}`} data-current={phase.id === CURRENT_PHASE.id ? "" : undefined}>
+    <li className="phase" id={`phase-${phase.id}`}>
       <button type="button" className="phase-head" aria-expanded={expanded} onClick={onToggle}>
         <b className="phase-letter">{phase.id}</b>
         <span className="phase-title">
@@ -77,9 +75,7 @@ function PhaseRow({ phase, expanded, onToggle, children }: { phase: Phase; expan
         </span>
         <span className="phase-meta">
           <span>{phase.week}</span>
-          <span>
-            เสร็จ {done} / {phase.steps.length}
-          </span>
+          <span>{phase.steps.length} ขั้น</span>
         </span>
       </button>
       {expanded ? <ol className="steps">{children}</ol> : null}
@@ -88,17 +84,13 @@ function PhaseRow({ phase, expanded, onToggle, children }: { phase: Phase; expan
 }
 
 function StepRow({ step, open, extra, onToggle, onJump }: { step: Step; open: boolean; extra?: React.ReactNode; onToggle: () => void; onJump: (id: string) => void }) {
-  const status = statusOf(step.id);
   return (
-    <li className="step" id={`step-${step.id}`} data-open={open ? "" : undefined} data-status={status}>
+    <li className="step" id={`step-${step.id}`} data-open={open ? "" : undefined}>
       <button type="button" className="step-head" aria-expanded={open} onClick={onToggle}>
         <span className="step-id">{step.id}</span>
         <span className="step-title">
           <b>{step.title}</b>
           <span className="step-owner">{step.owner}</span>
-        </span>
-        <span className="step-status" data-status={status}>
-          {STEP_STATUS_LABEL[status]}
         </span>
       </button>
       {open ? (
@@ -112,28 +104,7 @@ function StepRow({ step, open, extra, onToggle, onJump }: { step: Step; open: bo
             </ul>
           </div>
           {step.code ? <pre className="step-code">{step.code}</pre> : null}
-          {step.table ? (
-            <div className="scroll-x">
-              <table className="register step-table">
-                <thead>
-                  <tr>
-                    {step.table.head.map((cell) => (
-                      <th key={cell}>{cell}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {step.table.rows.map((row) => (
-                    <tr key={row.join("|")}>
-                      {row.map((cell, index) => (
-                        <td key={index}>{index === 0 ? <code>{cell}</code> : cell}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : null}
+          {step.table ? <StepTable table={step.table} /> : null}
           {extra}
           <p className="step-done">
             <span className="field-label">เสร็จเมื่อ</span>
@@ -168,5 +139,30 @@ function StepRow({ step, open, extra, onToggle, onJump }: { step: Step; open: bo
         </div>
       ) : null}
     </li>
+  );
+}
+
+function StepTable({ table }: { table: NonNullable<Step["table"]> }) {
+  return (
+    <div className="scroll-x">
+      <table className="register step-table">
+        <thead>
+          <tr>
+            {table.head.map((cell) => (
+              <th key={cell}>{cell}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {table.rows.map((row) => (
+            <tr key={row.join("|")}>
+              {row.map((cell, index) => (
+                <td key={index}>{index === 0 ? <code>{cell}</code> : cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

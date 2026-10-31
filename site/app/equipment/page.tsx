@@ -4,18 +4,16 @@ import { FigureSide } from "@/components/figure-side";
 import { Enlarge } from "@/components/enlarge";
 import { GatewayFigure } from "@/components/figures/gateway/figure";
 import { NodeFigure } from "@/components/figures/node/figure";
-import { PartsRegister } from "@/components/parts-register";
-import { MISC, SUNDRIES, TOOLS, TOOLS_TOTAL, baht } from "@/lib/project";
+import { AccessoriesTable, Budget, MiscList, PartsList, ToolsTable } from "@/components/equipment";
+import { BUDGET, baht } from "@/lib/equipment";
 import "@/components/figure-side.css";
 import "../pages.css";
 import "./equipment.css";
 
 export const metadata: Metadata = {
   title: "Equipment",
-  description: "อุปกรณ์ทุกชิ้นของ Ghost-Desk Monitor: ใช้ทำอะไร ราคาเท่าไร สั่งแล้วหรือยัง และประกอบกันอย่างไร",
+  description: "อุปกรณ์ทุกชิ้นของ Ghost-Desk Monitor รวมอุปกรณ์เสริมและเครื่องมือ: ใช้ทำอะไร ราคาเท่าไร สั่งแล้วหรือยัง และประกอบกันอย่างไร",
 };
-
-const WHERE = { node: "Node", gateway: "Gateway", both: "ทั้งสองฝั่ง" } as const;
 
 export default function EquipmentPage() {
   return (
@@ -32,102 +30,35 @@ export default function EquipmentPage() {
             sensor 6 ตัวทำงานอย่างไร
           </Link>
         </div>
-        <PartsRegister />
+        <Budget />
+        <PartsList />
+        <p className="note gap">ราคาเช็กจากหน้าร้าน 28–31 ต.ค. 2026 · ใบสั่งซื้อเต็มพร้อมรหัสสินค้าอยู่ใน docs/order-list.md</p>
+      </section>
+
+      <section className="sheet section" aria-labelledby="accessories">
+        <div className="section-head">
+          <h2 id="accessories">Accessories · อุปกรณ์เสริม</h2>
+          <span className="ref">{baht(BUDGET.accessories)} บาท · สั่งแล้วครบ</span>
+        </div>
+        <AccessoriesTable />
       </section>
 
       <section className="sheet section" aria-labelledby="misc">
         <div className="section-head">
           <h2 id="misc">Small parts · ของจิปาถะ</h2>
-          <span className="ref">~{baht(SUNDRIES)} บาท (ประมาณ)</span>
+          <span className="ref">~{baht(BUDGET.misc)} บาท (ประมาณ)</span>
         </div>
-        <p className="lede misc-lede">ทำต้นแบบจากของถูกก่อน เช่น ฟิวเจอร์บอร์ด ขาตั้งมือถือ แล้วค่อยทำตัวจริงเมื่อขนาดนิ่ง</p>
-        <ol className="rows rows-misc">
-          {MISC.map((item) => (
-            <li key={item.id} id={`misc-${item.id}`}>
-              <details>
-                <summary>
-                  <span className="row-name">
-                    <b>{item.name}</b>
-                    <small>
-                      {WHERE[item.where]} · {item.qty}
-                    </small>
-                  </span>
-                  <span className="row-use">{item.use}</span>
-                  <span className="row-step">ขั้น {item.step}</span>
-                </summary>
-                <dl className="row-facts">
-                  <div>
-                    <dt className="field-label">ไว้ทำอะไร</dt>
-                    <dd>{item.job}</dd>
-                  </div>
-                  <div>
-                    <dt className="field-label">ทำ / ซื้ออย่างไร</dt>
-                    <dd>{item.make}</dd>
-                  </div>
-                  {item.watch ? (
-                    <div className="wide row-watch">
-                      <dt className="field-label">ระวัง</dt>
-                      <dd>{item.watch}</dd>
-                    </div>
-                  ) : null}
-                  <div className="wide">
-                    <dd>
-                      <Link href={`/build-plan/#step-${item.step}`}>ไปที่ขั้น {item.step} ใน Build Plan</Link>
-                    </dd>
-                  </div>
-                </dl>
-              </details>
-            </li>
-          ))}
-        </ol>
+        <p className="lede section-lede">ทำต้นแบบจากของถูกก่อน เช่น ฟิวเจอร์บอร์ด ขาตั้งมือถือ แล้วค่อยทำตัวจริงเมื่อขนาดนิ่ง</p>
+        <MiscList />
       </section>
 
       <section className="sheet section" aria-labelledby="tools">
         <div className="section-head">
           <h2 id="tools">Tools · เครื่องมือช่าง</h2>
-          <span className="ref">cybertice · {baht(TOOLS_TOTAL)} บาท · ยังไม่สั่ง</span>
+          <span className="ref">cybertice · {baht(BUDGET.tools)} บาท</span>
         </div>
-        <p className="lede misc-lede">ต้องมีก่อนของถึง เพราะต้องบัดกรีขา FireBeetle, LD2410 และสายแจ็ก DC เอง · ถ้าในทีมมีอยู่แล้วตัดรายการนั้นออกได้</p>
-        <div className="scroll-x">
-          <table className="register stack-sm">
-            <thead>
-              <tr>
-                <th>รหัส</th>
-                <th>ชื่อ</th>
-                <th>ใช้ทำอะไร</th>
-                <th className="num">จำนวน</th>
-                <th className="num">บาท</th>
-              </tr>
-            </thead>
-            <tbody>
-              {TOOLS.map((tool) => (
-                <tr key={tool.code}>
-                  <td>
-                    <code>{tool.code}</code>
-                  </td>
-                  <td>
-                    {tool.url ? (
-                      <a href={tool.url} target="_blank" rel="noreferrer">
-                        <b>{tool.name}</b>
-                      </a>
-                    ) : (
-                      <b>{tool.name}</b>
-                    )}
-                  </td>
-                  <td>{tool.job}</td>
-                  <td className="num">{tool.qty}</td>
-                  <td className="num">{baht(tool.price * tool.qty)}</td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colSpan={4}>รวม</td>
-                <td className="num">{baht(TOOLS_TOTAL)}</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+        <p className="lede section-lede">ต้องมีก่อนของถึง เพราะต้องบัดกรีขา FireBeetle, LD2410 และสายแจ็ก DC เอง · ถ้าในทีมมีอยู่แล้วตัดรายการนั้นออกได้</p>
+        <ToolsTable />
       </section>
 
       <section className="sheet section" aria-labelledby="node">

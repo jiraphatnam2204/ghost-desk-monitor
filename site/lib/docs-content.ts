@@ -1,5 +1,5 @@
 // Formal documents for the course instructor, in English and Thai.
-// Sources: docs/strategy.md (28 Oct 2026), lib/project.ts, the course brief; sensor and AI plan changed 29 Oct 2026.
+// Sources: docs/strategy.md (28 Oct 2026), lib/equipment.ts, the course brief; sensor and AI plan changed 29 Oct 2026.
 // Nothing here is measured yet: anything that needs data is a `todo` block.
 import { STRUCT } from "./message-format";
 

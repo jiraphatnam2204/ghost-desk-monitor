@@ -1,16 +1,24 @@
-// Project facts shown on the site. Source: docs/strategy.md (28 Oct 2026); sensor and AI plan changed 29 Oct 2026.
-// Prices were checked on shop pages on 28–29 Oct 2026 unless marked as an estimate.
+// Everything the build needs, what it costs and whether it is ordered: the Equipment page and docs/order-list.md.
+// Prices were checked on the shop pages 28–31 Oct 2026; orders were placed on 31 Oct 2026.
 
 export type Level = "ง่าย" | "กลาง" | "ยาก";
-
 export type Order = "ordered" | "partial" | "pending" | "have";
-export const ORDER_LABEL: Record<Order, string> = { ordered: "สั่งแล้ว", partial: "สั่งแล้ว 1 จาก 2", pending: "ยังไม่สั่ง", have: "มีแล้ว" };
+
+export const ORDER_LABEL: Record<Order, string> = {
+  ordered: "สั่งแล้ว",
+  partial: "สั่งแล้วบางส่วน",
+  pending: "ยังไม่สั่ง",
+  have: "มีแล้ว",
+};
+
+/* ---------- main parts ---------- */
 
 export interface Part {
   id: string;
   name: string;
   use: string;
   order: Order;
+  orderNote?: string;
   where: "node" | "gateway";
   role: string;
   bus: string;
@@ -21,7 +29,6 @@ export interface Part {
   url?: string;
   price: number;
   qty: number;
-  estimate?: boolean;
   why: string;
   note?: string;
 }
@@ -29,9 +36,10 @@ export interface Part {
 export const PARTS: Part[] = [
   {
     id: "firebeetle",
+    name: "FireBeetle 2 ESP32-S3 + กล้อง OV2640",
     use: "สมองของ node และกล้องถ่ายโต๊ะ",
     order: "partial",
-    name: "FireBeetle 2 ESP32-S3 + กล้อง OV2640",
+    orderNote: "สั่งแล้ว 1 จาก 2 · ตัวที่ 2 สั่งหลัง PoC ผ่าน ภายใน 13 พ.ย.",
     where: "node",
     role: "สมองของ node: อ่านเรดาร์และ ToF 10 ครั้ง/วินาทีส่งให้ gateway, ถ่ายภาพเมื่อ gateway ขอ, สั่ง servo",
     bus: "กล้องต่อสาย FPC มากับบอร์ด",
@@ -47,9 +55,9 @@ export const PARTS: Part[] = [
   },
   {
     id: "ld2410",
+    name: "HLK-LD2410 mmWave 24 GHz",
     use: "จับว่ามีคนนั่ง แม้นั่งนิ่ง (จากการหายใจ)",
     order: "ordered",
-    name: "HLK-LD2410 mmWave 24 GHz",
     where: "node",
     role: "รู้ว่ามีคนนั่งแม้นั่งนิ่ง เพราะจับการหายใจได้ (PIR ทำไม่ได้) · โหมด engineering ให้พลังงาน 9 ช่วงระยะ × 2 (ขยับ/นิ่ง) เป็น feature หลักของโมเดล AI ที่ gateway",
     bus: "UART + ขา OUT (ใช้ทำ interrupt)",
@@ -64,9 +72,9 @@ export const PARTS: Part[] = [
   },
   {
     id: "vl53l1x",
+    name: "VL53L1X วัดระยะด้วยแสงเลเซอร์ (ToF)",
     use: "วัดระยะลงที่เบาะเก้าอี้ มีคนนั่งระยะจะสั้นลง",
     order: "ordered",
-    name: "VL53L1X วัดระยะด้วยแสงเลเซอร์ (ToF)",
     where: "node",
     role: "วัดระยะจากหัว node ลงไปที่เบาะเก้าอี้: มีคนนั่งระยะจะสั้นลงและขยับตามการหายใจ · ป้อนโมเดล AI ที่ gateway คู่กับเรดาร์",
     bus: "I²C + ขา GPIO1 (data ready)",
@@ -82,9 +90,9 @@ export const PARTS: Part[] = [
   },
   {
     id: "servo",
+    name: "TD-7120MG servo 0–270°",
     use: "หมุนป้ายปริซึม 3 หน้า",
     order: "ordered",
-    name: "TD-7120MG servo 0–270°",
     where: "node",
     role: "หมุนป้ายปริซึม 3 หน้า ไปที่ 0° / 120° / 240°",
     bus: "PWM 1 ขา",
@@ -100,9 +108,9 @@ export const PARTS: Part[] = [
   },
   {
     id: "adapter-node",
+    name: "อแดปเตอร์ 5V 2A",
     use: "ไฟเลี้ยงโต๊ะละ 1 ตัว",
     order: "ordered",
-    name: "อแดปเตอร์ 5V 2A",
     where: "node",
     role: "ไฟเลี้ยงโต๊ะละตัว: กล้อง + Wi-Fi + servo กินไฟพร้อมกัน",
     bus: "แจ็ก 5.5×2.5",
@@ -117,9 +125,9 @@ export const PARTS: Part[] = [
   },
   {
     id: "yd-esp32",
+    name: "Waveshare ESP32-S3-DEV-KIT-N8R8",
     use: "สมองของ gateway รันโมเดล AI ส่งข้อมูลขึ้น cloud",
     order: "ordered",
-    name: "Waveshare ESP32-S3-DEV-KIT-N8R8",
     where: "gateway",
     role: "สมองของ gateway: รันโมเดล AI (E7), state machine, ตัวจับเวลา 2/20/30 นาที, ส่งภาพไปถาม cloud AI, ส่งข้อมูลขึ้น cloud, ส่ง LINE",
     bus: "Wi-Fi + ESP-NOW",
@@ -135,9 +143,9 @@ export const PARTS: Part[] = [
   },
   {
     id: "scd41",
+    name: "SCD41 CO₂",
     use: "วัด CO₂ ในห้อง แสดงบน dashboard",
     order: "ordered",
-    name: "SCD41 CO₂",
     where: "gateway",
     role: "แสดงบน dashboard: คุณภาพอากาศในห้อง และใช้ประมาณความหนาแน่นของคน",
     bus: "I²C (bus เดียวกับ BH1750)",
@@ -153,9 +161,9 @@ export const PARTS: Part[] = [
   },
   {
     id: "max4466",
+    name: "ไมค์อนาล็อก MAX4466",
     use: "วัดระดับเสียงในห้อง",
     order: "ordered",
-    name: "ไมค์อนาล็อก MAX4466",
     where: "gateway",
     role: "แสดงบน dashboard: ระดับเสียงในห้อง แจ้ง staff ถ้า quiet zone ดังเกิน",
     bus: "ADC 1 ขา",
@@ -171,9 +179,9 @@ export const PARTS: Part[] = [
   },
   {
     id: "bh1750",
+    name: "GY-302 BH1750 วัดแสง",
     use: "วัดแสงในห้อง",
     order: "ordered",
-    name: "GY-302 BH1750 วัดแสง",
     where: "gateway",
     role: "แสดงบน dashboard: แสงในห้อง และบอกช่วงเปิด/ปิดไฟ",
     bus: "I²C",
@@ -188,9 +196,9 @@ export const PARTS: Part[] = [
   },
   {
     id: "adapter-gw",
+    name: "ที่ชาร์จมือถือ 5V + สาย USB-C",
     use: "ไฟเลี้ยง gateway",
     order: "have",
-    name: "ที่ชาร์จมือถือ 5V + สาย USB-C",
     where: "gateway",
     role: "ไฟเลี้ยง gateway ตลอดการรัน 24 ชม.",
     bus: "USB-C",
@@ -204,16 +212,181 @@ export const PARTS: Part[] = [
   },
 ];
 
-export const SUNDRIES = 400; // ~250 already ordered (allnewstep jumpers, breadboards, headers, adapter boards, DC jacks; cybertice capacitors) + ~150 enclosure and printing
-export const SUNDRIES_LEFT = 150; // the part of SUNDRIES not bought yet
+export const lineTotal = (item: { price: number; qty: number }) => item.price * item.qty;
 
-export const lineTotal = (part: Part) => part.price * part.qty;
+/* ---------- accessories: small bought parts, all ordered 31 Oct ---------- */
 
-// Tools: assume the lab lends nothing. Checked on cybertice 31 Oct 2026; allnewstep had no multimeter or solder in stock.
+export interface Accessory {
+  code: string;
+  name: string;
+  use: string;
+  shop: string;
+  price: number;
+  qty: number;
+  order: Order;
+}
+
+export const ACCESSORIES: Accessory[] = [
+  { code: "E0044", name: "ตัวเก็บประจุ 1000 µF 50V", use: "ติดข้าง servo กันบอร์ดรีเซ็ต", shop: "cybertice", price: 6, qty: 2, order: "ordered" },
+  { code: "A1121", name: "บอร์ดแปลงขา 8-pin 1.27/2.0 → 2.54 mm", use: "ให้ LD2410 เสียบ breadboard ได้ (ใช้ 2 สำรอง 2)", shop: "allnewstep", price: 7, qty: 4, order: "ordered" },
+  { code: "A836", name: "แจ็ก DC ตัวเมีย 5.5×2.5 mm", use: "รับไฟจากอแดปเตอร์ บัดกรีสายเอง", shop: "allnewstep", price: 10, qty: 2, order: "ordered" },
+  { code: "A247", name: "Breadboard MB-102", use: "ต่อวงจรทดลอง", shop: "allnewstep", price: 37, qty: 2, order: "ordered" },
+  { code: "A2329", name: "สายจัมเปอร์ ผู้-เมีย", use: "ต่อขาบอร์ดกับโมดูล", shop: "allnewstep", price: 2, qty: 20, order: "ordered" },
+  { code: "A2331", name: "สายจัมเปอร์ ผู้-ผู้", use: "ต่อบน breadboard · ตัดใช้เป็นสายแจ็ก DC", shop: "allnewstep", price: 2, qty: 20, order: "ordered" },
+  { code: "A2330", name: "สายจัมเปอร์ เมีย-เมีย", use: "ต่อขาโมดูลกับขาบอร์ดตรง ๆ", shop: "allnewstep", price: 2, qty: 10, order: "ordered" },
+  { code: "A233", name: "Pin header 1×40", use: "บัดกรีขาให้บอร์ดและโมดูล", shop: "allnewstep", price: 5, qty: 3, order: "ordered" },
+];
+
+/* ---------- small and mechanical parts: made or bought later, one estimate ---------- */
+
+export const MISC_ESTIMATE = 150; // perfboard, enclosure material, printing
+
+export interface Misc {
+  id: string;
+  name: string;
+  use: string;
+  order: Order;
+  orderNote?: string;
+  where: "node" | "gateway" | "both";
+  qty: string;
+  job: string;
+  make: string;
+  watch?: string;
+  step: string;
+}
+
+export const MISC: Misc[] = [
+  {
+    id: "cap",
+    name: "ตัวเก็บประจุ 1000 µF 50V",
+    use: "กันบอร์ดรีเซ็ตตอน servo เริ่มหมุน",
+    order: "ordered",
+    orderNote: "E0044 × 2 จาก cybertice",
+    where: "node",
+    qty: "1 ต่อโต๊ะ",
+    job: "กันบอร์ดรีเซ็ตตอน servo เริ่มหมุน: servo ดึงกระแสกระชากสูงชั่วขณะ แรงดัน 5 V จึงตกวูบ ตัวเก็บประจุจ่ายกระแสช่วงนั้นแทนอแดปเตอร์",
+    make: "ต่อคร่อมสาย + กับ − ของไฟ servo ให้ใกล้ขั้ว servo ที่สุด",
+    watch: "มีขั้ว: ขาสั้น / แถบข้างตัว = ขาลบ ต่อกลับขั้วแล้วเสียหรือบวมได้ · เลือกแรงดัน ≥ 10 V",
+    step: "C4",
+  },
+  {
+    id: "power-split",
+    name: "แจ็ก DC ตัวเมีย 5.5×2.5 + terminal block",
+    use: "แยกไฟจากอแดปเตอร์ไปบอร์ดและ servo",
+    order: "partial",
+    orderNote: "แจ็ก DC สั่งแล้ว · terminal block ยังไม่สั่ง",
+    where: "node",
+    qty: "1 ชุดต่อโต๊ะ",
+    job: "แยกไฟ 5 V จากอแดปเตอร์ไปสองทาง: บอร์ด FireBeetle และ servo โดยใช้ GND ร่วมกัน",
+    make: "ขันสายใน terminal block · servo ไม่ดึงไฟผ่านบอร์ด",
+    watch: "GND ของ servo, บอร์ด และอแดปเตอร์ต้องต่อถึงกัน ไม่งั้นสัญญาณ PWM เพี้ยน",
+    step: "C4",
+  },
+  {
+    id: "perfboard",
+    name: "Breadboard → perfboard, header, สายจัมเปอร์",
+    use: "ต่อวงจรทดลอง แล้วย้ายลงแผ่นถาวร",
+    order: "partial",
+    orderNote: "breadboard, header, สายจัมเปอร์สั่งแล้ว · perfboard ยังไม่สั่ง",
+    where: "both",
+    qty: "ตามใช้",
+    job: "ทดลองบน breadboard ก่อน แล้วย้ายวงจร node ลง perfboard เมื่อ pin map นิ่ง สายจะไม่หลุดตอนยกโต๊ะ",
+    make: "ใช้ header ตัวเมียเสียบบอร์ดและโมดูล จะถอดคืนได้",
+    watch: "ใช้ header ไม่บัดกรีโมดูลตรง จะได้ถอดเปลี่ยนตัวที่เสียได้",
+    step: "F4",
+  },
+  {
+    id: "mast",
+    name: "เสาและแขนจับหัวกล้อง",
+    use: "ยกกล้องและ ToF ให้เห็นโต๊ะและเก้าอี้",
+    order: "pending",
+    where: "node",
+    qty: "1 ต่อโต๊ะ",
+    job: "ยกกล้องและ VL53L1X ให้สูงพอจะเห็นทั้งพื้นโต๊ะและเก้าอี้ มองลงเฉียง ๆ · VL53L1X เล็งลงที่เบาะเก้าอี้",
+    make: "ต้นแบบ: ขาตั้งมือถือแบบหนีบขอบโต๊ะ ปรับมุมได้ · ตัวจริง: แขนพิมพ์ 3D หรือท่อ PVC + ตัวหนีบ",
+    watch: "ปรับจนภาพเห็นพื้นโต๊ะครบและ ToF เห็นเบาะ ก่อนเริ่มเก็บ dataset ห้ามขยับมุมหลังจากนั้น",
+    step: "C5",
+  },
+  {
+    id: "head-box",
+    name: "กล่องหัวกล้อง",
+    use: "ครอบบอร์ดกับกล้องเป็นชิ้นเดียว",
+    order: "pending",
+    where: "node",
+    qty: "1 ต่อโต๊ะ",
+    job: "ครอบ FireBeetle 2 ให้เป็นชิ้นเดียวกับเลนส์และ VL53L1X กันฝุ่นและมือ",
+    make: "กล่องพิมพ์ 3D หรือกล่องพลาสติกเล็ก เจาะรูเลนส์และช่องเซ็นเซอร์",
+    watch: "หน้า VL53L1X ต้องเปิดโล่ง: แผ่นพลาสติก / อะคริลิกสะท้อนเลเซอร์กลับเข้าเซนเซอร์ ระยะจะเพี้ยน",
+    step: "F4",
+  },
+  {
+    id: "radar-mount",
+    name: "ที่ยึด LD2410 ใต้ขอบโต๊ะ",
+    use: "ยึดเรดาร์ใต้ขอบโต๊ะ หันหาเก้าอี้",
+    order: "pending",
+    where: "node",
+    qty: "1 ต่อโต๊ะ",
+    job: "ให้เรดาร์หันหาเก้าอี้ระดับอก จับการหายใจของคนที่นั่ง",
+    make: "เทปโฟมสองหน้าหรือสกรูเล็กบนแผ่นหน้าโต๊ะ",
+    watch: "ห้ามมีโลหะบังด้านหน้า · ทดสอบใหม่ทุกครั้งที่ย้ายตำแหน่ง",
+    step: "C5",
+  },
+  {
+    id: "prism",
+    name: "ป้ายปริซึม 3 หน้า + แผ่นข้าง + ฐาน",
+    use: "ป้าย 3 หน้า ชมพู / เหลือง / เขียว",
+    order: "pending",
+    where: "node",
+    qty: "1 ชุดต่อโต๊ะ",
+    job: "หน้าที่คนในห้องเห็น: ชมพู ใช้งาน · เหลือง ไม่อยู่ · เขียว ว่าง",
+    make: "ต้นแบบ: ฟิวเจอร์บอร์ด / foam board · ตัวจริง: พิมพ์ 3D หรืออะคริลิก · หน้าพิมพ์สีติดกาว · ปลายหนึ่งยึด horn ของ servo ปลายอีกข้างหมุนบนแกน",
+    watch: "ต้องเบาและสมดุล ไม่งั้น servo ต้องออกแรงค้างแล้วมีเสียงหึ่ง · มีหมุดกันหมุนเกิน (M7)",
+    step: "C3",
+  },
+  {
+    id: "qr",
+    name: "การ์ด QR + ที่ตั้งอะคริลิก",
+    use: "เปิดหน้าสถานะโต๊ะ + เพิ่มเพื่อน LINE",
+    order: "pending",
+    where: "node",
+    qty: "1 ต่อโต๊ะ",
+    job: "เปิดหน้าสถานะโต๊ะ และลิงก์เพิ่มเพื่อน LINE Official Account",
+    make: "พิมพ์การ์ดเคลือบ เสียบในที่ตั้งป้ายอะคริลิกขนาดเล็ก",
+    step: "F4",
+  },
+  {
+    id: "gw-box",
+    name: "กล่อง gateway + standoff M3",
+    use: "กล่องเก็บ gateway และ sensor ห้อง",
+    order: "pending",
+    where: "gateway",
+    qty: "1",
+    job: "เก็บบอร์ด gateway และ sensor ห้องให้เรียบร้อย ย้ายได้ (Build Quality)",
+    make: "แผ่นฐานอะคริลิก + standoff M3 ใต้ทุกบอร์ด แล้วครอบด้วยกล่องพลาสติกหรือกล่องพิมพ์ 3D",
+    watch: "ต้องมีช่องระบายอากาศให้ SCD41 (วัด CO₂ จากอากาศที่ไหลผ่าน) · หน้าต่างใสหรือรูให้ BH1750 รับแสง · รูให้ไมค์ · ช่องสาย USB-C",
+    step: "F3",
+  },
+  {
+    id: "finish",
+    name: "เคเบิลไทร์, ท่อหด, เทปโฟม, ป้ายชื่อสาย, สาย USB-C ที่ส่งข้อมูลได้",
+    use: "เก็บสายให้เรียบร้อย รู้ว่าเส้นไหนไปไหน",
+    order: "pending",
+    where: "both",
+    qty: "ตามใช้",
+    job: "เก็บสายให้เรียบร้อยและรู้ว่าสายไหนไปไหน · สาย USB-C ไว้อัปโหลดโค้ด",
+    make: "ติดป้ายที่ปลายสายทุกเส้นตาม pin map",
+    watch: "สายชาร์จอย่างเดียวจะไม่เห็น COM port (เหมือนใน Lab 10)",
+    step: "F4",
+  },
+];
+
+/* ---------- tools: assume the lab lends nothing; cybertice had every one in stock on 31 Oct ---------- */
+
 export interface Tool {
   code: string;
   name: string;
   job: string;
+  order: Order;
   price: number;
   qty: number;
   url?: string;
@@ -227,187 +400,43 @@ export const TOOLS: Tool[] = [
     code: "A0559",
     name: "ชุดหัวแร้ง 60W ปรับอุณหภูมิ 200–450 °C (มีที่วาง ฟองน้ำ หัวเปลี่ยน 5 หัว ที่ดูดตะกั่ว)",
     job: "บัดกรีขา header ของ FireBeetle, LD2410 ลงบอร์ดแปลงขา, สายแจ็ก DC",
+    order: "pending",
     price: 365,
     qty: 1,
     url: "https://www.cybertice.com/product/4821/%E0%B8%8A%E0%B8%B8%E0%B8%94%E0%B8%AD%E0%B8%B8%E0%B8%9B%E0%B8%81%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%9A%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%A3%E0%B8%B5-60w-%E0%B8%AB%E0%B8%B1%E0%B8%A7%E0%B9%81%E0%B8%A3%E0%B9%89%E0%B8%87%E0%B8%9B%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%AD%E0%B8%B8%E0%B8%93%E0%B8%AB%E0%B8%A0%E0%B8%B9%E0%B8%A1%E0%B8%B4%E0%B9%84%E0%B8%94%E0%B9%89",
   },
-  { code: "A0087", name: "ตะกั่วบัดกรี 60/40 ยาว 2 เมตร", job: "ม้วนละ 2 เมตร เผื่อไว้ 2 ม้วน", price: 40, qty: 2, url: CYBERTICE_SOLDERING },
+  { code: "A0087", name: "ตะกั่วบัดกรี 60/40 ยาว 2 เมตร", job: "ม้วนละ 2 เมตร เผื่อไว้ 2 ม้วน", order: "pending", price: 40, qty: 2, url: CYBERTICE_SOLDERING },
   {
     code: "A0341",
     name: "มัลติมิเตอร์ DT9205A",
     job: "วัดไฟ 5 V / 3.3 V, หาขั้วบวกของแจ็ก DC ก่อนต่อบอร์ด, หาสายขาด · ใช้ถ่าน 9 V (หน้าร้านไม่บอกว่าแถม)",
+    order: "pending",
     price: 270,
     qty: 1,
     url: "https://www.cybertice.com/search?q=%E0%B8%A1%E0%B8%B1%E0%B8%A5%E0%B8%95%E0%B8%B4%E0%B8%A1%E0%B8%B4%E0%B9%80%E0%B8%95%E0%B8%AD%E0%B8%A3%E0%B9%8C",
   },
-  { code: "A0499", name: "คีมตัด สำหรับงานอิเล็กทรอนิกส์", job: "ตัดขาที่เกินหลังบัดกรี ตัดสาย", price: 40, qty: 1, url: CYBERTICE_PLIERS },
-  { code: "A0256", name: "คีมปอกสาย TUOSEN 6 นิ้ว", job: "ปอกสายแจ็ก DC และสายไฟ servo", price: 160, qty: 1, url: CYBERTICE_PLIERS },
-  { code: "A0491", name: "ลวดซับตะกั่ว 2.0 mm ยาว 1.5 เมตร", job: "เก็บตะกั่วที่เชื่อมขาติดกันตอนบัดกรีพลาด", price: 40, qty: 1, url: CYBERTICE_SOLDERING },
+  { code: "A0499", name: "คีมตัด สำหรับงานอิเล็กทรอนิกส์", job: "ตัดขาที่เกินหลังบัดกรี ตัดสาย", order: "pending", price: 40, qty: 1, url: CYBERTICE_PLIERS },
+  { code: "A0256", name: "คีมปอกสาย TUOSEN 6 นิ้ว", job: "ปอกสายแจ็ก DC และสายไฟ servo", order: "pending", price: 160, qty: 1, url: CYBERTICE_PLIERS },
+  { code: "A0491", name: "ลวดซับตะกั่ว 2.0 mm ยาว 1.5 เมตร", job: "เก็บตะกั่วที่เชื่อมขาติดกันตอนบัดกรีพลาด", order: "pending", price: 40, qty: 1, url: CYBERTICE_SOLDERING },
 ];
 
-export const TOOLS_TOTAL = TOOLS.reduce((sum, tool) => sum + tool.price * tool.qty, 0);
+/* ---------- budget ---------- */
 
-export const LABS = [
-  {
-    lab: "Lab 8 · ADC",
-    learned: "analogRead() อ่านค่า LDR",
-    reuse: "อ่านไมค์ MAX4466 ที่ gateway แล้วคิดเป็นระดับเสียง",
-  },
-  {
-    lab: "Lab 10 · Tasks",
-    learned: "xTaskCreate หลาย task พร้อมกัน",
-    reuse: "node แยก task: เรดาร์ / ToF / ส่งข้อมูล / กล้อง / servo (E1)",
-  },
-  {
-    lab: "Lab 10 · Mutex",
-    learned: "xSemaphoreCreateMutex กัน Serial ชนกัน",
-    reuse: "กันสอง task ใช้ I²C bus หรือ Serial พร้อมกัน · ISR ปลุก task ด้วย semaphore (E2)",
-  },
-  {
-    lab: "Lab 10 · Queue",
-    learned: "xQueueCreate ส่งข้อความระหว่าง task",
-    reuse: "ส่งค่า sensor เข้า queue ให้ task ส่งข้อมูล · buffer ตอนเน็ตหลุด (E4)",
-  },
-  {
-    lab: "Lab 10 · บอร์ด",
-    learned: "YD-ESP32-23 + Arduino IDE 2, esp32 core 3.x",
-    reuse: "gateway ใช้บอร์ด DevKitC-1 ผังขาเดียวกัน ตั้งค่า Tools เหมือนเดิม · ระหว่างรอของใช้บอร์ด Lab 10 แทนได้",
-  },
-];
+const sum = (items: { price: number; qty: number }[]) => items.reduce((total, item) => total + lineTotal(item), 0);
 
-export const DEPTH = [
-  { id: "E1", name: "RTOS multitasking", plan: "node มี 5 task คุยกันด้วย queue (แบบ Lab 10)" },
-  { id: "E2", name: "Interrupt-driven I/O", plan: "ขา OUT ของ LD2410 → ISR → semaphore ปลุก task" },
-  { id: "E4", name: "Reliable communication", plan: "ESP-NOW ดูผล ack จาก send callback + retry · buffer ใน RAM ตอนเน็ตหลุด" },
-  { id: "E5", name: "Security", plan: "HTTPS/TLS ไป Supabase · key อยู่ใน secrets.h ที่ไม่ commit" },
-  { id: "E7", name: "On-device AI", plan: "โมเดล Edge Impulse จากข้อมูลเรดาร์ + ToF รันบน gateway ESP32-S3 (FAQ ข้อ 4) · ต้องแม่นกว่ากติกา if-else" },
-];
+// a part ordered 1 of 2 still owes one unit
+const partsLeft = PARTS.reduce((total, part) => total + (part.order === "pending" ? lineTotal(part) : part.order === "partial" ? part.price : 0), 0);
+const toolsLeft = sum(TOOLS.filter((tool) => tool.order === "pending"));
 
-export const SPARE_DEPTH = { id: "E6", name: "OTA update", plan: "ตัวอย่าง ArduinoOTA · ใช้แทน E7 ถ้าโมเดลไม่ผ่านเส้นตาย 13 พ.ย." };
+export const BUDGET = (() => {
+  const parts = sum(PARTS);
+  const accessories = sum(ACCESSORIES);
+  const tools = sum(TOOLS);
+  const total = parts + accessories + MISC_ESTIMATE + tools;
+  const left = partsLeft + toolsLeft + MISC_ESTIMATE;
+  return { parts, accessories, misc: MISC_ESTIMATE, tools, total, left, ordered: total - left };
+})();
+
+export const TEAM_SIZE = 5;
 
 export const baht = (value: number) => value.toLocaleString("en-US");
-
-// Small and mechanical parts: no single shop price; together they sit in the SUNDRIES estimate.
-export interface Misc {
-  id: string;
-  name: string;
-  use: string;
-  where: "node" | "gateway" | "both";
-  qty: string;
-  job: string;
-  make: string;
-  watch?: string;
-  step: string;
-}
-
-export const MISC: Misc[] = [
-  {
-    id: "cap",
-    use: "กันบอร์ดรีเซ็ตตอน servo เริ่มหมุน",
-    name: "ตัวเก็บประจุ 1000 µF (electrolytic, 16 V)",
-    where: "node",
-    qty: "1 ต่อโต๊ะ",
-    job: "กันบอร์ดรีเซ็ตตอน servo เริ่มหมุน: servo ดึงกระแสกระชากสูงชั่วขณะ แรงดัน 5 V จึงตกวูบ ตัวเก็บประจุจ่ายกระแสช่วงนั้นแทนอแดปเตอร์",
-    make: "ต่อคร่อมสาย + กับ − ของไฟ servo ให้ใกล้ขั้ว servo ที่สุด",
-    watch: "มีขั้ว: ขาสั้น / แถบข้างตัว = ขาลบ ต่อกลับขั้วแล้วเสียหรือบวมได้ · เลือกแรงดัน ≥ 10 V",
-    step: "C4",
-  },
-  {
-    id: "power-split",
-    use: "แยกไฟจากอแดปเตอร์ไปบอร์ดและ servo",
-    name: "แจ็ก DC ตัวเมีย 5.5×2.5 + terminal block",
-    where: "node",
-    qty: "1 ชุดต่อโต๊ะ",
-    job: "แยกไฟ 5 V จากอแดปเตอร์ไปสองทาง: บอร์ด FireBeetle และ servo โดยใช้ GND ร่วมกัน",
-    make: "ขันสายใน terminal block · servo ไม่ดึงไฟผ่านบอร์ด",
-    watch: "GND ของ servo, บอร์ด และอแดปเตอร์ต้องต่อถึงกัน ไม่งั้นสัญญาณ PWM เพี้ยน",
-    step: "C4",
-  },
-  {
-    id: "perfboard",
-    use: "ต่อวงจรทดลอง แล้วย้ายลงแผ่นถาวร",
-    name: "Breadboard → perfboard, header, สายจัมเปอร์",
-    where: "both",
-    qty: "ตามใช้",
-    job: "ทดลองบน breadboard ก่อน แล้วย้ายวงจร node ลง perfboard เมื่อ pin map นิ่ง สายจะไม่หลุดตอนยกโต๊ะ",
-    make: "ใช้ header ตัวเมียเสียบบอร์ดและโมดูล จะถอดคืนได้",
-    watch: "ใช้ header ไม่บัดกรีโมดูลตรง จะได้ถอดเปลี่ยนตัวที่เสียได้",
-    step: "F4",
-  },
-  {
-    id: "mast",
-    use: "ยกกล้องและ ToF ให้เห็นโต๊ะและเก้าอี้",
-    name: "เสาและแขนจับหัวกล้อง",
-    where: "node",
-    qty: "1 ต่อโต๊ะ",
-    job: "ยกกล้องและ VL53L1X ให้สูงพอจะเห็นทั้งพื้นโต๊ะและเก้าอี้ มองลงเฉียง ๆ · VL53L1X เล็งลงที่เบาะเก้าอี้",
-    make: "ต้นแบบ: ขาตั้งมือถือแบบหนีบขอบโต๊ะ ปรับมุมได้ · ตัวจริง: แขนพิมพ์ 3D หรือท่อ PVC + ตัวหนีบ",
-    watch: "ปรับจนภาพเห็นพื้นโต๊ะครบและ ToF เห็นเบาะ ก่อนเริ่มเก็บ dataset ห้ามขยับมุมหลังจากนั้น",
-    step: "C5",
-  },
-  {
-    id: "head-box",
-    use: "ครอบบอร์ดกับกล้องเป็นชิ้นเดียว",
-    name: "กล่องหัวกล้อง",
-    where: "node",
-    qty: "1 ต่อโต๊ะ",
-    job: "ครอบ FireBeetle 2 ให้เป็นชิ้นเดียวกับเลนส์และ VL53L1X กันฝุ่นและมือ",
-    make: "กล่องพิมพ์ 3D หรือกล่องพลาสติกเล็ก เจาะรูเลนส์และช่องเซ็นเซอร์",
-    watch: "หน้า VL53L1X ต้องเปิดโล่ง: แผ่นพลาสติก / อะคริลิกสะท้อนเลเซอร์กลับเข้าเซนเซอร์ ระยะจะเพี้ยน",
-    step: "F4",
-  },
-  {
-    id: "radar-mount",
-    use: "ยึดเรดาร์ใต้ขอบโต๊ะ หันหาเก้าอี้",
-    name: "ที่ยึด LD2410 ใต้ขอบโต๊ะ",
-    where: "node",
-    qty: "1 ต่อโต๊ะ",
-    job: "ให้เรดาร์หันหาเก้าอี้ระดับอก จับการหายใจของคนที่นั่ง",
-    make: "เทปโฟมสองหน้าหรือสกรูเล็กบนแผ่นหน้าโต๊ะ",
-    watch: "ห้ามมีโลหะบังด้านหน้า · ทดสอบใหม่ทุกครั้งที่ย้ายตำแหน่ง",
-    step: "C5",
-  },
-  {
-    id: "prism",
-    use: "ป้าย 3 หน้า ชมพู / เหลือง / เขียว",
-    name: "ป้ายปริซึม 3 หน้า + แผ่นข้าง + ฐาน",
-    where: "node",
-    qty: "1 ชุดต่อโต๊ะ",
-    job: "หน้าที่คนในห้องเห็น: ชมพู ใช้งาน · เหลือง ไม่อยู่ · เขียว ว่าง",
-    make: "ต้นแบบ: ฟิวเจอร์บอร์ด / foam board · ตัวจริง: พิมพ์ 3D หรืออะคริลิก · หน้าพิมพ์สีติดกาว · ปลายหนึ่งยึด horn ของ servo ปลายอีกข้างหมุนบนแกน",
-    watch: "ต้องเบาและสมดุล ไม่งั้น servo ต้องออกแรงค้างแล้วมีเสียงหึ่ง · มีหมุดกันหมุนเกิน (M7)",
-    step: "C3",
-  },
-  {
-    id: "qr",
-    use: "เปิดหน้าสถานะโต๊ะ + เพิ่มเพื่อน LINE",
-    name: "การ์ด QR + ที่ตั้งอะคริลิก",
-    where: "node",
-    qty: "1 ต่อโต๊ะ",
-    job: "เปิดหน้าสถานะโต๊ะ และลิงก์เพิ่มเพื่อน LINE Official Account",
-    make: "พิมพ์การ์ดเคลือบ เสียบในที่ตั้งป้ายอะคริลิกขนาดเล็ก",
-    step: "F4",
-  },
-  {
-    id: "gw-box",
-    use: "กล่องเก็บ gateway และ sensor ห้อง",
-    name: "กล่อง gateway + standoff M3",
-    where: "gateway",
-    qty: "1",
-    job: "เก็บบอร์ด gateway และ sensor ห้องให้เรียบร้อย ย้ายได้ (Build Quality)",
-    make: "แผ่นฐานอะคริลิก + standoff M3 ใต้ทุกบอร์ด แล้วครอบด้วยกล่องพลาสติกหรือกล่องพิมพ์ 3D",
-    watch: "ต้องมีช่องระบายอากาศให้ SCD41 (วัด CO₂ จากอากาศที่ไหลผ่าน) · หน้าต่างใสหรือรูให้ BH1750 รับแสง · รูให้ไมค์ · ช่องสาย USB-C",
-    step: "F3",
-  },
-  {
-    id: "finish",
-    use: "เก็บสายให้เรียบร้อย รู้ว่าเส้นไหนไปไหน",
-    name: "เคเบิลไทร์, ท่อหด, เทปโฟม, ป้ายชื่อสาย, สาย USB-C ที่ส่งข้อมูลได้",
-    where: "both",
-    qty: "ตามใช้",
-    job: "เก็บสายให้เรียบร้อยและรู้ว่าสายไหนไปไหน · สาย USB-C ไว้อัปโหลดโค้ด",
-    make: "ติดป้ายที่ปลายสายทุกเส้นตาม pin map",
-    watch: "สายชาร์จอย่างเดียวจะไม่เห็น COM port (เหมือนใน Lab 10)",
-    step: "F4",
-  },
-];

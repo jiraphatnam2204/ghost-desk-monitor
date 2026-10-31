@@ -403,6 +403,17 @@ html {
     padding: 0;
     border: 0;
   }
+
+  /* a stacked number names itself, since the column header is hidden */
+  .stack-sm td.num {
+    text-align: left;
+  }
+
+  .stack-sm td[data-label]::before {
+    content: attr(data-label) " ";
+    font-size: 13px;
+    color: var(--toner-2);
+  }
 }
 
 .register code {

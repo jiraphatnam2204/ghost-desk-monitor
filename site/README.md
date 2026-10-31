@@ -5,9 +5,9 @@ The team's front end for the final project: check how the project stands, see pr
 | Page | What it's for |
 |---|---|
 | Overview | Live desk demo (simulated) and the most serious open problems |
-| Equipment | Both devices as isometric figures that come apart, every part with price, library and starting example, and a budget calculator |
+| Equipment | Budget, then every part, accessory, small part and tool with its use, price and order status (rows open to the library and starting example); both devices as isometric figures that come apart |
 | Grading Criteria | The 70-point rubric, M1–M8 and deadlines as a scorecard: status, owner, plan, projected score |
-| Build Plan | How to build the project start to finish: which equipment to start with, 8 phases and 26 steps with done-when tests, owners and weeks; the figure lights the part each step uses |
+| Build Plan | 8 phases by week, folded; each step opens to what to do, its done-when test and owner |
 | Problems | Every issue, expected problem and risk, with filters and search |
 | Docs | Proposal and final report in English or Thai, printable to PDF |
 
@@ -15,7 +15,8 @@ The team's front end for the final project: check how the project stands, see pr
 
 - **Rubric status:** edit `data/progress.json` — set `status` to `not-started`, `in-progress`, `done` or `at-risk`, add an `evidence` link, update `updated`.
 - **Problems:** edit `data/problems.json` — copy the template from the Problems page, use the next `P` id and `"type": "issue"`; mark `"status": "fixed"` when solved.
-- **Workflow steps:** edit `data/workflow.json` — set each step to `not-started`, `in-progress`, `done` or `blocked`.
+- **Parts and order status:** `lib/equipment.ts` — set `order` to `ordered`, `partial`, `pending` or `have`.
+- **Build plan steps:** `lib/workflow.ts`.
 - **Docs text:** `lib/docs-content.ts` (every string has an `en` and a `th` version).
 
 Commit and push to `main`; the workflow rebuilds the site in a few minutes.

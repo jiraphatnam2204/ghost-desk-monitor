@@ -1,5 +1,5 @@
 // The six sensor types (M1), one list for the Equipment table and the How It Works cards.
-// `part` is the id of the matching entry in PARTS (lib/project.ts).
+// `part` is the id of the matching entry in PARTS (lib/equipment.ts).
 
 export interface Sensor {
   no: string;

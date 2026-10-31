@@ -73,7 +73,7 @@
 }
 
 .rows-misc summary {
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.6fr) 90px;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.6fr) 128px;
 }
 
 .rows-head {
@@ -163,7 +163,14 @@
 }
 
 .row-use {
+  display: grid;
+  gap: 1px;
   font-size: 15.5px;
+}
+
+.row-use small {
+  font-size: 13px;
+  color: var(--toner-2);
 }
 
 .row-price {
@@ -171,8 +178,8 @@
   text-align: right;
 }
 
-.row-order,
-.row-step {
+/* order status, shared by every list and table on the page */
+.order-tag {
   justify-self: start;
   padding: 1px 8px 2px;
   border: 1.5px solid var(--toner);
@@ -181,17 +188,17 @@
   white-space: nowrap;
 }
 
-.row-order[data-order="ordered"],
-.row-order[data-order="have"] {
+.order-tag[data-order="ordered"],
+.order-tag[data-order="have"] {
   background: var(--toner);
   color: var(--paper);
 }
 
-.row-order[data-order="partial"] {
+.order-tag[data-order="partial"] {
   border-style: dashed;
 }
 
-.row-order[data-order="pending"] {
+.order-tag[data-order="pending"] {
   border-color: var(--stamp);
   color: var(--stamp);
 }
@@ -214,7 +221,7 @@
   line-height: 1.55;
 }
 
-.part-note {
+.row-muted {
   color: var(--toner-2);
 }
 
@@ -223,7 +230,7 @@
   border: 1.5px dashed var(--toner);
 }
 
-.misc-lede {
+.section-lede {
   margin-bottom: 24px;
 }
 
@@ -252,8 +259,7 @@
     grid-row: 1;
   }
 
-  .row-order,
-  .row-step {
+  .rows .order-tag {
     grid-column: 1;
     grid-row: 3;
     margin-top: 4px;
