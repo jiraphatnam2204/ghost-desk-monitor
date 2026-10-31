@@ -47,7 +47,7 @@ export function BlockDiagram({ lang }: { lang: Lang }) {
     <svg className="doc-figure-svg" viewBox="0 0 900 330" role="img" aria-label={th ? "แผนภาพระบบ: sensor node สองตัวส่งข้อมูลไป gateway แล้วขึ้น cloud แสดงบน dashboard และแจ้งเตือนผ่าน LINE" : "Block diagram: two sensor nodes report to a gateway, which stores data in the cloud, drives the dashboard and sends LINE alerts"}>
       <Defs />
       <Box x={10} y={20} w={215} h={190} title={th ? "Sensor node × 2 (ต่อโต๊ะ)" : "Sensor node × 2 (per desk)"} lines={["FireBeetle 2 ESP32-S3", "LD2410 mmWave (UART, OUT)", "VL53L1X ToF (I²C)", th ? "OV2640 ถ่ายภาพเมื่อ gateway ขอ" : "OV2640 photo on request", "Servo 270° → prism sign"]} />
-      <Box x={365} y={20} w={225} h={190} title="Gateway × 1" heavy lines={["ESP32-S3 N16R8 (DevKitC-1)", "SCD41 CO₂ (I²C)", "BH1750 light (I²C)", "MAX4466 mic (ADC1)", th ? "AI local + state machine" : "Local AI + state machine"]} />
+      <Box x={365} y={20} w={225} h={190} title="Gateway × 1" heavy lines={["ESP32-S3 N8R8 (Waveshare)", "SCD41 CO₂ (I²C)", "BH1750 light (I²C)", "MAX4466 mic (ADC1)", th ? "AI local + state machine" : "Local AI + state machine"]} />
       <Box x={680} y={20} w={210} h={110} title="Cloud" lines={["Supabase Postgres", "REST insert + Realtime", th ? "Vision API (ภาพจาก gateway)" : "Vision API (photo from gateway)"]} />
       <Box x={680} y={170} w={210} h={90} title="Dashboard" lines={[th ? "หน้าเว็บผังห้อง (GitHub Pages)" : "Room map web page"]} />
       <Box x={365} y={250} w={225} h={70} title="LINE Official Account" lines={[th ? "broadcast เตือนนาทีที่ 20" : "broadcast at 20 min"]} />

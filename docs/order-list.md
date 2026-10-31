@@ -4,7 +4,7 @@ Checked against the shop pages on 30 Oct 2026. Prices do not include shipping. T
 
 Order from three shops so shipping is paid three times, not nine. Goal: everything arrives before **Fri 6 Nov** (end of W1).
 
-## cybertice: 1,955 baht
+## cybertice: 1,675 baht
 
 | Qty | Part | Each | Line | Link |
 |---:|---|---:|---:|---|
@@ -12,16 +12,16 @@ Order from three shops so shipping is paid three times, not nine. Goal: everythi
 | 2 | TD-7120MG servo 0–270° | 440 | 880 | [shop](https://www.cybertice.com/product/5406/td-7120mg-servo-motor-0-270%E0%B8%AD%E0%B8%87%E0%B8%A8%E0%B8%B2-%E0%B9%80%E0%B8%9F%E0%B8%B7%E0%B8%AD%E0%B8%87%E0%B9%82%E0%B8%A5%E0%B8%AB%E0%B8%B0%E0%B8%97%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%AB%E0%B8%A1%E0%B8%94-%E0%B9%81%E0%B8%A3%E0%B8%87%E0%B8%9A%E0%B8%B4%E0%B8%94%E0%B8%AA%E0%B8%B9%E0%B8%87%E0%B8%AA%E0%B8%B8%E0%B8%94-20kg) |
 | 2 | 5 V 2 A adapter, 5.5×2.5 jack (one per node) | 130 | 260 | [shop](https://www.cybertice.com/product/365/power-adapter-5v-2a-%E0%B8%AD%E0%B8%B0%E0%B9%81%E0%B8%94%E0%B8%9B%E0%B9%80%E0%B8%95%E0%B8%AD%E0%B8%A3%E0%B9%8C-5v-%E0%B8%81%E0%B8%A3%E0%B8%B0%E0%B9%81%E0%B8%AA-2a-%E0%B8%AB%E0%B8%B1%E0%B8%A7%E0%B9%81%E0%B8%88%E0%B9%87%E0%B8%84-5-5x2-5mm) |
 | 1 | GY-302 BH1750 light sensor | 50 | 50 | [shop](https://www.cybertice.com/product/784/gy-302-%E0%B9%80%E0%B8%8B%E0%B9%87%E0%B8%99%E0%B9%80%E0%B8%8B%E0%B8%AD%E0%B8%A3%E0%B9%8C-%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B9%80%E0%B8%82%E0%B9%89%E0%B8%A1%E0%B9%81%E0%B8%AA%E0%B8%87-ambient-light-sensor-module-bh1750fvi) |
-| 1 | ESP32-S3 DevKitC-1 compatible core board N16R8, product code **M1622** (pins soldered): the gateway, bought instead of borrowed | 280 | 280 | [search](https://www.cybertice.com/search?q=M1622) |
 | 1 | MAX4466 microphone, product code **M0571** | 65 | 65 | [shop](https://www.cybertice.com/product/2057/electret-microphone-sound-sencor-amplifier-max4466-%E0%B9%80%E0%B8%8B%E0%B9%87%E0%B8%99%E0%B9%80%E0%B8%8B%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B9%80%E0%B8%AA%E0%B8%B5%E0%B8%A2%E0%B8%87%E0%B8%84%E0%B8%A7%E0%B8%B2%E0%B8%A1%E0%B9%84%E0%B8%A7%E0%B8%AA%E0%B8%B9%E0%B8%87) |
 
 The gateway board takes USB-C, so it runs from a phone charger the team already has. Do not buy a third adapter.
 
-## arduitronics: 2,370 baht
+## arduitronics: 3,055 baht
 
 | Qty | Part | Each | Line | Link |
 |---:|---|---:|---:|---|
 | 2 | FireBeetle 2 ESP32-S3 + OV2640 camera (DFRobot): **1 ordered 31 Oct for a proof of concept**; order the 2nd by Fri 13 Nov once it passes | 1,185 | 2,370 | [shop](https://www.arduitronics.com/product/5665/firebeetle-2-esp32-s3-ai-board-with-ov2640-camera-image-recognition-ble-5-%E0%B9%81%E0%B8%97%E0%B9%89%E0%B8%88%E0%B8%B2%E0%B8%81-dfrobot) |
+| 1 | Waveshare ESP32-S3-DEV-KIT-N8R8, product code **BA00293**: the gateway (genuine Waveshare, DevKitC-1 layout; set Flash Size 8MB in Arduino IDE) | 685 | 685 | [shop](https://www.arduitronics.com/product/5932/esp32-s3-microcontroller-2-4ghz-wi-fi-development-board-240mhz-dual-core-processor-esp32-s3-wroom-1-) |
 
 ## allnewstep: 360 baht + adapter boards
 
@@ -46,12 +46,12 @@ Use lab spares first. Buy only what is missing, before step C4:
 
 | | Baht |
 |---|---:|
-| cybertice | 1,955 |
-| arduitronics | 2,370 |
+| cybertice | 1,675 |
+| arduitronics | 3,055 |
 | allnewstep | 360 + adapter boards |
 | SCD41 (Shopee, ordered) | ~820 |
 | Small parts (estimate) | ~400 |
-| **Total** | **~5,905** (about 1,180 each for 5 people, plus shipping) |
+| **Total** | **~6,310** (about 1,260 each for 5 people, plus shipping) |
 
 ## Before you pay
 

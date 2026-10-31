@@ -130,7 +130,7 @@ export default function EquipmentPage() {
                 {
                   part: "esp",
                   title: "ESP32-S3 DevKitC-1",
-                  text: "บอร์ด N16R8 ผังขาเดียวกับ Lab 10 (cybertice M1622) รันโมเดล AI จากข้อมูลเรดาร์ + ToF ของทุกโต๊ะ (E7) เป็นเจ้าของ state machine และเวลา 2 / 20 / 30 นาที ส่งภาพไปถาม cloud AI ส่งข้อมูลขึ้น Supabase และส่ง LINE",
+                  text: "Waveshare ESP32-S3 N8R8 ผังขาแบบ DevKitC-1 เหมือนบอร์ด Lab 10 รันโมเดล AI จากข้อมูลเรดาร์ + ToF ของทุกโต๊ะ (E7) เป็นเจ้าของ state machine และเวลา 2 / 20 / 30 นาที ส่งภาพไปถาม cloud AI ส่งข้อมูลขึ้น Supabase และส่ง LINE",
                 },
                 { part: "scd", title: "S4 SCD41 · CO₂", text: "CO₂ ในห้อง แสดงบน dashboard ดูคุณภาพอากาศและประมาณว่าห้องแน่นแค่ไหน" },
                 { part: "lux", title: "S6 BH1750 · วัดแสง", text: "แสงในห้อง แสดงบน dashboard ใช้ I²C สองเส้นเดียวกับ SCD41" },

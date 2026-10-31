@@ -69,7 +69,7 @@ export const PHASES: Phase[] = [
         part: "โน้ตบุ๊กทุกเครื่อง",
         why: "ทุกคนใช้ IDE และ core รุ่นเดียวกัน โค้ดของเพื่อนจะคอมไพล์ได้บนเครื่องเรา",
         todo: [
-          "Arduino IDE 2 + esp32 core 3.x · board: ESP32S3 Dev Module, Flash 16MB, PSRAM OPI",
+          "Arduino IDE 2 + esp32 core 3.x · board: ESP32S3 Dev Module, PSRAM OPI · Flash Size 16MB สำหรับ FireBeetle และบอร์ด Lab 10, 8MB สำหรับ gateway Waveshare",
           "Library Manager: MyLD2410, VL53L1X (Pololu), ESP32Servo, BH1750 + ตัว CO₂ ตามที่ทีมเลือกใน P2 (Sensirion I2C SCD4x หรือ MH-Z19)",
           "ลองอัปโหลด sketch จาก Lab 10 ลงบอร์ดของตัวเองอีกครั้ง",
         ],
@@ -89,11 +89,11 @@ export const PHASES: Phase[] = [
       },
       {
         id: "A3",
-        title: "สั่งของ 3 ร้าน + SCD41 (~5,905 บาท)",
+        title: "สั่งของ 3 ร้าน + SCD41 (~6,310 บาท)",
         part: "ทุกชิ้นในหน้า Equipment",
         why: "ของจากร้านใช้เวลาหลายวัน ถ้าสั่งช้าทั้ง W1 จะรอของ · สั่งรวมตามร้านจะได้เสียค่าส่งแค่ 3 ครั้ง",
         todo: [
-          "คนกดสั่ง 1 คน ทุกคนโอนส่วนของตัวเอง (~1,180 บาท/คน + ค่าส่ง) และจดไว้ในกลุ่มแชต",
+          "คนกดสั่ง 1 คน ทุกคนโอนส่วนของตัวเอง (~1,260 บาท/คน + ค่าส่ง) และจดไว้ในกลุ่มแชต",
           "เช็กราคาและของในสต็อกอีกครั้งก่อนจ่าย ราคาเปลี่ยนได้",
           "VL53L1X ต้องเป็นรหัส M1532 (210 บาท) ไม่ใช่ TOF400C (275 บาท) · servo ต้องเป็น 0–270° · FireBeetle 2 ต้องเป็นรุ่นที่มีกล้อง OV2640",
           "ไม่ต้องซื้อ: AMG8833 (เปลี่ยนเป็น VL53L1X), HC-SR501, Raspberry Pi, อแดปเตอร์ตัวที่ 3 (gateway ใช้ USB-C: ใช้ที่ชาร์จมือถือแทน)",
@@ -109,12 +109,12 @@ export const PHASES: Phase[] = [
         table: {
           head: ["ร้าน", "ของ", "บาท"],
           rows: [
-            ["cybertice", "VL53L1X × 2 · TD-7120MG × 2 · อแดปเตอร์ 5V 2A × 2 · BH1750 · MAX4466 (M0571) · บอร์ด gateway ESP32-S3 DevKitC-1 N16R8 (M1622)", "1,955"],
-            ["arduitronics", "FireBeetle 2 ESP32-S3 + OV2640 × 2 · ตัวแรกสั่งแล้ว 31 ต.ค. ✓ ตัวที่ 2 สั่งหลัง PoC ผ่าน", "2,370"],
+            ["cybertice", "VL53L1X × 2 · TD-7120MG × 2 · อแดปเตอร์ 5V 2A × 2 · BH1750 · MAX4466 (M0571)", "1,675"],
+            ["arduitronics", "FireBeetle 2 ESP32-S3 + OV2640 × 2 (ตัวแรกสั่งแล้ว 31 ต.ค. ✓ ตัวที่ 2 สั่งหลัง PoC ผ่าน) · บอร์ด gateway Waveshare ESP32-S3-DEV-KIT-N8R8 (BA00293)", "3,055"],
             ["allnewstep", "HLK-LD2410 × 2 (+ บอร์ดแปลงขา × 2)", "360+"],
             ["Shopee ✓", "SCD41 สั่งแล้ว 31 ต.ค.", "~820"],
             ["ของจิปาถะ", "ตัวเก็บประจุ 1000 µF × 2, แจ็ก DC + terminal block × 2, สาย, header, perfboard", "~400"],
-            ["รวม", "รวมของจิปาถะ ไม่รวมค่าส่ง", "~5,905"],
+            ["รวม", "รวมของจิปาถะ ไม่รวมค่าส่ง", "~6,310"],
           ],
         },
       },
