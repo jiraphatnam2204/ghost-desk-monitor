@@ -20,7 +20,7 @@ The gateway board takes USB-C, so it runs from a phone charger the team already 
 
 | Qty | Part | Each | Line | Link |
 |---:|---|---:|---:|---|
-| 2 | FireBeetle 2 ESP32-S3 + OV2640 camera (DFRobot), in stock | 1,185 | 2,370 | [shop](https://www.arduitronics.com/product/5665/firebeetle-2-esp32-s3-ai-board-with-ov2640-camera-image-recognition-ble-5-%E0%B9%81%E0%B8%97%E0%B9%89%E0%B8%88%E0%B8%B2%E0%B8%81-dfrobot) |
+| 2 | FireBeetle 2 ESP32-S3 + OV2640 camera (DFRobot): **1 ordered 31 Oct for a proof of concept**; order the 2nd by Fri 13 Nov once it passes | 1,185 | 2,370 | [shop](https://www.arduitronics.com/product/5665/firebeetle-2-esp32-s3-ai-board-with-ov2640-camera-image-recognition-ble-5-%E0%B9%81%E0%B8%97%E0%B9%89%E0%B8%88%E0%B8%B2%E0%B8%81-dfrobot) |
 
 ## allnewstep: 360 baht + adapter boards
 
