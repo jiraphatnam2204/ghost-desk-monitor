@@ -214,7 +214,7 @@ export const PARTS: Part[] = [
 
 export const lineTotal = (item: { price: number; qty: number }) => item.price * item.qty;
 
-/* ---------- accessories: small bought parts, all ordered 31 Oct ---------- */
+/* ---------- accessories: small bought parts ---------- */
 
 export interface Accessory {
   code: string;
@@ -235,11 +235,13 @@ export const ACCESSORIES: Accessory[] = [
   { code: "A2331", name: "สายจัมเปอร์ ผู้-ผู้", use: "ต่อบน breadboard · ตัดใช้เป็นสายแจ็ก DC", shop: "allnewstep", price: 2, qty: 20, order: "ordered" },
   { code: "A2330", name: "สายจัมเปอร์ เมีย-เมีย", use: "ต่อขาโมดูลกับขาบอร์ดตรง ๆ", shop: "allnewstep", price: 2, qty: 10, order: "ordered" },
   { code: "A233", name: "Pin header 1×40", use: "บัดกรีขาให้บอร์ดและโมดูล", shop: "allnewstep", price: 5, qty: 3, order: "ordered" },
+  { code: "SK217", name: "Terminal block KF301-2P ระยะขา 5 mm", use: "แยกไฟ 5V ไปบอร์ดกับ servo โต๊ะละ 1 (สำรอง 2)", shop: "cybertice", price: 4, qty: 4, order: "pending" },
+  { code: "SK002", name: "แผ่นปริ๊นอเนกประสงค์ 7×9 cm ไข่ปลา 2.54 mm", use: "วงจรตัวจริงของ node ละ 1 แผ่น (สำรอง 1)", shop: "cybertice", price: 12, qty: 3, order: "pending" },
 ];
 
 /* ---------- small and mechanical parts: made or bought later, one estimate ---------- */
 
-export const MISC_ESTIMATE = 150; // perfboard, enclosure material, printing
+export const MISC_ESTIMATE = 150; // enclosure material, glue, fixings, printing
 
 export interface Misc {
   id: string;
@@ -274,7 +276,7 @@ export const MISC: Misc[] = [
     name: "แจ็ก DC ตัวเมีย 5.5×2.5 + terminal block",
     use: "แยกไฟจากอแดปเตอร์ไปบอร์ดและ servo",
     order: "partial",
-    orderNote: "แจ็ก DC สั่งแล้ว · terminal block ยังไม่สั่ง",
+    orderNote: "แจ็ก DC สั่งแล้ว · terminal block SK217 รอสั่งพร้อมเครื่องมือ",
     where: "node",
     qty: "1 ชุดต่อโต๊ะ",
     job: "แยกไฟ 5 V จากอแดปเตอร์ไปสองทาง: บอร์ด FireBeetle และ servo โดยใช้ GND ร่วมกัน",
@@ -287,7 +289,7 @@ export const MISC: Misc[] = [
     name: "Breadboard → perfboard, header, สายจัมเปอร์",
     use: "ต่อวงจรทดลอง แล้วย้ายลงแผ่นถาวร",
     order: "partial",
-    orderNote: "breadboard, header, สายจัมเปอร์สั่งแล้ว · perfboard ยังไม่สั่ง",
+    orderNote: "breadboard, header, สายจัมเปอร์สั่งแล้ว · perfboard SK002 รอสั่งพร้อมเครื่องมือ",
     where: "both",
     qty: "ตามใช้",
     job: "ทดลองบน breadboard ก่อน แล้วย้ายวงจร node ลง perfboard เมื่อ pin map นิ่ง สายจะไม่หลุดตอนยกโต๊ะ",
@@ -426,14 +428,14 @@ const sum = (items: { price: number; qty: number }[]) => items.reduce((total, it
 
 // a part ordered 1 of 2 still owes one unit
 const partsLeft = PARTS.reduce((total, part) => total + (part.order === "pending" ? lineTotal(part) : part.order === "partial" ? part.price : 0), 0);
-const toolsLeft = sum(TOOLS.filter((tool) => tool.order === "pending"));
+const pending = <T extends { order: Order; price: number; qty: number }>(items: T[]) => sum(items.filter((item) => item.order === "pending"));
 
 export const BUDGET = (() => {
   const parts = sum(PARTS);
   const accessories = sum(ACCESSORIES);
   const tools = sum(TOOLS);
   const total = parts + accessories + MISC_ESTIMATE + tools;
-  const left = partsLeft + toolsLeft + MISC_ESTIMATE;
+  const left = partsLeft + pending(ACCESSORIES) + pending(TOOLS) + MISC_ESTIMATE;
   return { parts, accessories, misc: MISC_ESTIMATE, tools, total, left, ordered: total - left };
 })();
 

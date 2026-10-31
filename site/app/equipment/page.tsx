@@ -38,7 +38,7 @@ export default function EquipmentPage() {
       <section className="sheet section" aria-labelledby="accessories">
         <div className="section-head">
           <h2 id="accessories">Accessories · อุปกรณ์เสริม</h2>
-          <span className="ref">{baht(BUDGET.accessories)} บาท · สั่งแล้วครบ</span>
+          <span className="ref">{baht(BUDGET.accessories)} บาท</span>
         </div>
         <AccessoriesTable />
       </section>
