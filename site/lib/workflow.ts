@@ -110,7 +110,7 @@ export const PHASES: Phase[] = [
           head: ["ร้าน", "ของ", "บาท"],
           rows: [
             ["cybertice", "VL53L1X × 2 · TD-7120MG × 2 · อแดปเตอร์ 5V 2A × 2 · BH1750 · MAX4466 (M0571)", "1,675"],
-            ["arduitronics", "FireBeetle 2 ESP32-S3 + OV2640 × 2 (ตัวแรกสั่งแล้ว 31 ต.ค. ✓ ตัวที่ 2 สั่งหลัง PoC ผ่าน) · บอร์ด gateway Waveshare ESP32-S3-DEV-KIT-N8R8 (BA00293)", "3,055"],
+            ["arduitronics", "FireBeetle 2 ESP32-S3 + OV2640 × 2 (ตัวแรกสั่งแล้ว 31 ต.ค. ✓ ตัวที่ 2 สั่งหลัง PoC ผ่าน) · บอร์ด gateway Waveshare ESP32-S3-DEV-KIT-N8R8 (BA00293) สั่งแล้ว 31 ต.ค. ✓", "3,055"],
             ["allnewstep", "HLK-LD2410 × 2 (+ บอร์ดแปลงขา × 2)", "360+"],
             ["Shopee ✓", "SCD41 สั่งแล้ว 31 ต.ค.", "~820"],
             ["ของจิปาถะ", "ตัวเก็บประจุ 1000 µF × 2, แจ็ก DC + terminal block × 2, สาย, header, perfboard", "~400"],
