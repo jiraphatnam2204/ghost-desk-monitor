@@ -162,7 +162,7 @@ export const PHASES: Phase[] = [
       {
         id: "B1",
         title: "Gateway ส่งข้อมูลขึ้น Supabase",
-        part: "ESP32-S3 DevKitC-1 (ระหว่างรอใช้บอร์ด Lab 10)",
+        part: "Gateway (หรือบอร์ด Lab 10)",
         figure: "gateway",
         focus: "esp",
         why: "เริ่มได้ทันทีด้วยบอร์ด Lab 10 ไม่ต้องรอของ และพิสูจน์ส่วนที่ checkpoint วันที่ 20 พ.ย. ต้องเห็นตั้งแต่วันแรก",

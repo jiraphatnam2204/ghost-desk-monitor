@@ -369,6 +369,17 @@ html {
   color: var(--toner);
 }
 
+/* the bottom corners share one line and never wrap: on a narrow plate the hint gives way to the readout */
+.iso .iso-plate {
+  container-type: inline-size;
+}
+
+@container (max-width: 560px) {
+  .iso .iso-plate-corner[data-corner="hint"] {
+    display: none;
+  }
+}
+
 .iso .iso-legend {
   font-family: var(--font-sans);
   font-size: 14px;

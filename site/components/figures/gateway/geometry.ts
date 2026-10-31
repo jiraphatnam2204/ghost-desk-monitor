@@ -199,7 +199,7 @@ export const LIFT: Record<ModuleId, { move: Point3; at: number }> = {
 };
 
 export const MODULES = [
-  { id: "esp", label: "ESP32-S3 DevKitC-1", readout: "ESP32-S3 DevKitC-1 · Wi-Fi + ESP-NOW ต้องอยู่ช่องเดียวกัน", key: "Waveshare ESP32-S3 N8R8" },
+  { id: "esp", label: "ESP32-S3 DevKitC-1", readout: "ESP32-S3 · Wi-Fi + ESP-NOW ต้องอยู่ช่องเดียวกัน", key: "Waveshare ESP32-S3 N8R8" },
   { id: "scd", label: "SCD41", readout: "SCD41 · I²C 0x62 · ค่า CO₂ ใหม่ทุก 5 วิ", key: "CO₂ + อุณหภูมิ + ความชื้น" },
   { id: "lux", label: "BH1750", readout: "BH1750 · I²C 0x23 · bus เดียวกับ SCD41", key: "แสงในห้อง (lux)" },
   { id: "mic", label: "MAX4466", readout: "MAX4466 · analogRead บนขา ADC1 (ADC2 ใช้ไม่ได้ตอนเปิด Wi-Fi)", key: "ระดับเสียง" },
