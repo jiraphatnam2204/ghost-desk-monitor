@@ -285,8 +285,8 @@ export const REPORT: Doc = {
         {
           kind: "p",
           text: t(
-            "**Gateway.** A YD-ESP32-23 (ESP32-S3) receives node batches over ESP-NOW, runs the Edge Impulse model on the last 5 seconds of each desk every second, runs one state machine per desk, sends a desk photo to the cloud vision API when a decision needs it, reads an SCD41 and a BH1750 on a shared I²C bus and a MAX4466 microphone on an ADC1 pin, uploads to Supabase over HTTPS, buffers records in RAM while offline, and sends LINE broadcasts.",
-            "**Gateway** บอร์ด YD-ESP32-23 (ESP32-S3) รับชุดข้อมูลจาก node ผ่าน ESP-NOW รันโมเดล Edge Impulse กับข้อมูล 5 วินาทีล่าสุดของแต่ละโต๊ะทุก 1 วินาที ทำงาน state machine แยกต่อโต๊ะ ส่งภาพโต๊ะไปที่ cloud vision API เมื่อต้องตัดสิน อ่านค่า SCD41 และ BH1750 บน I²C bus ร่วมกัน และไมโครโฟน MAX4466 ผ่านขา ADC1 ส่งข้อมูลขึ้น Supabase ผ่าน HTTPS พักข้อมูลไว้ใน RAM ขณะออฟไลน์ และส่ง LINE broadcast",
+            "**Gateway.** An ESP32-S3 DevKitC-1 board (N16R8) receives node batches over ESP-NOW, runs the Edge Impulse model on the last 5 seconds of each desk every second, runs one state machine per desk, sends a desk photo to the cloud vision API when a decision needs it, reads an SCD41 and a BH1750 on a shared I²C bus and a MAX4466 microphone on an ADC1 pin, uploads to Supabase over HTTPS, buffers records in RAM while offline, and sends LINE broadcasts.",
+            "**Gateway** บอร์ด ESP32-S3 DevKitC-1 (N16R8) รับชุดข้อมูลจาก node ผ่าน ESP-NOW รันโมเดล Edge Impulse กับข้อมูล 5 วินาทีล่าสุดของแต่ละโต๊ะทุก 1 วินาที ทำงาน state machine แยกต่อโต๊ะ ส่งภาพโต๊ะไปที่ cloud vision API เมื่อต้องตัดสิน อ่านค่า SCD41 และ BH1750 บน I²C bus ร่วมกัน และไมโครโฟน MAX4466 ผ่านขา ADC1 ส่งข้อมูลขึ้น Supabase ผ่าน HTTPS พักข้อมูลไว้ใน RAM ขณะออฟไลน์ และส่ง LINE broadcast",
           ),
         },
         {

@@ -102,17 +102,19 @@ export const PARTS: Part[] = [
   },
   {
     id: "yd-esp32",
-    name: "YD-ESP32-23 (ESP32-S3 N16R8)",
+    name: "ESP32-S3 DevKitC-1 (N16R8)",
     where: "gateway",
     role: "สมองของ gateway: รันโมเดล AI (E7), state machine, ตัวจับเวลา 2/20/30 นาที, ส่งภาพไปถาม cloud AI, ส่งข้อมูลขึ้น cloud, ส่ง LINE",
     bus: "Wi-Fi + ESP-NOW",
     library: "esp32 core 3.x (ESP-NOW, WiFiClientSecure, HTTPClient, WebServer) + ไลบรารีที่ Edge Impulse export ให้",
-    start: "บอร์ดเดียวกับ Lab 10 ตั้งค่า Tools เหมือนเดิม",
+    start: "ผังขาแบบเดียวกับ YD-ESP32-23 ของ Lab 10 ตั้งค่า Tools เหมือนเดิม (ESP32S3 Dev Module, PSRAM OPI)",
     level: "กลาง",
-    shop: "มีอยู่แล้วจาก Lab 10",
-    price: 0,
+    shop: "cybertice",
+    url: "https://www.cybertice.com/search?q=M1622",
+    price: 280,
     qty: 1,
-    why: "ทีมมีบอร์ดนี้และคุ้นกับมันแล้ว ไม่ต้องซื้อเพิ่ม · ESP32-S3 N16R8 มี PSRAM 8 MB พอรันโมเดลและพักภาพก่อนส่ง cloud",
+    why: "ESP32-S3 N16R8 มี PSRAM 8 MB พอรันโมเดลและพักภาพก่อนส่ง cloud · ผังขา DevKitC-1 ตรงกับ pin map ขั้น A4 · ซื้อเองแทนการยืมบอร์ด Lab 10",
+    note: "รหัสสินค้า M1622 (บัดกรีขาแล้ว) · ระหว่างรอของ ใช้บอร์ด Lab 10 ของใครก็ได้ โค้ดเดียวกัน",
   },
   {
     id: "scd41",
@@ -205,7 +207,7 @@ export const LABS = [
   {
     lab: "Lab 10 · บอร์ด",
     learned: "YD-ESP32-23 + Arduino IDE 2, esp32 core 3.x",
-    reuse: "ใช้บอร์ดเดิมเป็น gateway ตั้งค่า Tools เหมือนเดิม",
+    reuse: "gateway ใช้บอร์ด DevKitC-1 ผังขาเดียวกัน ตั้งค่า Tools เหมือนเดิม · ระหว่างรอของใช้บอร์ด Lab 10 แทนได้",
   },
 ];
 
@@ -318,7 +320,7 @@ export const MISC: Misc[] = [
     name: "กล่อง gateway + standoff M3",
     where: "gateway",
     qty: "1",
-    job: "เก็บ YD-ESP32-23 และ sensor ห้องให้เรียบร้อย ย้ายได้ (Build Quality)",
+    job: "เก็บบอร์ด gateway และ sensor ห้องให้เรียบร้อย ย้ายได้ (Build Quality)",
     make: "แผ่นฐานอะคริลิก + standoff M3 ใต้ทุกบอร์ด แล้วครอบด้วยกล่องพลาสติกหรือกล่องพิมพ์ 3D",
     watch: "ต้องมีช่องระบายอากาศให้ SCD41 (วัด CO₂ จากอากาศที่ไหลผ่าน) · หน้าต่างใสหรือรูให้ BH1750 รับแสง · รูให้ไมค์ · ช่องสาย USB-C",
     step: "F3",

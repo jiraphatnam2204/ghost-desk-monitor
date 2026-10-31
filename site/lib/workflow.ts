@@ -36,14 +36,14 @@ export interface Phase {
 }
 
 export const START_HERE = {
-  part: "YD-ESP32-23 · บอร์ดจาก Lab 10",
-  why: "เริ่มที่ gateway เพราะเป็นของที่มีอยู่แล้ว ไม่ต้องรอของที่สั่ง และทุกอย่างในระบบต้องผ่านมัน ทำเส้นทาง node ปลอม → gateway → Supabase → LINE ให้วิ่งได้ก่อน แล้วค่อยเสียบ sensor จริงทีละตัวเมื่อของมาถึง",
+  part: "Gateway · ESP32-S3 DevKitC-1",
+  why: "เริ่มที่ gateway เพราะเริ่มได้ทันทีด้วยบอร์ด Lab 10 ของใครก็ได้ (ผังขาเดียวกับบอร์ด DevKitC-1 ที่สั่ง) ไม่ต้องรอของ และทุกอย่างในระบบต้องผ่านมัน ทำเส้นทาง node ปลอม → gateway → Supabase → LINE ให้วิ่งได้ก่อน แล้วค่อยเสียบ sensor จริงทีละตัวเมื่อของมาถึง",
   step: "B1",
 };
 
 // The order the equipment is brought up, each pointing at the step that does it.
 export const EQUIPMENT_ORDER = [
-  { part: "YD-ESP32-23", step: "B1" },
+  { part: "Gateway (บอร์ด Lab 10 ระหว่างรอ DevKitC-1)", step: "B1" },
   { part: "ESP32 ตัวที่ 2 (node ปลอม)", step: "B2" },
   { part: "LD2410", step: "C1" },
   { part: "VL53L1X", step: "C2" },
@@ -89,11 +89,11 @@ export const PHASES: Phase[] = [
       },
       {
         id: "A3",
-        title: "สั่งของ 3 ร้าน + SCD41 (~5,225 บาท)",
+        title: "สั่งของ 3 ร้าน + SCD41 (~5,905 บาท)",
         part: "ทุกชิ้นในหน้า Equipment",
         why: "ของจากร้านใช้เวลาหลายวัน ถ้าสั่งช้าทั้ง W1 จะรอของ · สั่งรวมตามร้านจะได้เสียค่าส่งแค่ 3 ครั้ง",
         todo: [
-          "คนกดสั่ง 1 คน ทุกคนโอนส่วนของตัวเอง (~1,045 บาท/คน + ค่าส่ง) และจดไว้ในกลุ่มแชต",
+          "คนกดสั่ง 1 คน ทุกคนโอนส่วนของตัวเอง (~1,180 บาท/คน + ค่าส่ง) และจดไว้ในกลุ่มแชต",
           "เช็กราคาและของในสต็อกอีกครั้งก่อนจ่าย ราคาเปลี่ยนได้",
           "VL53L1X ต้องเป็นรหัส M1532 (210 บาท) ไม่ใช่ TOF400C (275 บาท) · servo ต้องเป็น 0–270° · FireBeetle 2 ต้องเป็นรุ่นที่มีกล้อง OV2640",
           "ไม่ต้องซื้อ: AMG8833 (เปลี่ยนเป็น VL53L1X), HC-SR501, Raspberry Pi, อแดปเตอร์ตัวที่ 3 (gateway ใช้ USB-C: ใช้ที่ชาร์จมือถือแทน)",
@@ -101,7 +101,7 @@ export const PHASES: Phase[] = [
           "FireBeetle 2: สั่งตัวแรกแล้ว 31 ต.ค. เพื่อทำ PoC · PoC ผ่านเมื่อ C1 (MyLD2410 อ่านโหมด engineering), C2 (VL53L1X), C4 (servo หมุนขณะเปิด Wi-Fi ไม่รีเซ็ต) และ C6 (ภาพถึง gateway) ผ่านบนบอร์ดนี้ · ผ่านแล้วสั่งตัวที่ 2 ภายใน ศ. 13 พ.ย. เพื่อให้ทัน F1",
           "เซนเซอร์ชิ้นเล็ก (LD2410, VL53L1X, servo, อแดปเตอร์) ซื้อ 2 ชุดได้เลย ราคาไม่สูงและเสียค่าส่งครั้งเดียว",
           "MAX4466 ที่ cybertice รหัส M0571 (65 บาท) · LD2410 ของ allnewstep ขาเล็ก ซื้อบอร์ดแปลงขา 2.54 mm ในหน้าเดียวกัน 2 แผ่น · ของจิปาถะใช้ของเหลือจาก lab ก่อน",
-          "จดวันที่ของแต่ละร้านจะถึง ถ้ามีร้านไหนเลย 6 พ.ย. ให้บอกทีม: เริ่มขั้น B ด้วย YD-ESP32-23 กับ node ปลอมไปก่อน",
+          "จดวันที่ของแต่ละร้านจะถึง ถ้ามีร้านไหนเลย 6 พ.ย. ให้บอกทีม: เริ่มขั้น B ด้วยบอร์ด Lab 10 ของใครก็ได้กับ node ปลอมไปก่อน",
         ],
         start: "ลิงก์ร้านทุกชิ้นอยู่ในหน้า Equipment (Parts & budget) และ docs/order-list.md ใน repo",
         done: "ยืนยันคำสั่งซื้อครบ 3 ร้าน (SCD41 สั่งจาก Shopee แล้ว) จดวันที่ของจะถึง และของถึงก่อน 6 พ.ย.",
@@ -109,19 +109,19 @@ export const PHASES: Phase[] = [
         table: {
           head: ["ร้าน", "ของ", "บาท"],
           rows: [
-            ["cybertice", "VL53L1X × 2 · TD-7120MG × 2 · อแดปเตอร์ 5V 2A × 2 · BH1750 · MAX4466 (M0571)", "1,675"],
+            ["cybertice", "VL53L1X × 2 · TD-7120MG × 2 · อแดปเตอร์ 5V 2A × 2 · BH1750 · MAX4466 (M0571) · บอร์ด gateway ESP32-S3 DevKitC-1 N16R8 (M1622)", "1,955"],
             ["arduitronics", "FireBeetle 2 ESP32-S3 + OV2640 × 2 · ตัวแรกสั่งแล้ว 31 ต.ค. ✓ ตัวที่ 2 สั่งหลัง PoC ผ่าน", "2,370"],
             ["allnewstep", "HLK-LD2410 × 2 (+ บอร์ดแปลงขา × 2)", "360+"],
             ["Shopee ✓", "SCD41 สั่งแล้ว 31 ต.ค.", "~820"],
             ["ของจิปาถะ", "ตัวเก็บประจุ 1000 µF × 2, แจ็ก DC + terminal block × 2, สาย, header, perfboard", "~400"],
-            ["รวม", "ไม่รวมค่าส่ง", "~5,225"],
+            ["รวม", "รวมของจิปาถะ ไม่รวมค่าส่ง", "~5,905"],
           ],
         },
       },
       {
         id: "A4",
         title: "Pin map และแผนการต่อสาย",
-        part: "FireBeetle 2 · YD-ESP32-23",
+        part: "FireBeetle 2 · ESP32-S3 DevKitC-1",
         figure: "node",
         focus: "head radar tof servo",
         why: "กล้องใช้ขาของ FireBeetle ไปหลายขา และบอร์ดที่มี PSRAM แบบ OPI ใช้ GPIO 35–37 อยู่แล้ว ถ้าไม่วางขาก่อน จะเจอขาชนกันตอนบัดกรี",
@@ -132,7 +132,7 @@ export const PHASES: Phase[] = [
           "gateway: MAX4466 ต้องอยู่ขา ADC1 (GPIO 1–10) เพราะ ADC2 ใช้ไม่ได้ตอนเปิด Wi-Fi · ห้ามใช้ 0 3 45 46 (strapping), 19 20 (USB), 35–37 (PSRAM), 48 (RGB LED)",
           "ตรวจขาที่ใช้กับลายพิมพ์บนบอร์ดจริงก่อนต่อสาย แล้วเก็บเป็น pins.h ใน repo ทุกคนใช้ไฟล์เดียวกัน",
         ],
-        start: "หน้า pinout ในเอกสารของ FireBeetle 2 และ YD-ESP32-23",
+        start: "หน้า pinout ในเอกสารของ FireBeetle 2 และ ESP32-S3 DevKitC-1",
         done: "pins.h อยู่ใน repo และไม่มีขาซ้ำกับกล้องหรือ PSRAM",
         table: {
           head: ["บอร์ด", "อุปกรณ์", "ขา (ร่าง)", "ไฟเลี้ยง"],
@@ -162,10 +162,10 @@ export const PHASES: Phase[] = [
       {
         id: "B1",
         title: "Gateway ส่งข้อมูลขึ้น Supabase",
-        part: "YD-ESP32-23",
+        part: "ESP32-S3 DevKitC-1 (ระหว่างรอใช้บอร์ด Lab 10)",
         figure: "gateway",
         focus: "esp",
-        why: "ใช้บอร์ดที่มีอยู่แล้ว ไม่ต้องรอของ และพิสูจน์ส่วนที่ checkpoint วันที่ 20 พ.ย. ต้องเห็นตั้งแต่วันแรก",
+        why: "เริ่มได้ทันทีด้วยบอร์ด Lab 10 ไม่ต้องรอของ และพิสูจน์ส่วนที่ checkpoint วันที่ 20 พ.ย. ต้องเห็นตั้งแต่วันแรก",
         todo: ["สร้างโปรเจกต์ Supabase + ตาราง desk_events และ room_env", "ต่อ hotspot (Wi-Fi มหาลัยใช้กับ ESP32 ไม่ค่อยได้)", "HTTPS POST แถวปลอมทุก 10 วิ ด้วย anon key จาก secrets.h"],
         start: "ตัวอย่าง WiFiClientSecure + HTTPClient ใน esp32 core",
         done: "เห็นแถวใหม่ในตาราง desk_events ทุก 10 วิ",
@@ -189,7 +189,7 @@ export const PHASES: Phase[] = [
       {
         id: "B3",
         title: "Gateway ส่ง LINE เอง",
-        part: "YD-ESP32-23 + LINE OA",
+        part: "Gateway + LINE OA",
         figure: "gateway",
         focus: "esp",
         why: "การแจ้งเตือน (M6) ไม่ต้องรอ sensor เลย ทำเสร็จได้ในวันเดียว",
@@ -346,7 +346,7 @@ export const PHASES: Phase[] = [
       {
         id: "D2",
         title: "State machine ที่ gateway + demo mode",
-        part: "YD-ESP32-23",
+        part: "ESP32-S3 DevKitC-1",
         figure: "gateway",
         focus: "esp",
         why: "gateway เป็นเจ้าของเวลา 2 / 20 / 30 นาทีของทุกโต๊ะ (real-time processing ในหมวด II) · demo mode ย่อเป็นวินาทีเพื่อทดสอบได้เร็ว",
@@ -367,7 +367,7 @@ export const PHASES: Phase[] = [
       {
         id: "D3",
         title: "AI สองตัว + เส้นตาย 13 พ.ย.",
-        part: "YD-ESP32-23 (AI local) · cloud vision API",
+        part: "Gateway DevKitC-1 (AI local) · cloud vision API",
         figure: "gateway",
         focus: "esp",
         why: "E7 และ M4 closed loop: AI local บน gateway ตัดสินว่ามีคนนั่งไหมทุกวินาที · cloud AI ดูภาพเฉพาะตอนตัดสิน ว่าโต๊ะโล่งหรือมีของค้าง",

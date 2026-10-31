@@ -129,8 +129,8 @@ export default function EquipmentPage() {
               parts={[
                 {
                   part: "esp",
-                  title: "YD-ESP32-23",
-                  text: "บอร์ดจาก Lab 10 รันโมเดล AI จากข้อมูลเรดาร์ + ToF ของทุกโต๊ะ (E7) เป็นเจ้าของ state machine และเวลา 2 / 20 / 30 นาที ส่งภาพไปถาม cloud AI ส่งข้อมูลขึ้น Supabase และส่ง LINE",
+                  title: "ESP32-S3 DevKitC-1",
+                  text: "บอร์ด N16R8 ผังขาเดียวกับ Lab 10 (cybertice M1622) รันโมเดล AI จากข้อมูลเรดาร์ + ToF ของทุกโต๊ะ (E7) เป็นเจ้าของ state machine และเวลา 2 / 20 / 30 นาที ส่งภาพไปถาม cloud AI ส่งข้อมูลขึ้น Supabase และส่ง LINE",
                 },
                 { part: "scd", title: "S4 SCD41 · CO₂", text: "CO₂ ในห้อง แสดงบน dashboard ดูคุณภาพอากาศและประมาณว่าห้องแน่นแค่ไหน" },
                 { part: "lux", title: "S6 BH1750 · วัดแสง", text: "แสงในห้อง แสดงบน dashboard ใช้ I²C สองเส้นเดียวกับ SCD41" },
@@ -139,7 +139,7 @@ export default function EquipmentPage() {
               assemblies={[
                 {
                   part: "esp",
-                  title: "YD-ESP32-23",
+                  title: "ESP32-S3 DevKitC-1",
                   text: "วางบนเสา standoff 4 ต้น ถอดสาย USB-C ออกจากคลิปที่ขอบแผ่นได้ ขา header ด้านหน้ารับสายจัมเปอร์ทุกเส้น",
                 },
                 { part: "scd", title: "SCD41", text: "บอร์ดเล็กบนเสา 4 ต้น ขา header 5 ขาทางซ้าย รับ SDA / SCL จาก ESP32 แล้วต่อพ่วงไป BH1750" },

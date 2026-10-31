@@ -128,7 +128,7 @@ export function GatewayFigure() {
       keys={MODULES.map((module) => ({ mark: module.id === "esp" ? "lit" : "raised", label: `${module.label}: ${module.key}` }))}
       caption="แผ่นฐานบนขายาง บอร์ดทุกตัวยืนบนเสา standoff · SCD41 กับ BH1750 ต่อพ่วงบน I²C สองเส้นเดียวกัน, ไมค์ MAX4466 ต่อ 3 สายเข้าขา ADC, สาย USB-C ยึดกับคลิปที่ขอบแผ่น"
     >
-      <IsoFigure width={WIDTH} height={HEIGHT} label="ภาพไอโซเมตริกของ gateway: บอร์ด YD-ESP32-23 ต่อสายไปยัง SCD41, BH1750 และไมค์ MAX4466 บนแผ่นฐาน">
+      <IsoFigure width={WIDTH} height={HEIGHT} label="ภาพไอโซเมตริกของ gateway: บอร์ด ESP32-S3 DevKitC-1 ต่อสายไปยัง SCD41, BH1750 และไมค์ MAX4466 บนแผ่นฐาน">
         <GatewayLive layers={LAYERS} />
       </IsoFigure>
     </Plate>

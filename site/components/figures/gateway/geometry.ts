@@ -23,7 +23,7 @@ export interface Module {
   plan: Plan;
 }
 
-// YD-ESP32-23: an ESP32-S3 module (can + PCB antenna) on a dev board with two USB-C ports.
+// ESP32-S3 DevKitC-1 (N16R8, same layout as the Lab 10 YD-ESP32-23): an ESP32-S3 module (can + PCB antenna) on a dev board with two USB-C ports.
 export const ESP: Plan = { x: -122, y: -54, w: 120, d: 44, r: 1.5 };
 export const SCD: Plan = { x: 34, y: -64, w: 36, d: 36, r: 1.2 };
 export const LUX: Plan = { x: 86, y: -6, w: 30, d: 36, r: 1.2 };
@@ -199,7 +199,7 @@ export const LIFT: Record<ModuleId, { move: Point3; at: number }> = {
 };
 
 export const MODULES = [
-  { id: "esp", label: "YD-ESP32-23 (ESP32-S3)", readout: "YD-ESP32-23 · Wi-Fi + ESP-NOW ต้องอยู่ช่องเดียวกัน", key: "บอร์ดจาก Lab 10" },
+  { id: "esp", label: "ESP32-S3 DevKitC-1", readout: "ESP32-S3 DevKitC-1 · Wi-Fi + ESP-NOW ต้องอยู่ช่องเดียวกัน", key: "ESP32-S3 N16R8" },
   { id: "scd", label: "SCD41", readout: "SCD41 · I²C 0x62 · ค่า CO₂ ใหม่ทุก 5 วิ", key: "CO₂ + อุณหภูมิ + ความชื้น" },
   { id: "lux", label: "BH1750", readout: "BH1750 · I²C 0x23 · bus เดียวกับ SCD41", key: "แสงในห้อง (lux)" },
   { id: "mic", label: "MAX4466", readout: "MAX4466 · analogRead บนขา ADC1 (ADC2 ใช้ไม่ได้ตอนเปิด Wi-Fi)", key: "ระดับเสียง" },
