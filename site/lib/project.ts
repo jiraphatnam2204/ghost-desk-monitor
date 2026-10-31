@@ -128,7 +128,7 @@ export const PARTS: Part[] = [
     price: 820,
     qty: 1,
     why: "ถูกกว่า MH-Z19C ในร้านที่เช็ก · I²C ไม่เปลืองขา · วัดอุณหภูมิ/ความชื้นในตัว",
-    note: "30 ต.ค. ของหมดที่ cybertice · ทีมตัดสินใน P2: รอ SCD41 หรือเปลี่ยนเป็น MH-Z19C (895 บาท พร้อมส่งที่ arduitronics)",
+    note: "cybertice ของหมด · สั่งจาก Shopee แล้ว 31 ต.ค. (P2) · ราคาในรายการยังเป็นของ cybertice",
   },
   {
     id: "max4466",

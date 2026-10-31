@@ -16,12 +16,11 @@ Order from three shops so shipping is paid three times, not nine. Goal: everythi
 
 The gateway board takes USB-C, so it runs from a phone charger the team already has. Do not buy a third adapter.
 
-## arduitronics: 2,370 baht (+ 895 if the team picks the MH-Z19C)
+## arduitronics: 2,370 baht
 
 | Qty | Part | Each | Line | Link |
 |---:|---|---:|---:|---|
 | 2 | FireBeetle 2 ESP32-S3 + OV2640 camera (DFRobot), in stock | 1,185 | 2,370 | [shop](https://www.arduitronics.com/product/5665/firebeetle-2-esp32-s3-ai-board-with-ov2640-camera-image-recognition-ble-5-%E0%B9%81%E0%B8%97%E0%B9%89%E0%B8%88%E0%B8%B2%E0%B8%81-dfrobot) |
-| (1) | MH-Z19C CO₂ sensor, terminal type, in stock: **only if the team picks option A in P2** | 895 | 895 | [shop](https://www.arduitronics.com/product/3389/ndir-infrared-carbon-dioxide-co2-sensor-module-mh-z19c-terminal-type) |
 
 ## allnewstep: 360 baht + adapter boards
 
@@ -30,9 +29,9 @@ The gateway board takes USB-C, so it runs from a phone charger the team already 
 | 2 | HLK-LD2410 mmWave 24 GHz | 180 | 360 | [shop](https://www.allnewstep.com/product/5388/%E0%B9%80%E0%B8%8B%E0%B9%87%E0%B8%99%E0%B9%80%E0%B8%8B%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%88%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%A1%E0%B8%99%E0%B8%B8%E0%B8%A9%E0%B8%A2%E0%B9%8C-hlk-ld2410-%E0%B9%81%E0%B8%9A%E0%B8%9A%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%99%E0%B8%A2%E0%B8%B3%E0%B8%AA%E0%B8%B9%E0%B8%87-%E0%B9%82%E0%B8%A1%E0%B8%94%E0%B8%B9%E0%B8%A5%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%88%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%80%E0%B8%84%E0%B8%A5%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%99%E0%B9%84%E0%B8%AB%E0%B8%A7-fmcw-human-presence-sensor-) |
 | 2 | Pin adapter board for the LD2410 (its pins are smaller than 2.54 mm), sold on the same page | — | — | same page |
 
-## CO₂ sensor: waiting for the team (problem P2)
+## CO₂ sensor: ordered ✓
 
-The SCD41 at cybertice ([M1641, 820 baht](https://www.cybertice.com/product/5620/)) was **out of stock** on 30 Oct. Options: A) MH-Z19C at arduitronics, 895 baht, in stock (recommended); B) wait for the SCD41; C) no CO₂ sensor (M1 still holds with 5 types).
+The SCD41 at cybertice was out of stock on 30–31 Oct, so it was **ordered from Shopee on 31 Oct** (problem P2). Do not buy an MH-Z19C.
 
 ## Small parts: about 400 baht (estimate)
 
@@ -49,13 +48,13 @@ Use lab spares first. Buy only what is missing, before step C4:
 | cybertice | 1,675 |
 | arduitronics | 2,370 |
 | allnewstep | 360 + adapter boards |
-| CO₂ sensor (P2) | 0–895 |
+| SCD41 (Shopee, ordered) | ~820 |
 | Small parts (estimate) | ~400 |
-| **Total** | **~5,300** with the MH-Z19C (about 1,060 each for 5 people, plus shipping) |
+| **Total** | **~5,225** (about 1,045 each for 5 people, plus shipping) |
 
 ## Before you pay
 
-- [ ] The team has decided P2 (CO₂ sensor).
+- [x] CO₂ sensor: SCD41 ordered from Shopee on 31 Oct (P2).
 - [ ] One person orders; everyone pays their share (record it in the group chat).
 - [ ] Re-check each price and that it is in stock; prices change.
 - [ ] VL53L1X: product code M1532, 2 pieces. MAX4466: product code M0571.
