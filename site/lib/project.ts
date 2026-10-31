@@ -179,7 +179,7 @@ export const PARTS: Part[] = [
   },
 ];
 
-export const SUNDRIES = 400; // jumpers, breadboard, 1000 µF capacitors, enclosure, printing: an estimate
+export const SUNDRIES = 400; // ~250 already ordered (allnewstep jumpers, breadboards, headers, adapter boards, DC jacks; cybertice capacitors) + ~150 enclosure and printing
 
 export const lineTotal = (part: Part) => part.price * part.qty;
 

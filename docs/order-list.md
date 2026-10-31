@@ -24,24 +24,29 @@ The gateway board takes USB-C, so it runs from a phone charger the team already 
 | 2 | FireBeetle 2 ESP32-S3 + OV2640 camera (DFRobot): **1 ordered 31 Oct for a proof of concept**; order the 2nd by Fri 13 Nov once it passes | 1,185 | 2,370 | [shop](https://www.arduitronics.com/product/5665/firebeetle-2-esp32-s3-ai-board-with-ov2640-camera-image-recognition-ble-5-%E0%B9%81%E0%B8%97%E0%B9%89%E0%B8%88%E0%B8%B2%E0%B8%81-dfrobot) |
 | 1 | ✓ **ordered 31 Oct** · Waveshare ESP32-S3-DEV-KIT-N8R8, product code **BA00293**: the gateway (genuine Waveshare, DevKitC-1 layout; set Flash Size 8MB in Arduino IDE) | 685 | 685 | [shop](https://www.arduitronics.com/product/5932/esp32-s3-microcontroller-2-4ghz-wi-fi-development-board-240mhz-dual-core-processor-esp32-s3-wroom-1-) |
 
-## allnewstep: 380 baht + adapter boards
+## allnewstep: 597 baht ✓ ordered 31 Oct
 
 | Qty | Part | Each | Line | Link |
 |---:|---|---:|---:|---|
 | 2 | HLK-LD2410 mmWave 24 GHz | 180 | 360 | [shop](https://www.allnewstep.com/product/5388/%E0%B9%80%E0%B8%8B%E0%B9%87%E0%B8%99%E0%B9%80%E0%B8%8B%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%88%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%A1%E0%B8%99%E0%B8%B8%E0%B8%A9%E0%B8%A2%E0%B9%8C-hlk-ld2410-%E0%B9%81%E0%B8%9A%E0%B8%9A%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%99%E0%B8%A2%E0%B8%B3%E0%B8%AA%E0%B8%B9%E0%B8%87-%E0%B9%82%E0%B8%A1%E0%B8%94%E0%B8%B9%E0%B8%A5%E0%B8%95%E0%B8%A3%E0%B8%A7%E0%B8%88%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%80%E0%B8%84%E0%B8%A5%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%99%E0%B9%84%E0%B8%AB%E0%B8%A7-fmcw-human-presence-sensor-) |
-| 2 | Pin adapter board for the LD2410 (its pins are smaller than 2.54 mm), sold on the same page | — | — | same page |
+| 4 | 8-pin adapter board 1.27/2.0 → 2.54 mm for the LD2410, product code **A1121** (2 used, 2 spare) | 7 | 28 | [search](https://www.allnewstep.com/search?q=A1121) |
 | 2 | DC Jack 5.5×2.5 mm female connector, product code **A836** (solder two wires to it; cybertice only has 5.5×2.1, which does not fit the P0009 plug) | 10 | 20 | [search](https://www.allnewstep.com/search?q=DC+Jack) |
+| 2 | Breadboard MB-102, product code **A247** | 37 | 74 | |
+| 20 | Jumper wire male-female, product code **A2329** (sold per wire) | 2 | 40 | |
+| 20 | Jumper wire male-male, product code **A2331** | 2 | 40 | |
+| 10 | Jumper wire female-female, product code **A2330** | 2 | 20 | |
+| 3 | Pin header 1×40, product code **A233** | 5 | 15 | |
 
 ## CO₂ sensor: ordered ✓
 
 The SCD41 at cybertice was out of stock on 30–31 Oct, so it was **ordered from Shopee on 31 Oct** (problem P2). Do not buy an MH-Z19C.
 
-## Small parts: about 400 baht (estimate)
+## Small parts: about 150 baht left (estimate)
 
-Use lab spares first. Buy only what is missing, before step C4:
+Capacitors, DC jacks, jumpers, breadboards and headers are already in the cybertice and allnewstep orders. What is left, bought before step G (use lab spares first):
 
-- (capacitors and DC jacks are now in the cybertice and allnewstep orders)
-- Jumper wires, female headers, a perfboard (or a breadboard for now)
+- A perfboard for the final wiring
+- Enclosure material and printing (QR stickers, labels)
 
 ## Total
 
@@ -49,9 +54,9 @@ Use lab spares first. Buy only what is missing, before step C4:
 |---|---:|
 | cybertice ✓ | 1,687 |
 | arduitronics | 3,055 |
-| allnewstep | 380 + adapter boards |
+| allnewstep ✓ | 597 |
 | SCD41 (Shopee, ordered) | ~820 |
-| Small parts (estimate) | ~370 |
+| Small parts left (estimate) | ~150 |
 | **Total** | **~6,310** (about 1,260 each for 5 people, plus shipping) |
 
 ## Before you pay
