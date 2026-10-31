@@ -101,7 +101,7 @@ export const PHASES: Phase[] = [
           "gateway: MAX4466 ต้องอยู่ขา ADC1 (GPIO 1–10) เพราะ ADC2 ใช้ไม่ได้ตอนเปิด Wi-Fi · ห้ามใช้ 0 3 45 46 (strapping), 19 20 (USB), 35–37 (PSRAM), 48 (RGB LED)",
           "ตรวจขาที่ใช้กับลายพิมพ์บนบอร์ดจริงก่อนต่อสาย แล้วเก็บเป็น pins.h ใน repo ทุกคนใช้ไฟล์เดียวกัน",
         ],
-        start: "หน้า pinout ในเอกสารของ FireBeetle 2 และ ESP32-S3 DevKitC-1",
+        start: "รูปการต่อสาย (Wiring) ในหน้า Equipment + หน้า pinout ในเอกสารของ FireBeetle 2 และ ESP32-S3 DevKitC-1",
         done: "pins.h อยู่ใน repo และไม่มีขาซ้ำกับกล้องหรือ PSRAM",
         table: {
           head: ["บอร์ด", "อุปกรณ์", "ขา (ร่าง)", "ไฟเลี้ยง"],

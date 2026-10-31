@@ -1,0 +1,186 @@
+/* wire colours follow the bench convention: red is 5 V, ground is dashed so it never relies on colour alone */
+.wiring {
+  --wire-v5: #d1453b;
+  --wire-v33: #c68412;
+  --wire-sig: var(--stamp);
+  --wire-sda: #1f8a5c;
+  --wire-scl: var(--stamp);
+  --wire-ana: #2f6fb0;
+  --wire-gnd: var(--toner-3);
+}
+
+.wiring-grid {
+  display: grid;
+  gap: clamp(36px, 5vw, 56px);
+}
+
+/* one drawing per row, big enough to read pin names; the notes sit beside it on wide screens */
+.wiring-figure {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  grid-template-areas: "title title" "plate points" "key points";
+  gap: 0 clamp(24px, 3vw, 44px);
+  align-items: start;
+  margin: 0;
+}
+
+.wiring-figure h3 {
+  grid-area: title;
+  margin-bottom: 10px;
+  font-size: clamp(19px, 2vw, 22px);
+  font-weight: 800;
+}
+
+.wiring-plate {
+  grid-area: plate;
+  padding: 14px;
+  border: 1.5px solid var(--rule);
+  background: #ffffff;
+}
+
+.wr-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.wr-box {
+  fill: #ffffff;
+  stroke: var(--toner);
+  stroke-width: 1.5;
+}
+
+.wr-title {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 800;
+  fill: var(--toner);
+}
+
+.wr-text {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  fill: var(--toner-2);
+}
+
+.wr-pin {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 700;
+  fill: var(--toner);
+}
+
+.wr-wire {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.wr-v5 {
+  stroke: var(--wire-v5);
+  stroke-width: 3;
+}
+
+.wr-v33 {
+  stroke: var(--wire-v33);
+}
+
+.wr-sig {
+  stroke: var(--wire-sig);
+}
+
+.wr-sda {
+  stroke: var(--wire-sda);
+}
+
+.wr-scl {
+  stroke: var(--wire-scl);
+}
+
+.wr-ana {
+  stroke: var(--wire-ana);
+}
+
+.wr-gnd {
+  stroke: var(--wire-gnd);
+  stroke-dasharray: 7 5;
+}
+
+.wr-link {
+  stroke: var(--toner-2);
+}
+
+.wr-dot {
+  stroke: none;
+}
+
+.wr-dot.wr-sda {
+  fill: var(--wire-sda);
+}
+
+.wr-dot.wr-scl {
+  fill: var(--wire-scl);
+}
+
+.wr-key {
+  grid-area: key;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  color: var(--toner-2);
+}
+
+.wr-key li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wr-key svg {
+  width: 30px;
+  height: 10px;
+}
+
+.wiring-points {
+  grid-area: points;
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 1.2em;
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+.wiring-check {
+  margin-top: 28px;
+  padding: 12px 16px 14px;
+  border: 1.5px dashed var(--toner);
+  max-width: var(--measure);
+}
+
+@media (max-width: 960px) {
+  .wiring-figure {
+    grid-template-columns: 1fr;
+    grid-template-areas: "title" "plate" "key" "points";
+  }
+
+  .wiring-points {
+    margin-top: 14px;
+  }
+}
+
+/* keep pin names readable on a phone: the drawing scrolls sideways instead of shrinking */
+@media (max-width: 560px) {
+  .wiring-plate {
+    overflow-x: auto;
+  }
+
+  .wr-svg {
+    min-width: 540px;
+  }
+}

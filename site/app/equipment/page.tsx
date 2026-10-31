@@ -5,8 +5,10 @@ import { Enlarge } from "@/components/enlarge";
 import { GatewayFigure } from "@/components/figures/gateway/figure";
 import { NodeFigure } from "@/components/figures/node/figure";
 import { AccessoriesTable, Budget, MiscList, PartsList, ToolsTable } from "@/components/equipment";
+import { GatewayWiring, NodeWiring, WireKey } from "@/components/wiring-diagram";
 import { BUDGET, baht } from "@/lib/equipment";
 import "@/components/figure-side.css";
+import "@/components/wiring-diagram.css";
 import "../pages.css";
 import "./equipment.css";
 
@@ -59,6 +61,62 @@ export default function EquipmentPage() {
         </div>
         <p className="lede section-lede">ต้องมีก่อนของถึง เพราะต้องบัดกรีขา FireBeetle, LD2410 และสายแจ็ก DC เอง · ถ้าในทีมมีอยู่แล้วตัดรายการนั้นออกได้</p>
         <ToolsTable />
+      </section>
+
+      <section className="sheet section wiring" aria-labelledby="wiring">
+        <div className="section-head">
+          <h2 id="wiring">Wiring · ต่อสายยังไง</h2>
+          <Link className="ref" href="/build-plan/#step-A4">
+            ขาตามร่าง pin map ขั้น A4
+          </Link>
+        </div>
+        <p className="lede section-lede">
+          ต่อแบบ breadboard: ราง 5V ข้างบน ราง GND ข้างล่าง ชิ้นไหนต้องการไฟก็ลากขึ้นราง 5V ทุกชิ้นลากลงราง GND ส่วนสายสัญญาณลากจากขาบอร์ดไปขาโมดูลตรง ๆ · ตัวอักษรในกล่องคือชื่อขาที่พิมพ์บนบอร์ด
+        </p>
+        <div className="wiring-grid">
+          <figure className="wiring-figure">
+            <h3>Node · ที่โต๊ะ (ทำ 2 ชุด)</h3>
+            <div className="wiring-plate">
+              <NodeWiring />
+            </div>
+            <WireKey kinds={["v5", "v33", "sig", "gnd"]} />
+            <ul className="wiring-points">
+              <li>
+                <b>TX ไขว้ RX:</b> TX ของ LD2410 เข้า RX ของบอร์ด (GPIO17) และ TX ของบอร์ด (GPIO18) เข้า RX ของ LD2410 · ต่อ TX ชน TX จะไม่มีข้อมูลเข้า
+              </li>
+              <li>
+                <b>servo เอาไฟจากราง 5V ตรง ๆ</b> ห้ามดึงจากขาบอร์ด ตอนเริ่มหมุน servo กระชากไฟจนบอร์ดรีเซ็ตได้ · ตัวเก็บประจุ 1000 µF ติดข้าง servo ขาสั้น / ฝั่งที่มีแถบคือขาลบ
+              </li>
+              <li>
+                <b>VL53L1X ใช้ 3.3V</b> จากขา 3V3 ของบอร์ด ส่วน LD2410 ใช้ 5V
+              </li>
+              <li>
+                <b>GND ทุกชิ้นต่อถึงกัน</b> ไม่งั้นสัญญาณเพี้ยน servo สั่น · XSHUT ของ VL53L1X (GPIO13) ไม่ต่อก็ได้ · กล้องเสียบสายแพเข้าบอร์ด
+              </li>
+            </ul>
+          </figure>
+          <figure className="wiring-figure">
+            <h3>Gateway · ที่ห้อง</h3>
+            <div className="wiring-plate">
+              <GatewayWiring />
+            </div>
+            <WireKey kinds={["v5", "sda", "scl", "ana"]} />
+            <ul className="wiring-points">
+              <li>
+                <b>I²C ใช้สาย 2 เส้นร่วมกันได้:</b> SDA ไป SDA ทุกตัว SCL ไป SCL ทุกตัว (จุดกลมคือจุดแยกสาย) · บอร์ดแยกตัวจาก address: SCD41 = 0x62, BH1750 = 0x23 ไม่ชนกัน
+              </li>
+              <li>
+                <b>ไมค์ต้องอยู่ขา ADC1 (GPIO 1–10)</b> เพราะ ADC2 ใช้ไม่ได้ตอนเปิด Wi-Fi · อ่านด้วย analogRead() แบบ Lab 8
+              </li>
+              <li>
+                <b>sensor ทุกตัวใช้ 3.3V และ GND จากบอร์ด</b> บอร์ดรับไฟจากที่ชาร์จมือถือทาง USB-C
+              </li>
+            </ul>
+          </figure>
+        </div>
+        <p className="wiring-check">
+          <b>ก่อนต่อจริง:</b> ขาในรูปเป็นร่าง ให้เช็กกับตัวหนังสือบนบอร์ดจริงทุกขา (โดยเฉพาะขารับไฟ 5V ของ FireBeetle) · วัดด้วยมัลติมิเตอร์ว่าสายจากแจ็ก DC เส้นไหนเป็น + ก่อนเสียบบอร์ด · ต่อบน breadboard ทีละชิ้น รัน example ให้ผ่านก่อนต่อชิ้นถัดไป ตามขั้น C1 → C7
+        </p>
       </section>
 
       <section className="sheet section" aria-labelledby="node">

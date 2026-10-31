@@ -5,7 +5,7 @@ The team's front end for the final project: check how the project stands, see pr
 | Page | What it's for |
 |---|---|
 | Overview | Live desk demo (simulated) and the most serious open problems |
-| Equipment | Budget, then every part, accessory, small part and tool with its use, price and order status (rows open to the library and starting example); both devices as isometric figures that come apart |
+| Equipment | Budget, then every part, accessory, small part and tool with its use, price and order status (rows open to the library and starting example); wiring diagrams for the node and the gateway; both devices as isometric figures that come apart |
 | Grading Criteria | The 70-point rubric, M1–M8 and deadlines as a scorecard: status, owner, plan, projected score |
 | Build Plan | 8 phases by week, folded; each step opens to what to do, its done-when test and owner |
 | Problems | Every issue, expected problem and risk, with filters and search |
