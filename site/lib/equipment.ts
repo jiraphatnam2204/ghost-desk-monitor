@@ -421,6 +421,7 @@ export const TOOLS: Tool[] = [
   { code: "A0499", name: "คีมตัด สำหรับงานอิเล็กทรอนิกส์", job: "ตัดขาที่เกินหลังบัดกรี ตัดสาย", order: "pending", price: 40, qty: 1, url: CYBERTICE_PLIERS },
   { code: "A0256", name: "คีมปอกสาย TUOSEN 6 นิ้ว", job: "ปอกสายแจ็ก DC และสายไฟ servo", order: "pending", price: 160, qty: 1, url: CYBERTICE_PLIERS },
   { code: "A0491", name: "ลวดซับตะกั่ว 2.0 mm ยาว 1.5 เมตร", job: "เก็บตะกั่วที่เชื่อมขาติดกันตอนบัดกรีพลาด", order: "pending", price: 40, qty: 1, url: CYBERTICE_SOLDERING },
+  { code: "A0579", name: "ชุดไขควงอเนกประสงค์ 32 หัว", job: "ขันสายใน terminal block (ปากแบนเล็ก) และสกรูแขน servo (ปากแฉกเล็ก)", order: "pending", price: 75, qty: 1, url: "https://www.cybertice.com/search?q=%E0%B9%84%E0%B8%82%E0%B8%84%E0%B8%A7%E0%B8%87" },
 ];
 
 /* ---------- budget ---------- */
