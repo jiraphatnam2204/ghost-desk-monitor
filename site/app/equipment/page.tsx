@@ -59,7 +59,7 @@ export default function EquipmentPage() {
           <h2 id="tools">Tools · เครื่องมือช่าง</h2>
           <span className="ref">cybertice · {baht(BUDGET.tools)} บาท</span>
         </div>
-        <p className="lede section-lede">ต้องมีก่อนของถึง เพราะต้องบัดกรีขา FireBeetle, LD2410 และสายแจ็ก DC เอง · ถ้าในทีมมีอยู่แล้วตัดรายการนั้นออกได้</p>
+        <p className="lede section-lede">สั่งแล้ว 31 ต.ค. ในบิลเดียวกับ terminal block และ perfboard · ใช้บัดกรีขา FireBeetle, LD2410 และสายแจ็ก DC</p>
         <ToolsTable />
       </section>
 

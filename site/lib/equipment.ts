@@ -235,14 +235,14 @@ export const ACCESSORIES: Accessory[] = [
   { code: "A2331", name: "สายจัมเปอร์ ผู้-ผู้", use: "ต่อบน breadboard · ตัดใช้เป็นสายแจ็ก DC", shop: "allnewstep", price: 2, qty: 20, order: "ordered" },
   { code: "A2330", name: "สายจัมเปอร์ เมีย-เมีย", use: "ต่อขาโมดูลกับขาบอร์ดตรง ๆ", shop: "allnewstep", price: 2, qty: 20, order: "ordered" },
   { code: "A233", name: "Pin header 1×40", use: "บัดกรีขาให้บอร์ดและโมดูล", shop: "allnewstep", price: 5, qty: 3, order: "ordered" },
-  { code: "SK217", name: "Terminal block KF301-2P ระยะขา 5 mm", use: "แยกไฟ 5V ไปบอร์ดกับ servo โต๊ะละ 1 (สำรอง 2)", shop: "cybertice", price: 4, qty: 4, order: "pending" },
-  { code: "SK002", name: "แผ่นปริ๊นอเนกประสงค์ 7×9 cm ไข่ปลา 2.54 mm", use: "วงจรตัวจริงของ node ละ 1 แผ่น (สำรอง 1)", shop: "cybertice", price: 12, qty: 3, order: "pending" },
+  { code: "SK217", name: "Terminal block KF301-2P ระยะขา 5 mm", use: "แยกไฟ 5V ไปบอร์ดกับ servo โต๊ะละ 1 (สำรอง 2)", shop: "cybertice", price: 4, qty: 4, order: "ordered" },
+  { code: "SK002", name: "แผ่นปริ๊นอเนกประสงค์ 7×9 cm ไข่ปลา 2.54 mm", use: "วงจรตัวจริงของ node ละ 1 แผ่น (สำรอง 1)", shop: "cybertice", price: 12, qty: 3, order: "ordered" },
 ];
 
 /* ---------- small and mechanical parts: made or bought later, one estimate ---------- */
 
 export const MISC_ESTIMATE = 150; // enclosure material, glue, fixings, printing
-export const SHIPPING_PAID = 140; // arduitronics 2 × 50, allnewstep 40; cybertice and Shopee had none on top
+export const SHIPPING_PAID = 190; // arduitronics 2 × 50, allnewstep 40, cybertice tools order 50; the first cybertice order and Shopee had none on top
 
 export interface Misc {
   id: string;
@@ -276,8 +276,8 @@ export const MISC: Misc[] = [
     id: "power-split",
     name: "แจ็ก DC ตัวเมีย 5.5×2.5 + terminal block",
     use: "แยกไฟจากอแดปเตอร์ไปบอร์ดและ servo",
-    order: "partial",
-    orderNote: "แจ็ก DC สั่งแล้ว · terminal block SK217 รอสั่งพร้อมเครื่องมือ",
+    order: "ordered",
+    orderNote: "แจ็ก DC (allnewstep) และ terminal block SK217 (cybertice) สั่งแล้ว",
     where: "node",
     qty: "1 ชุดต่อโต๊ะ",
     job: "แยกไฟ 5 V จากอแดปเตอร์ไปสองทาง: บอร์ด FireBeetle และ servo โดยใช้ GND ร่วมกัน",
@@ -289,8 +289,8 @@ export const MISC: Misc[] = [
     id: "perfboard",
     name: "Breadboard → perfboard, header, สายจัมเปอร์",
     use: "ต่อวงจรทดลอง แล้วย้ายลงแผ่นถาวร",
-    order: "partial",
-    orderNote: "breadboard, header, สายจัมเปอร์สั่งแล้ว · perfboard SK002 รอสั่งพร้อมเครื่องมือ",
+    order: "ordered",
+    orderNote: "breadboard, header, สายจัมเปอร์ (allnewstep) และ perfboard SK002 (cybertice) สั่งแล้ว",
     where: "both",
     qty: "ตามใช้",
     job: "ทดลองบน breadboard ก่อน แล้วย้ายวงจร node ลง perfboard เมื่อ pin map นิ่ง สายจะไม่หลุดตอนยกโต๊ะ",
@@ -383,7 +383,7 @@ export const MISC: Misc[] = [
   },
 ];
 
-/* ---------- tools: assume the lab lends nothing; cybertice had every one in stock on 31 Oct ---------- */
+/* ---------- tools: assume the lab lends nothing; ordered from cybertice on 31 Oct ---------- */
 
 export interface Tool {
   code: string;
@@ -403,25 +403,25 @@ export const TOOLS: Tool[] = [
     code: "A0559",
     name: "ชุดหัวแร้ง 60W ปรับอุณหภูมิ 200–450 °C (มีที่วาง ฟองน้ำ หัวเปลี่ยน 5 หัว ที่ดูดตะกั่ว)",
     job: "บัดกรีขา header ของ FireBeetle, LD2410 ลงบอร์ดแปลงขา, สายแจ็ก DC",
-    order: "pending",
+    order: "ordered",
     price: 365,
     qty: 1,
     url: "https://www.cybertice.com/product/4821/%E0%B8%8A%E0%B8%B8%E0%B8%94%E0%B8%AD%E0%B8%B8%E0%B8%9B%E0%B8%81%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%9A%E0%B8%B1%E0%B8%94%E0%B8%81%E0%B8%A3%E0%B8%B5-60w-%E0%B8%AB%E0%B8%B1%E0%B8%A7%E0%B9%81%E0%B8%A3%E0%B9%89%E0%B8%87%E0%B8%9B%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B8%AD%E0%B8%B8%E0%B8%93%E0%B8%AB%E0%B8%A0%E0%B8%B9%E0%B8%A1%E0%B8%B4%E0%B9%84%E0%B8%94%E0%B9%89",
   },
-  { code: "A0087", name: "ตะกั่วบัดกรี 60/40 ยาว 2 เมตร", job: "ม้วนละ 2 เมตร เผื่อไว้ 2 ม้วน", order: "pending", price: 40, qty: 2, url: CYBERTICE_SOLDERING },
+  { code: "A0087", name: "ตะกั่วบัดกรี 60/40 ยาว 2 เมตร", job: "ม้วนละ 2 เมตร เผื่อไว้ 2 ม้วน", order: "ordered", price: 40, qty: 2, url: CYBERTICE_SOLDERING },
   {
     code: "A0341",
     name: "มัลติมิเตอร์ DT9205A",
     job: "วัดไฟ 5 V / 3.3 V, หาขั้วบวกของแจ็ก DC ก่อนต่อบอร์ด, หาสายขาด · ใช้ถ่าน 9 V (หน้าร้านไม่บอกว่าแถม)",
-    order: "pending",
+    order: "ordered",
     price: 270,
     qty: 1,
     url: "https://www.cybertice.com/search?q=%E0%B8%A1%E0%B8%B1%E0%B8%A5%E0%B8%95%E0%B8%B4%E0%B8%A1%E0%B8%B4%E0%B9%80%E0%B8%95%E0%B8%AD%E0%B8%A3%E0%B9%8C",
   },
-  { code: "A0499", name: "คีมตัด สำหรับงานอิเล็กทรอนิกส์", job: "ตัดขาที่เกินหลังบัดกรี ตัดสาย", order: "pending", price: 40, qty: 1, url: CYBERTICE_PLIERS },
-  { code: "A0256", name: "คีมปอกสาย TUOSEN 6 นิ้ว", job: "ปอกสายแจ็ก DC และสายไฟ servo", order: "pending", price: 160, qty: 1, url: CYBERTICE_PLIERS },
-  { code: "A0491", name: "ลวดซับตะกั่ว 2.0 mm ยาว 1.5 เมตร", job: "เก็บตะกั่วที่เชื่อมขาติดกันตอนบัดกรีพลาด", order: "pending", price: 40, qty: 1, url: CYBERTICE_SOLDERING },
-  { code: "A0579", name: "ชุดไขควงอเนกประสงค์ 32 หัว", job: "ขันสายใน terminal block (ปากแบนเล็ก) และสกรูแขน servo (ปากแฉกเล็ก)", order: "pending", price: 75, qty: 1, url: "https://www.cybertice.com/search?q=%E0%B9%84%E0%B8%82%E0%B8%84%E0%B8%A7%E0%B8%87" },
+  { code: "A0499", name: "คีมตัด สำหรับงานอิเล็กทรอนิกส์", job: "ตัดขาที่เกินหลังบัดกรี ตัดสาย", order: "ordered", price: 40, qty: 1, url: CYBERTICE_PLIERS },
+  { code: "A0256", name: "คีมปอกสาย TUOSEN 6 นิ้ว", job: "ปอกสายแจ็ก DC และสายไฟ servo", order: "ordered", price: 160, qty: 1, url: CYBERTICE_PLIERS },
+  { code: "A0491", name: "ลวดซับตะกั่ว 2.0 mm ยาว 1.5 เมตร", job: "เก็บตะกั่วที่เชื่อมขาติดกันตอนบัดกรีพลาด", order: "ordered", price: 40, qty: 1, url: CYBERTICE_SOLDERING },
+  { code: "A0579", name: "ชุดไขควงอเนกประสงค์ 32 หัว", job: "ขันสายใน terminal block (ปากแบนเล็ก) และสกรูแขน servo (ปากแฉกเล็ก)", order: "ordered", price: 75, qty: 1, url: "https://www.cybertice.com/search?q=%E0%B9%84%E0%B8%82%E0%B8%84%E0%B8%A7%E0%B8%87" },
 ];
 
 /* ---------- budget ---------- */
