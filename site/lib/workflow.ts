@@ -35,27 +35,6 @@ export interface Phase {
   steps: Step[];
 }
 
-export const START_HERE = {
-  part: "Gateway · ESP32-S3 DevKitC-1",
-  why: "เริ่มที่ gateway เพราะเริ่มได้ทันทีด้วยบอร์ด Lab 10 ของใครก็ได้ (ผังขาเดียวกับบอร์ด DevKitC-1 ที่สั่ง) ไม่ต้องรอของ และทุกอย่างในระบบต้องผ่านมัน ทำเส้นทาง node ปลอม → gateway → Supabase → LINE ให้วิ่งได้ก่อน แล้วค่อยเสียบ sensor จริงทีละตัวเมื่อของมาถึง",
-  step: "B1",
-};
-
-// The order the equipment is brought up, each pointing at the step that does it.
-export const EQUIPMENT_ORDER = [
-  { part: "Gateway (บอร์ด Lab 10 ระหว่างรอ DevKitC-1)", step: "B1" },
-  { part: "ESP32 ตัวที่ 2 (node ปลอม)", step: "B2" },
-  { part: "LD2410", step: "C1" },
-  { part: "VL53L1X", step: "C2" },
-  { part: "Servo", step: "C3" },
-  { part: "ไฟต่อโต๊ะ + ตัวเก็บประจุ", step: "C4" },
-  { part: "เสากล้อง ที่ยึดเรดาร์ ป้ายต้นแบบ", step: "C5" },
-  { part: "FireBeetle 2 + กล้อง", step: "C6" },
-  { part: "SCD41 · BH1750 · MAX4466", step: "C7" },
-  { part: "Node ตัวที่ 2", step: "F1" },
-  { part: "กล่อง gateway · node ตัวจริง", step: "F3" },
-];
-
 export const PHASES: Phase[] = [
   {
     id: "A",
@@ -123,8 +102,6 @@ export const PHASES: Phase[] = [
         id: "A4",
         title: "Pin map และแผนการต่อสาย",
         part: "FireBeetle 2 · ESP32-S3 DevKitC-1",
-        figure: "node",
-        focus: "head radar tof servo",
         why: "กล้องใช้ขาของ FireBeetle ไปหลายขา และบอร์ดที่มี PSRAM แบบ OPI ใช้ GPIO 35–37 อยู่แล้ว ถ้าไม่วางขาก่อน จะเจอขาชนกันตอนบัดกรี",
         todo: [
           "เริ่มจากร่างในตาราง: node ใช้ขาว่าง 5 ขา (เหลือ 4) gateway ใช้ 3–5 ขา (เหลืออีกมาก) · ขาพอทุกตัว",
@@ -164,8 +141,6 @@ export const PHASES: Phase[] = [
         id: "B1",
         title: "Gateway ส่งข้อมูลขึ้น Supabase",
         part: "Gateway (หรือบอร์ด Lab 10)",
-        figure: "gateway",
-        focus: "esp",
         why: "เริ่มได้ทันทีด้วยบอร์ด Lab 10 ไม่ต้องรอของ และพิสูจน์ส่วนที่ checkpoint วันที่ 20 พ.ย. ต้องเห็นตั้งแต่วันแรก",
         todo: ["สร้างโปรเจกต์ Supabase + ตาราง desk_events และ room_env", "ต่อ hotspot (Wi-Fi มหาลัยใช้กับ ESP32 ไม่ค่อยได้)", "HTTPS POST แถวปลอมทุก 10 วิ ด้วย anon key จาก secrets.h"],
         start: "ตัวอย่าง WiFiClientSecure + HTTPClient ใน esp32 core",
@@ -177,8 +152,6 @@ export const PHASES: Phase[] = [
         id: "B2",
         title: "ESP-NOW จาก node ปลอม และ freeze message format",
         part: "ESP32 ตัวที่ 2",
-        figure: "gateway",
-        focus: "esp",
         why: "ระหว่างรอ FireBeetle ใช้บอร์ด Lab 10 ของเพื่อนเป็น node ปลอมที่ส่งค่าสมมติ จะได้เขียน protocol และ ack ได้เลย",
         todo: ["node ปลอมส่ง node_batch_t ทุก 1 วิ (10 ค่าต่อชุด) ค่า sensor เป็นตัวเลขสมมติ", "gateway ตอบ ack · node ส่งซ้ำถ้าไม่ได้ ack (E4)", "ตกลง format กันทั้งทีมแล้ว freeze ภายใน 6 พ.ย. · ต้องรู้ก่อนว่า ld2410 อ่านโหมด engineering ได้ (C1)"],
         start: "ตัวอย่าง ESP_NOW ใน esp32 core",
@@ -191,8 +164,6 @@ export const PHASES: Phase[] = [
         id: "B3",
         title: "Gateway ส่ง LINE เอง",
         part: "Gateway + LINE OA",
-        figure: "gateway",
-        focus: "esp",
         why: "การแจ้งเตือน (M6) ไม่ต้องรอ sensor เลย ทำเสร็จได้ในวันเดียว",
         todo: ["สร้าง LINE Official Account + Messaging API channel", "เก็บ channel access token ใน secrets.h", "POST /v2/bot/message/broadcast ข้อความทดสอบ"],
         start: "HTTPClient + JSON body ตามเอกสาร Messaging API",
@@ -212,8 +183,6 @@ export const PHASES: Phase[] = [
         id: "C1",
         title: "LD2410: จับคนนั่งนิ่ง",
         part: "HLK-LD2410",
-        figure: "node",
-        focus: "radar",
         why: "เป็นหัวใจของโปรเจกต์ (มีคนจริงไหม) ง่ายที่สุด และขา OUT ใช้ทำ E2 ได้ทันที จึงเริ่มฝั่ง node ที่ตัวนี้",
         todo: ["UART 256000 baud + ขา OUT ตาม pins.h", "ISR บนขา OUT ให้ semaphore ปลุก task (แบบ Lab 10)", "เปิดโหมด engineering อ่านพลังงาน 9 ช่วงระยะ × 2 (ขยับ/นิ่ง) · ถ้าไลบรารีไม่รองรับ แจ้ง Architect ทันที เพราะกระทบ format และโมเดล", "ลองนั่งนิ่ง ๆ อ่านหนังสือ 1 นาที"],
         start: "ตัวอย่าง sensor_data ในไลบรารี MyLD2410 (อ่านได้ทั้งโหมดปกติและ engineering)",
@@ -225,8 +194,6 @@ export const PHASES: Phase[] = [
         id: "C2",
         title: "VL53L1X: วัดระยะลงเบาะ",
         part: "VL53L1X",
-        figure: "node",
-        focus: "tof",
         why: "feature ชุดที่สองของโมเดล AI: มีคนนั่งระยะสั้นกว่าเก้าอี้ว่างมาก และขยับตามการหายใจ ช่วยแยกคนนั่งออกจากกระเป๋าและคนโต๊ะข้าง ๆ",
         todo: ["I²C 4 สาย + GPIO1 (data ready) · ใช้ header", "โหมด long distance, อ่าน 10 ครั้ง/วินาที", "ลองเก้าอี้ว่าง / นั่ง / วางกระเป๋า / เสื้อสีดำ"],
         start: "ตัวอย่าง Continuous ในไลบรารี VL53L1X (Pololu)",
@@ -238,8 +205,6 @@ export const PHASES: Phase[] = [
         id: "C3",
         title: "Servo หมุนได้ 3 ตำแหน่ง",
         part: "TD-7120MG",
-        figure: "node",
-        focus: "servo",
         why: "actuator ตัวเดียวของระบบ (M2) ลองให้หมุนถูกมุมก่อน แล้วค่อยแก้เรื่องไฟใน C4",
         todo: ["ESP32Servo ตั้งพัลส์ 500–2500 µs ให้ครบ 270°", "หาค่าที่ได้ 0° / 120° / 240° จริงบนตัว servo", "timeout ของคำสั่งหมุน (M7) · หยุดส่งพัลส์เมื่อถึงตำแหน่ง กันเสียงหึ่ง"],
         start: "ตัวอย่าง Sweep ของ ESP32Servo",
@@ -251,8 +216,6 @@ export const PHASES: Phase[] = [
         id: "C4",
         title: "ไฟต่อโต๊ะ + ตัวเก็บประจุ",
         part: "อแดปเตอร์ 5V 2A + terminal block + 1000 µF",
-        figure: "node",
-        focus: "servo cap block",
         why: "กล้อง + Wi-Fi + servo กินไฟพร้อมกัน servo กระชากไฟตอนเริ่มหมุนจนบอร์ดรีเซ็ตได้ ต้องแก้ก่อนรวมระบบ ไม่งั้นจะดูเหมือนบั๊กในโค้ด",
         todo: [
           "แยกไฟจากอแดปเตอร์ด้วย terminal block ไปบอร์ดและ servo · servo ไม่ดึงไฟผ่านบอร์ด",
@@ -260,7 +223,7 @@ export const PHASES: Phase[] = [
           "GND ของอแดปเตอร์ บอร์ด และ servo ต่อถึงกัน",
           "รันกล้อง + Wi-Fi + หมุน servo พร้อมกัน",
         ],
-        start: "แผนภาพ Power per desk ในหน้า Equipment",
+        start: "แผนภาพไฟเลี้ยงข้างบน",
         done: "หมุน servo 50 รอบขณะกล้องและ Wi-Fi ทำงาน ไม่มี brown-out ใน Serial Monitor",
         owner: "Sensor Node",
         needs: ["C3"],
@@ -269,8 +232,6 @@ export const PHASES: Phase[] = [
         id: "C5",
         title: "ต้นแบบที่ยึด: เสากล้อง เรดาร์ ป้าย",
         part: "ขาตั้งมือถือแบบหนีบ + ฟิวเจอร์บอร์ด",
-        figure: "node",
-        focus: "mast radar prism stand",
         why: "มุมกล้องต้องนิ่งก่อนเก็บ dataset และตำแหน่งเรดาร์มีผลกับการจับคนนั่งนิ่ง ทำต้นแบบจากของถูกก่อนลงทุนทำตัวจริงใน F4",
         todo: [
           "หนีบขาตั้งมือถือที่ขอบโต๊ะ ติดหัวกล้อง + VL53L1X มองลงเฉียง เห็นพื้นโต๊ะและเก้าอี้ · ToF เล็งที่เบาะ",
@@ -287,8 +248,6 @@ export const PHASES: Phase[] = [
         id: "C6",
         title: "กล้อง: ถ่ายแล้วส่งภาพให้ gateway",
         part: "FireBeetle 2 + OV2640",
-        figure: "node",
-        focus: "head",
         why: "cloud AI ต้องได้ภาพจาก node แต่ sensor node ห้ามส่งขึ้น cloud เอง (นิยามข้อ 2.3) จึงส่งให้ gateway ผ่าน Wi-Fi วงเดียวกัน · ESP-NOW ส่งภาพไม่ได้เพราะข้อความยาวได้แค่ 250 ไบต์",
         todo: [
           "แก้ขากล้องตาม wiki ของ DFRobot · ภาพ JPEG ขนาดเล็ก (QVGA)",
@@ -304,8 +263,6 @@ export const PHASES: Phase[] = [
         id: "C7",
         title: "Sensor ที่ห้อง: CO₂ แสง เสียง",
         part: "SCD41 · BH1750 · MAX4466",
-        figure: "gateway",
-        focus: "scd lux mic",
         why: "ครบ M1 ฝั่ง gateway (≥ 2 ชนิด) และเป็นของง่าย ทำคู่ขนานกับฝั่ง node ได้ · ทั้งสามตัวแสดงบน dashboard",
         todo: ["SCD41 กับ BH1750 ใช้ I²C สองเส้นเดียวกัน", "ไมค์ต่อขา ADC1 (ADC2 ใช้ไม่ได้ตอนเปิด Wi-Fi) · analogRead แบบ Lab 8 หา peak-to-peak"],
         start: "exampleUsage (SCD4x) · BH1750test · โค้ด ADC จาก Lab 8",
@@ -325,8 +282,6 @@ export const PHASES: Phase[] = [
         id: "D1",
         title: "Node เป็น FreeRTOS",
         part: "FireBeetle 2 (ทั้ง node)",
-        figure: "node",
-        focus: "head radar tof servo",
         why: "E1: แยกงานเป็น task ที่คุยกันด้วย queue ทำให้ sensor ช้าตัวหนึ่งไม่ถ่วงทั้งระบบ",
         todo: ["รวมโค้ด C1–C6 เป็น 5 task", "radarTask กับ tofTask ส่งค่าเข้า queue ให้ commTask รวมเป็นชุด (Lab 10 Part 3)", "mutex คุม I²C bus (Lab 10 Part 2)"],
         start: "โครง xTaskCreate + xQueueCreate จาก Lab 10",
@@ -348,8 +303,6 @@ export const PHASES: Phase[] = [
         id: "D2",
         title: "State machine ที่ gateway + demo mode",
         part: "ESP32-S3 DevKitC-1",
-        figure: "gateway",
-        focus: "esp",
         why: "gateway เป็นเจ้าของเวลา 2 / 20 / 30 นาทีของทุกโต๊ะ (real-time processing ในหมวด II) · demo mode ย่อเป็นวินาทีเพื่อทดสอบได้เร็ว",
         todo: ["state ต่อ node_id: FREE / IN_USE / AWAY / OFFLINE", "AI local บอก person ต่อเนื่อง 60 วิ → IN_USE · ไม่ใช่ person 2 นาที → สั่ง SNAP แล้วถาม cloud AI: empty → FREE, items_only → AWAY, person → อยู่ต่อ, ไม่ตอบ → AWAY", "ส่ง SET_SIGN กลับ node เมื่อสถานะเปลี่ยน", "อ่าน demo mode จากตาราง settings ทุก 2 วิ"],
         start: "switch-case ตาม state table ในหน้า Docs (Appendix ของ report)",
@@ -369,8 +322,6 @@ export const PHASES: Phase[] = [
         id: "D3",
         title: "AI สองตัว + เส้นตาย 13 พ.ย.",
         part: "Gateway DevKitC-1 (AI local) · cloud vision API",
-        figure: "gateway",
-        focus: "esp",
         why: "E7 และ M4 closed loop: AI local บน gateway ตัดสินว่ามีคนนั่งไหมทุกวินาที · cloud AI ดูภาพเฉพาะตอนตัดสิน ว่าโต๊ะโล่งหรือมีของค้าง",
         todo: [
           "เก็บข้อมูล: gateway พิมพ์ node_batch_t เป็น CSV พร้อม label (person / empty / nearby) นั่งนิ่ง พิมพ์ เอนหลัง ลุก คนเดินผ่าน คนโต๊ะข้าง ๆ กระเป๋าบนเก้าอี้ เสื้อหลายสี หลายคน หลายวัน",
@@ -395,8 +346,6 @@ export const PHASES: Phase[] = [
         id: "E1",
         title: "ต่อของจริงครบเส้น",
         part: "node + gateway + Supabase",
-        figure: "gateway",
-        focus: "esp",
         why: "เปลี่ยน node ปลอมจาก B2 เป็น node จริง เส้นทางเดิมที่ทำไว้ตั้งแต่ W1 จึงแทบไม่ต้องแก้",
         todo: ["node จริงส่งไป gateway", "gateway POST ทุกการเปลี่ยนสถานะ + ค่าห้องทุก 1 นาที"],
         start: "โค้ด B1 + B2 + D1 + D2",
@@ -438,8 +387,6 @@ export const PHASES: Phase[] = [
         id: "F1",
         title: "Node ตัวที่ 2",
         part: "ชุด node ที่สอง",
-        figure: "node",
-        focus: "head radar tof servo prism qr mast",
         why: "Scalability 3 คะแนนต้องมี node จริง ≥ 2 ตัวทำงานพร้อมกัน",
         todo: ["FireBeetle ตัวที่ 2 ต้องสั่งภายใน ศ. 13 พ.ย. (หลัง PoC บนตัวแรกผ่าน ดูขั้น A3) ถ้าของหมดให้บอกทีมทันที", "ประกอบชุดที่สอง โค้ดเดิม node_id = 2", "เช็กว่า gateway และเว็บแยกสองโต๊ะถูก"],
         start: "firmware จาก D1 + D3",
@@ -451,8 +398,6 @@ export const PHASES: Phase[] = [
         id: "F2",
         title: "ทนเน็ตหลุดและไฟดับ",
         part: "gateway + node",
-        figure: "gateway",
-        focus: "esp",
         why: "E4 และ Robustness 3 คะแนน: ต้องกลับมาเองหลังไฟดับ / Wi-Fi หลุด",
         todo: ["ring buffer ใน RAM เก็บแถวที่ส่งไม่ได้ แล้วส่งย้อนหลัง", "reconnect Wi-Fi อัตโนมัติ", "OFFLINE เมื่อ node เงียบเกินเวลาที่ตั้ง"],
         start: "event ของ WiFi ใน esp32 core",
@@ -464,8 +409,6 @@ export const PHASES: Phase[] = [
         id: "F3",
         title: "กล่อง gateway",
         part: "แผ่นฐาน + standoff M3 + กล่อง",
-        figure: "gateway",
-        focus: "esp scd lux mic",
         why: "Build Quality 3 คะแนน และ sensor ห้องต้องวัดได้ถูกเมื่ออยู่ในกล่อง",
         todo: [
           "บอร์ดทุกตัวขึ้น standoff M3 บนแผ่นฐาน แล้วครอบด้วยกล่อง",
@@ -482,8 +425,6 @@ export const PHASES: Phase[] = [
         id: "F4",
         title: "Node ตัวจริง: วงจร กล่อง ป้าย QR",
         part: "perfboard + กล่องหัวกล้อง + ปริซึม + การ์ด QR",
-        figure: "node",
-        focus: "head prism qr stand",
         why: "เปลี่ยนต้นแบบจาก C5 เป็นของที่ย้ายได้ไม่พัง และข้อความ LINE ตัวจริงต้องบอกเลขโต๊ะชัด",
         todo: [
           "ย้ายวงจร node จาก breadboard ลง perfboard (header ตัวเมีย ถอดบอร์ดได้)",
@@ -585,3 +526,6 @@ export const STEPS = PHASES.flatMap((phase) => phase.steps);
 const saved = status as { updated: string; steps: Record<string, StepStatus> };
 export const WORKFLOW_UPDATED = saved.updated;
 export const statusOf = (id: string): StepStatus => saved.steps[id] ?? "not-started";
+
+// The phase the team is in: the first one with a step not done yet.
+export const CURRENT_PHASE = PHASES.find((phase) => phase.steps.some((step) => statusOf(step.id) !== "done")) ?? PHASES[PHASES.length - 1];

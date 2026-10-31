@@ -1,112 +1,110 @@
 "use client";
 
 import * as React from "react";
-import { FOCUS_EVENT, type FocusDetail } from "./part-list";
-import { PHASES, START_HERE, STEPS, STEP_STATUS_LABEL, statusOf, type Step } from "@/lib/workflow";
+import { CURRENT_PHASE, PHASES, STEP_STATUS_LABEL, statusOf, type Phase, type Step } from "@/lib/workflow";
 
-const byId = new Map(STEPS.map((step) => [step.id, step]));
+const phaseOf = new Map(PHASES.flatMap((phase) => phase.steps.map((step) => [step.id, phase.id] as const)));
+const firstOpen = CURRENT_PHASE.steps.find((step) => statusOf(step.id) === "in-progress") ?? CURRENT_PHASE.steps.find((step) => statusOf(step.id) !== "done");
 
-// The build, start to finish. Opening a step lights the part it works on in the figure beside the list.
-export function Workflow({ nodeFigure, gatewayFigure }: { nodeFigure: React.ReactNode; gatewayFigure: React.ReactNode }) {
-  const [open, setOpen] = React.useState<string>(START_HERE.step);
-  const step = byId.get(open);
-  const [figure, setFigure] = React.useState<"node" | "gateway">("gateway");
-  const shown = step?.figure ?? figure;
+// The build, phase by phase. Only the current phase starts open; a step opens to what to do and when it is done.
+export function Workflow({ extras = {} }: { extras?: Record<string, React.ReactNode> }) {
+  const [phases, setPhases] = React.useState<Set<string>>(() => new Set([CURRENT_PHASE.id]));
+  const [open, setOpen] = React.useState<string>(firstOpen?.id ?? "");
+  const scrollTo = React.useRef<{ id: string; smooth: boolean } | null>(null);
 
-  // light the step's part; a step without a part keeps the last figure on screen
-  React.useEffect(() => {
-    if (!step?.figure) return;
-    const other = step.figure === "node" ? "gateway" : "node";
-    window.dispatchEvent(new CustomEvent<FocusDetail>(FOCUS_EVENT, { detail: { figure: other, part: null } }));
-    window.dispatchEvent(new CustomEvent<FocusDetail>(FOCUS_EVENT, { detail: { figure: step.figure, part: step.focus ?? null } }));
-  }, [step]);
-
-  const choose = (id: string) => {
-    const next = byId.get(id);
-    if (next?.figure) setFigure(next.figure);
+  const choose = React.useCallback((id: string, smooth = true) => {
+    const phase = phaseOf.get(id);
+    if (!phase) return;
+    setPhases((current) => new Set(current).add(phase));
     setOpen(id);
-    window.requestAnimationFrame(() => document.getElementById(`step-${id}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" }));
-  };
+    scrollTo.current = { id, smooth };
+  }, []);
 
-  const done = STEPS.filter((item) => statusOf(item.id) === "done").length;
+  // scroll once the chosen step has rendered: its phase may have been folded a moment ago
+  React.useEffect(() => {
+    if (!scrollTo.current) return;
+    const { id, smooth } = scrollTo.current;
+    document.getElementById(`step-${id}`)?.scrollIntoView({ block: "start", behavior: smooth ? "smooth" : "auto" });
+    scrollTo.current = null;
+  }, [open, phases]);
+
+  // links like /build-plan/#step-C4 land on a step even when its phase is folded
+  React.useEffect(() => {
+    const follow = (smooth: boolean) => {
+      const match = window.location.hash.match(/^#step-(\w+)$/);
+      if (match) choose(match[1], smooth);
+    };
+    const onHash = () => follow(true);
+    // on first load wait for the router to finish its own scroll, or it puts the page back at the top
+    const first = window.setTimeout(() => follow(false), 120);
+    window.addEventListener("hashchange", onHash);
+    return () => {
+      window.clearTimeout(first);
+      window.removeEventListener("hashchange", onHash);
+    };
+  }, [choose]);
+
+  const togglePhase = (id: string) =>
+    setPhases((current) => {
+      const next = new Set(current);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
 
   return (
-    <div className="workflow">
-      <div className="workflow-figure">
-        <div className="workflow-figure-sticky">
-          <p className="field-label">
-            {shown === "node" ? "Sensor node" : "Gateway"} · {step ? `ขั้น ${step.id}: ${step.part}` : ""}
-          </p>
-          <div hidden={shown !== "node"}>{nodeFigure}</div>
-          <div hidden={shown !== "gateway"}>{gatewayFigure}</div>
-          <div className="workflow-progress" aria-label={`เสร็จ ${done} จาก ${STEPS.length} ขั้น`}>
-            <span className="field-label">
-              Progress · เสร็จ {done} / {STEPS.length} ขั้น
-            </span>
-            <span className="workflow-cells" aria-hidden="true">
-              {STEPS.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  tabIndex={-1}
-                  className="workflow-cell"
-                  data-status={statusOf(item.id)}
-                  data-open={item.id === open ? "" : undefined}
-                  title={`${item.id} ${item.title}`}
-                  onClick={() => choose(item.id)}
-                />
-              ))}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <ol className="phases">
-        {PHASES.map((phase) => (
-          <li key={phase.id} className="phase" id={`phase-${phase.id}`}>
-            <div className="phase-head">
-              <b className="phase-letter">{phase.id}</b>
-              <div>
-                <h3>{phase.name}</h3>
-                <p className="phase-goal">{phase.goal}</p>
-              </div>
-              <span className="phase-week">{phase.week}</span>
-            </div>
-            <ol className="steps">
-              {phase.steps.map((item) => (
-                <StepRow key={item.id} step={item} open={item.id === open} onToggle={() => (item.id === open ? setOpen("") : choose(item.id))} onJump={choose} />
-              ))}
-            </ol>
-          </li>
-        ))}
-      </ol>
-    </div>
+    <ol className="phases">
+      {PHASES.map((phase) => (
+        <PhaseRow key={phase.id} phase={phase} expanded={phases.has(phase.id)} onToggle={() => togglePhase(phase.id)}>
+          {phase.steps.map((item) => (
+            <StepRow key={item.id} step={item} open={item.id === open} extra={extras[item.id]} onToggle={() => setOpen(item.id === open ? "" : item.id)} onJump={choose} />
+          ))}
+        </PhaseRow>
+      ))}
+    </ol>
   );
 }
 
-function StepRow({ step, open, onToggle, onJump }: { step: Step; open: boolean; onToggle: () => void; onJump: (id: string) => void }) {
+function PhaseRow({ phase, expanded, onToggle, children }: { phase: Phase; expanded: boolean; onToggle: () => void; children: React.ReactNode }) {
+  const done = phase.steps.filter((step) => statusOf(step.id) === "done").length;
+  return (
+    <li className="phase" id={`phase-${phase.id}`} data-current={phase.id === CURRENT_PHASE.id ? "" : undefined}>
+      <button type="button" className="phase-head" aria-expanded={expanded} onClick={onToggle}>
+        <b className="phase-letter">{phase.id}</b>
+        <span className="phase-title">
+          <span className="phase-name">{phase.name}</span>
+          <span className="phase-goal">{phase.goal}</span>
+        </span>
+        <span className="phase-meta">
+          <span>{phase.week}</span>
+          <span>
+            เสร็จ {done} / {phase.steps.length}
+          </span>
+        </span>
+      </button>
+      {expanded ? <ol className="steps">{children}</ol> : null}
+    </li>
+  );
+}
+
+function StepRow({ step, open, extra, onToggle, onJump }: { step: Step; open: boolean; extra?: React.ReactNode; onToggle: () => void; onJump: (id: string) => void }) {
   const status = statusOf(step.id);
   return (
-    <li className="step" id={`step-${step.id}`} data-open={open ? "" : undefined} data-status={status} data-start={step.id === START_HERE.step ? "" : undefined}>
+    <li className="step" id={`step-${step.id}`} data-open={open ? "" : undefined} data-status={status}>
       <button type="button" className="step-head" aria-expanded={open} onClick={onToggle}>
         <span className="step-id">{step.id}</span>
         <span className="step-title">
           <b>{step.title}</b>
-          <span className="step-part">{step.part}</span>
+          <span className="step-owner">{step.owner}</span>
         </span>
-        {step.id === START_HERE.step ? <span className="step-start">เริ่มที่นี่</span> : null}
         <span className="step-status" data-status={status}>
           {STEP_STATUS_LABEL[status]}
         </span>
       </button>
       {open ? (
         <div className="step-body">
-          <p className="step-why">
-            <span className="field-label">ทำไมขั้นนี้ตอนนี้ · Why now</span>
-            {step.why}
-          </p>
           <div>
-            <span className="field-label">ทำอะไร · Do</span>
+            <span className="field-label">ทำอะไร</span>
             <ul className="step-todo">
               {step.todo.map((line) => (
                 <li key={line}>{line}</li>
@@ -115,37 +113,48 @@ function StepRow({ step, open, onToggle, onJump }: { step: Step; open: boolean; 
           </div>
           {step.code ? <pre className="step-code">{step.code}</pre> : null}
           {step.table ? (
-            <table className="register step-table">
-              <thead>
-                <tr>
-                  {step.table.head.map((cell) => (
-                    <th key={cell}>{cell}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {step.table.rows.map((row) => (
-                  <tr key={row.join("|")}>
-                    {row.map((cell, index) => (
-                      <td key={index}>{index === 0 ? <code>{cell}</code> : cell}</td>
+            <div className="scroll-x">
+              <table className="register step-table">
+                <thead>
+                  <tr>
+                    {step.table.head.map((cell) => (
+                      <th key={cell}>{cell}</th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {step.table.rows.map((row) => (
+                    <tr key={row.join("|")}>
+                      {row.map((cell, index) => (
+                        <td key={index}>{index === 0 ? <code>{cell}</code> : cell}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           ) : null}
-          <dl className="step-facts">
+          {extra}
+          <p className="step-done">
+            <span className="field-label">เสร็จเมื่อ</span>
+            {step.done}
+          </p>
+          <dl className="step-meta">
             <div>
-              <dt className="field-label">เริ่มจาก · Start from</dt>
+              <dt>ทำไม</dt>
+              <dd>{step.why}</dd>
+            </div>
+            <div>
+              <dt>เริ่มจาก</dt>
               <dd>{step.start}</dd>
             </div>
             <div>
-              <dt className="field-label">Owner</dt>
-              <dd>{step.owner}</dd>
+              <dt>ชิ้นที่ใช้</dt>
+              <dd>{step.part}</dd>
             </div>
             {step.needs?.length ? (
               <div>
-                <dt className="field-label">ต้องเสร็จก่อน · Needs</dt>
+                <dt>ต้องเสร็จก่อน</dt>
                 <dd className="step-needs">
                   {step.needs.map((id) => (
                     <button key={id} type="button" className="step-link" onClick={() => onJump(id)}>
@@ -156,10 +165,6 @@ function StepRow({ step, open, onToggle, onJump }: { step: Step; open: boolean; 
               </div>
             ) : null}
           </dl>
-          <p className="step-done">
-            <span className="field-label">เสร็จเมื่อ · Done when</span>
-            {step.done}
-          </p>
         </div>
       ) : null}
     </li>

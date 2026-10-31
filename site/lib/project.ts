@@ -3,9 +3,14 @@
 
 export type Level = "ง่าย" | "กลาง" | "ยาก";
 
+export type Order = "ordered" | "partial" | "pending" | "have";
+export const ORDER_LABEL: Record<Order, string> = { ordered: "สั่งแล้ว", partial: "สั่งแล้ว 1 จาก 2", pending: "ยังไม่สั่ง", have: "มีแล้ว" };
+
 export interface Part {
   id: string;
   name: string;
+  use: string;
+  order: Order;
   where: "node" | "gateway";
   role: string;
   bus: string;
@@ -24,6 +29,8 @@ export interface Part {
 export const PARTS: Part[] = [
   {
     id: "firebeetle",
+    use: "สมองของ node และกล้องถ่ายโต๊ะ",
+    order: "partial",
     name: "FireBeetle 2 ESP32-S3 + กล้อง OV2640",
     where: "node",
     role: "สมองของ node: อ่านเรดาร์และ ToF 10 ครั้ง/วินาทีส่งให้ gateway, ถ่ายภาพเมื่อ gateway ขอ, สั่ง servo",
@@ -40,6 +47,8 @@ export const PARTS: Part[] = [
   },
   {
     id: "ld2410",
+    use: "จับว่ามีคนนั่ง แม้นั่งนิ่ง (จากการหายใจ)",
+    order: "ordered",
     name: "HLK-LD2410 mmWave 24 GHz",
     where: "node",
     role: "รู้ว่ามีคนนั่งแม้นั่งนิ่ง เพราะจับการหายใจได้ (PIR ทำไม่ได้) · โหมด engineering ให้พลังงาน 9 ช่วงระยะ × 2 (ขยับ/นิ่ง) เป็น feature หลักของโมเดล AI ที่ gateway",
@@ -55,6 +64,8 @@ export const PARTS: Part[] = [
   },
   {
     id: "vl53l1x",
+    use: "วัดระยะลงที่เบาะเก้าอี้ มีคนนั่งระยะจะสั้นลง",
+    order: "ordered",
     name: "VL53L1X วัดระยะด้วยแสงเลเซอร์ (ToF)",
     where: "node",
     role: "วัดระยะจากหัว node ลงไปที่เบาะเก้าอี้: มีคนนั่งระยะจะสั้นลงและขยับตามการหายใจ · ป้อนโมเดล AI ที่ gateway คู่กับเรดาร์",
@@ -71,6 +82,8 @@ export const PARTS: Part[] = [
   },
   {
     id: "servo",
+    use: "หมุนป้ายปริซึม 3 หน้า",
+    order: "ordered",
     name: "TD-7120MG servo 0–270°",
     where: "node",
     role: "หมุนป้ายปริซึม 3 หน้า ไปที่ 0° / 120° / 240°",
@@ -87,6 +100,8 @@ export const PARTS: Part[] = [
   },
   {
     id: "adapter-node",
+    use: "ไฟเลี้ยงโต๊ะละ 1 ตัว",
+    order: "ordered",
     name: "อแดปเตอร์ 5V 2A",
     where: "node",
     role: "ไฟเลี้ยงโต๊ะละตัว: กล้อง + Wi-Fi + servo กินไฟพร้อมกัน",
@@ -102,6 +117,8 @@ export const PARTS: Part[] = [
   },
   {
     id: "yd-esp32",
+    use: "สมองของ gateway รันโมเดล AI ส่งข้อมูลขึ้น cloud",
+    order: "ordered",
     name: "Waveshare ESP32-S3-DEV-KIT-N8R8",
     where: "gateway",
     role: "สมองของ gateway: รันโมเดล AI (E7), state machine, ตัวจับเวลา 2/20/30 นาที, ส่งภาพไปถาม cloud AI, ส่งข้อมูลขึ้น cloud, ส่ง LINE",
@@ -118,6 +135,8 @@ export const PARTS: Part[] = [
   },
   {
     id: "scd41",
+    use: "วัด CO₂ ในห้อง แสดงบน dashboard",
+    order: "ordered",
     name: "SCD41 CO₂",
     where: "gateway",
     role: "แสดงบน dashboard: คุณภาพอากาศในห้อง และใช้ประมาณความหนาแน่นของคน",
@@ -134,6 +153,8 @@ export const PARTS: Part[] = [
   },
   {
     id: "max4466",
+    use: "วัดระดับเสียงในห้อง",
+    order: "ordered",
     name: "ไมค์อนาล็อก MAX4466",
     where: "gateway",
     role: "แสดงบน dashboard: ระดับเสียงในห้อง แจ้ง staff ถ้า quiet zone ดังเกิน",
@@ -150,6 +171,8 @@ export const PARTS: Part[] = [
   },
   {
     id: "bh1750",
+    use: "วัดแสงในห้อง",
+    order: "ordered",
     name: "GY-302 BH1750 วัดแสง",
     where: "gateway",
     role: "แสดงบน dashboard: แสงในห้อง และบอกช่วงเปิด/ปิดไฟ",
@@ -165,6 +188,8 @@ export const PARTS: Part[] = [
   },
   {
     id: "adapter-gw",
+    use: "ไฟเลี้ยง gateway",
+    order: "have",
     name: "ที่ชาร์จมือถือ 5V + สาย USB-C",
     where: "gateway",
     role: "ไฟเลี้ยง gateway ตลอดการรัน 24 ชม.",
@@ -180,6 +205,7 @@ export const PARTS: Part[] = [
 ];
 
 export const SUNDRIES = 400; // ~250 already ordered (allnewstep jumpers, breadboards, headers, adapter boards, DC jacks; cybertice capacitors) + ~150 enclosure and printing
+export const SUNDRIES_LEFT = 150; // the part of SUNDRIES not bought yet
 
 export const lineTotal = (part: Part) => part.price * part.qty;
 
@@ -265,6 +291,7 @@ export const baht = (value: number) => value.toLocaleString("en-US");
 export interface Misc {
   id: string;
   name: string;
+  use: string;
   where: "node" | "gateway" | "both";
   qty: string;
   job: string;
@@ -276,6 +303,7 @@ export interface Misc {
 export const MISC: Misc[] = [
   {
     id: "cap",
+    use: "กันบอร์ดรีเซ็ตตอน servo เริ่มหมุน",
     name: "ตัวเก็บประจุ 1000 µF (electrolytic, 16 V)",
     where: "node",
     qty: "1 ต่อโต๊ะ",
@@ -286,6 +314,7 @@ export const MISC: Misc[] = [
   },
   {
     id: "power-split",
+    use: "แยกไฟจากอแดปเตอร์ไปบอร์ดและ servo",
     name: "แจ็ก DC ตัวเมีย 5.5×2.5 + terminal block",
     where: "node",
     qty: "1 ชุดต่อโต๊ะ",
@@ -296,6 +325,7 @@ export const MISC: Misc[] = [
   },
   {
     id: "perfboard",
+    use: "ต่อวงจรทดลอง แล้วย้ายลงแผ่นถาวร",
     name: "Breadboard → perfboard, header, สายจัมเปอร์",
     where: "both",
     qty: "ตามใช้",
@@ -306,6 +336,7 @@ export const MISC: Misc[] = [
   },
   {
     id: "mast",
+    use: "ยกกล้องและ ToF ให้เห็นโต๊ะและเก้าอี้",
     name: "เสาและแขนจับหัวกล้อง",
     where: "node",
     qty: "1 ต่อโต๊ะ",
@@ -316,6 +347,7 @@ export const MISC: Misc[] = [
   },
   {
     id: "head-box",
+    use: "ครอบบอร์ดกับกล้องเป็นชิ้นเดียว",
     name: "กล่องหัวกล้อง",
     where: "node",
     qty: "1 ต่อโต๊ะ",
@@ -326,6 +358,7 @@ export const MISC: Misc[] = [
   },
   {
     id: "radar-mount",
+    use: "ยึดเรดาร์ใต้ขอบโต๊ะ หันหาเก้าอี้",
     name: "ที่ยึด LD2410 ใต้ขอบโต๊ะ",
     where: "node",
     qty: "1 ต่อโต๊ะ",
@@ -336,6 +369,7 @@ export const MISC: Misc[] = [
   },
   {
     id: "prism",
+    use: "ป้าย 3 หน้า ชมพู / เหลือง / เขียว",
     name: "ป้ายปริซึม 3 หน้า + แผ่นข้าง + ฐาน",
     where: "node",
     qty: "1 ชุดต่อโต๊ะ",
@@ -346,6 +380,7 @@ export const MISC: Misc[] = [
   },
   {
     id: "qr",
+    use: "เปิดหน้าสถานะโต๊ะ + เพิ่มเพื่อน LINE",
     name: "การ์ด QR + ที่ตั้งอะคริลิก",
     where: "node",
     qty: "1 ต่อโต๊ะ",
@@ -355,6 +390,7 @@ export const MISC: Misc[] = [
   },
   {
     id: "gw-box",
+    use: "กล่องเก็บ gateway และ sensor ห้อง",
     name: "กล่อง gateway + standoff M3",
     where: "gateway",
     qty: "1",
@@ -365,6 +401,7 @@ export const MISC: Misc[] = [
   },
   {
     id: "finish",
+    use: "เก็บสายให้เรียบร้อย รู้ว่าเส้นไหนไปไหน",
     name: "เคเบิลไทร์, ท่อหด, เทปโฟม, ป้ายชื่อสาย, สาย USB-C ที่ส่งข้อมูลได้",
     where: "both",
     qty: "ตามใช้",

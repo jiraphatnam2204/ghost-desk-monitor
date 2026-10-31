@@ -1,173 +1,68 @@
-/* ---------- start here ---------- */
+/* ---------- now ---------- */
 
-.start-here {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: 24px clamp(24px, 4vw, 56px);
-  align-items: start;
+.now {
   padding-bottom: clamp(40px, 6vw, 64px);
 }
 
-.start-box {
+.now-box {
   display: grid;
-  gap: 10px;
-  justify-items: start;
-  padding: 18px 20px 20px;
+  gap: 8px;
+  padding: 20px 22px 18px;
   border: 4px double var(--rule);
 }
 
-.start-box h2 {
-  font-size: clamp(26px, 3.2vw, 38px);
+.now-box h2 {
+  font-size: clamp(24px, 3vw, 34px);
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
-.start-box p {
-  max-width: 60ch;
+.now-meta {
+  max-width: var(--measure);
+  color: var(--toner-2);
 }
 
-.order ol {
+.now-steps {
   margin: 8px 0 0;
   padding: 0;
   list-style: none;
   border-top: 2px solid var(--rule);
 }
 
-.order li {
+.now-steps li {
   border-bottom: 1px solid var(--rule-soft);
 }
 
-.order a {
+.now-steps a {
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) auto;
-  gap: 12px;
-  align-items: center;
-  padding: 8px 0;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 4px 12px;
+  align-items: start;
+  padding: 10px 0;
   text-decoration: none;
 }
 
-.order a:hover span {
+.now-steps a:hover b {
   text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
-.order b {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border: 1.5px solid var(--toner);
-  font-size: 14px;
-}
-
-.order li:first-child b {
-  background: var(--toner);
-  color: var(--paper);
-}
-
-.order span {
-  font-weight: 600;
-}
-
-.order small {
-  font-size: 13px;
+.now-foot {
+  font-size: 15px;
   color: var(--toner-2);
 }
 
-@media (max-width: 860px) {
-  .start-here {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ---------- layout: list beside a sticky figure ---------- */
-
-.workflow {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  grid-template-areas: "list figure";
-  gap: 28px clamp(24px, 3vw, 44px);
-  align-items: start;
-}
-
-.workflow-figure {
-  grid-area: figure;
-  align-self: stretch;
-}
-
-.workflow-figure-sticky {
-  position: sticky;
-  top: 80px;
-  display: grid;
-  gap: 10px;
-}
-
-.workflow-figure .iso-legend {
-  display: none;
-}
+/* ---------- phases ---------- */
 
 .phases {
-  grid-area: list;
   margin: 0;
   padding: 0;
   list-style: none;
+  border-top: 2px solid var(--rule);
 }
 
-@media (max-width: 960px) {
-  .workflow {
-    grid-template-columns: 1fr;
-    grid-template-areas: "figure" "list";
-  }
-
-  .workflow-figure-sticky {
-    position: static;
-  }
-}
-
-/* ---------- progress cells ---------- */
-
-.workflow-progress {
-  display: grid;
-  gap: 6px;
-}
-
-.workflow-cells {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px;
-}
-
-.workflow-cell {
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  border: 1.5px solid var(--rule-soft);
-  background: var(--paper);
-  cursor: pointer;
-}
-
-.workflow-cell[data-status="in-progress"] {
-  border-color: var(--toner);
-  background: repeating-linear-gradient(135deg, var(--toner) 0 1px, transparent 1px 4px);
-}
-
-.workflow-cell[data-status="done"] {
-  border-color: var(--toner);
-  background: var(--toner);
-}
-
-.workflow-cell[data-status="blocked"] {
-  border-color: var(--stamp);
-}
-
-.workflow-cell[data-open] {
-  outline: 2px solid var(--toner);
-  outline-offset: 1px;
-}
-
-/* ---------- phases and steps ---------- */
-
-.phase + .phase {
-  margin-top: 34px;
+.phase {
+  border-bottom: 2px solid var(--rule);
 }
 
 .phase-head {
@@ -175,9 +70,20 @@
   grid-template-columns: 44px minmax(0, 1fr) auto;
   gap: 4px 14px;
   align-items: start;
-  padding-bottom: 10px;
-  border-bottom: 2px solid var(--rule);
+  width: 100%;
+  padding: 14px 0;
+  border: 0;
+  background: none;
+  color: var(--toner);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
   scroll-margin-top: 90px;
+}
+
+.phase-head:hover .phase-name {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .phase-letter {
@@ -190,21 +96,40 @@
   font-weight: 800;
 }
 
-.phase-head h3 {
+.phase[data-current] .phase-letter {
+  background: var(--toner);
+  color: var(--paper);
+}
+
+.phase-title {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.phase-name {
   font-size: clamp(19px, 2.2vw, 24px);
   font-weight: 800;
+  line-height: 1.2;
 }
 
 .phase-goal {
-  margin-top: 2px;
   font-size: 15px;
   color: var(--toner-2);
 }
 
-.phase-week {
+.phase-meta {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
   font-size: 13.5px;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.phase-meta span + span {
+  font-weight: 600;
+  color: var(--toner-2);
 }
 
 @media (max-width: 640px) {
@@ -212,15 +137,19 @@
     grid-template-columns: 44px minmax(0, 1fr);
   }
 
-  .phase-week {
+  .phase-meta {
     grid-column: 2;
+    justify-items: start;
   }
 }
 
+/* ---------- steps ---------- */
+
 .steps {
-  margin: 0;
+  margin: 0 0 12px;
   padding: 0;
   list-style: none;
+  border-top: 1px solid var(--rule-soft);
 }
 
 .step {
@@ -228,9 +157,13 @@
   scroll-margin-top: 90px;
 }
 
+.step:last-child {
+  border-bottom: 0;
+}
+
 .step-head {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) auto auto;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
   gap: 4px 12px;
   align-items: start;
   width: 100%;
@@ -271,17 +204,9 @@
   font-size: 16.5px;
 }
 
-.step-part {
+.step-owner {
   font-size: 13.5px;
   color: var(--toner-2);
-}
-
-.step-start {
-  padding: 1px 8px 2px;
-  border: 2px solid var(--toner);
-  font-size: 12.5px;
-  font-weight: 800;
-  white-space: nowrap;
 }
 
 .step-status {
@@ -310,11 +235,11 @@
 }
 
 @media (max-width: 640px) {
-  .step-head {
+  .step-head,
+  .now-steps a {
     grid-template-columns: 44px minmax(0, 1fr);
   }
 
-  .step-start,
   .step-status {
     grid-column: 2;
     justify-self: start;
@@ -326,14 +251,9 @@
 .step-body {
   display: grid;
   gap: 14px;
-  padding: 2px 0 20px 56px;
+  padding: 2px 0 22px 56px;
   font-size: 15.5px;
   line-height: 1.55;
-}
-
-.step-why {
-  display: grid;
-  gap: 1px;
 }
 
 .step-todo {
@@ -371,16 +291,35 @@
   font-size: 14px;
 }
 
-.step-facts {
+.step-done {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr) minmax(0, 0.8fr);
-  gap: 10px 20px;
-  margin: 0;
+  gap: 2px;
+  padding: 10px 14px 12px;
+  border: 4px double var(--rule);
+  font-weight: 700;
 }
 
-.step-facts dd {
-  margin: 1px 0 0;
-  font-weight: 600;
+/* the background to a step: smaller and quieter than what to do */
+.step-meta {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--toner-2);
+}
+
+.step-meta > div {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.step-meta dt {
+  font-weight: 700;
+}
+
+.step-meta dd {
+  margin: 0;
 }
 
 .step-needs {
@@ -405,24 +344,99 @@
   color: var(--paper);
 }
 
-.step-done {
-  display: grid;
-  gap: 2px;
-  padding: 10px 14px 12px;
-  border: 4px double var(--rule);
-  font-weight: 700;
-}
-
 @media (max-width: 640px) {
   .step-body {
     padding-left: 0;
   }
 
-  .step-facts {
-    grid-template-columns: 1fr 1fr;
+  .step-meta > div {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
+}
 
-  .step-facts > div:first-child {
-    grid-column: 1 / -1;
-  }
+/* ---------- power diagram (step C4) ---------- */
+
+.power-figure {
+  max-width: 720px;
+  margin: 0;
+  padding: 16px;
+  border: 1.5px solid var(--rule);
+  background: #ffffff;
+}
+
+.power-figure figcaption {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--toner-2);
+}
+
+.power-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pw-box {
+  fill: #ffffff;
+  stroke: var(--toner);
+  stroke-width: 1.5;
+}
+
+.pw-heavy {
+  stroke-width: 3;
+}
+
+.pw-title {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 800;
+  fill: var(--toner);
+}
+
+.pw-text {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  fill: var(--toner-2);
+}
+
+.pw-label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--toner);
+}
+
+.pw-cap {
+  font-size: 14px;
+}
+
+.pw-wire {
+  fill: none;
+  stroke: var(--toner);
+  stroke-width: 2;
+}
+
+.pw-gnd {
+  stroke-dasharray: 7 4;
+}
+
+.pw-signal {
+  stroke-width: 1.2;
+}
+
+.pw-plate {
+  fill: none;
+  stroke: var(--toner);
+  stroke-width: 3;
+}
+
+.pw-node {
+  fill: var(--toner);
+}
+
+.pw-screw {
+  fill: #ffffff;
+  stroke: var(--toner);
+  stroke-width: 1.5;
 }
