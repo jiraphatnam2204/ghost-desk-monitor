@@ -1,20 +1,19 @@
-# Wi-Fi passwords, Supabase keys, the LINE token and the Anthropic key never go in the repo (course rule, E5)
+# Secrets: copy secrets.h.example to secrets.h and fill it in on your own machine
 secrets.h
-**/secrets.h
 
-# local tooling and build output
-.claude/
-.vscode/
+# Kept local: payment slips, the proposal copy with student IDs, the course brief
+docs/receipts/
+docs/proposal-overleaf/private/
+docs/course-brief/
+
+# Build output
 build/
 *.bin
 *.elf
 
-# the course brief is the instructor's document: keep it local
-Embedded System (CEDT) - Final Project 2026.pdf
-Embedded System (CEDT) - Final Project 2026.md
-
-# the submitted proposal with student IDs stays local (the repo is public)
-docs/proposal-overleaf/private/
-
-# payment slips show bank details: keep them local (the repo is public)
-docs/receipts/
+# Editors and OS
+.vscode/
+.idea/
+.claude/
+.DS_Store
+Thumbs.db
